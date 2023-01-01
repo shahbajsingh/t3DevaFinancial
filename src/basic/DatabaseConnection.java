@@ -32,7 +32,7 @@ public class DatabaseConnection {
 
     }
 
-    public Connection getNewConnection() throws SQLException {
+    public Connection getConnection() throws SQLException {
 
         System.out.println("Connecting to database . . .");
         newConnection = DriverManager.getConnection(databaseURL, hostname, password);
@@ -65,6 +65,8 @@ public class DatabaseConnection {
         newStatement = newConnection.prepareStatement(sql);
         newStatement.executeUpdate(sql);
 
+        System.out.println("Query executed successfully\n");
+
     }
 
     // Following method will execute the passed SELECT query and return a ResultSet
@@ -76,6 +78,8 @@ public class DatabaseConnection {
 
         newStatement = newConnection.prepareStatement(sql);
         newResultSet = newStatement.executeQuery(sql);
+
+        System.out.println("Query executed successfully\n");
 
         return newResultSet;
 
@@ -97,20 +101,22 @@ public class DatabaseConnection {
 
     }
 
-    public void closeConnection(Connection connection, ResultSet resultSet) throws SQLException {
+    // Following method will close the connection, statement, and result set
 
-        if(resultSet != null) {
-            resultSet.close();
+    public void closeConnection() throws SQLException {
+
+        if (newConnection != null) {
+            newConnection.close();
         }
 
-        if(connection != null) {
-            connection.close();
+        if (newStatement != null) {
+            newStatement.close();
+        }
+
+        if (newResultSet != null) {
+            newResultSet.close();
         }
 
     }
-
-
-
-
 
 }
