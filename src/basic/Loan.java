@@ -6,14 +6,14 @@ import static basic.CONSTANTS.*;
 
 public class Loan {
 
-    // Note that interest rate is calculated as a percentage of the loan amount by the employee
+    // Note that interest rate is calculated as a percentage of the loan value by the employee
     // and total accrued interest will either be calculated at time of payment or per unit of time
 
     // LOAN ATTRIBUTES
 
     private long loan_id, card_no;
     private Timestamp loan_date;
-    private float loan_amount, interest_rate;
+    private float loan_value, interest_rate;
     private boolean is_active;
 
 
@@ -22,33 +22,33 @@ public class Loan {
     // Following constructor takes all parameters
 
     public Loan(long loan_id, Timestamp loan_date, long card_no,
-                float loan_amount, float interest_rate, boolean is_active){
+                float loan_value, float interest_rate, boolean is_active){
 
         this.loan_id = loan_id;
         this.loan_date = loan_date;
         this.card_no = card_no;
-        this.loan_amount = loan_amount;
+        this.loan_value = loan_value;
         this.interest_rate = interest_rate;
         this.is_active = is_active;
 
     }
 
-    // Following constructor takes four parameters: loan_id, card_no, loan_date, loan_amount, and interest rate
+    // Following constructor takes four parameters: loan_id, card_no, loan_date, loan_value, and interest rate
     // is_active is set to true
 
-    public Loan(long loan_id, Timestamp loan_date, long card_no, float loan_amount, float interest_rate){
+    public Loan(long loan_id, Timestamp loan_date, long card_no, float loan_value, float interest_rate){
 
         this.loan_id = loan_id;
         this.loan_date = loan_date;
         this.card_no = card_no;
-        this.loan_amount = loan_amount;
+        this.loan_value = loan_value;
         this.interest_rate = interest_rate;
         this.is_active = true;
 
     }
 
     // Following constructor takes loan_id and card_no as parameters
-    // Issue date is set to current date, loan amount is set to 0.0f,
+    // Issue date is set to current date, loan value is set to 0.0f,
     // interest rate is set to 0.0f, and loan is set to active
 
     public Loan(long loan_id, long card_no){
@@ -56,7 +56,7 @@ public class Loan {
         this.loan_id = loan_id;
         this.loan_date = CURRENT_TIME;
         this.card_no = card_no;
-        this.loan_amount = 0.00f;
+        this.loan_value = 0.00f;
         this.interest_rate = 0.00f;
         this.is_active = true;
 
@@ -70,7 +70,7 @@ public class Loan {
         this.loan_id = 0;
         this.loan_date = null;
         this.card_no = 0;
-        this.loan_amount = 0.00f;
+        this.loan_value = 0.00f;
         this.interest_rate = 0.00f;
         this.is_active = true;
 
@@ -91,8 +91,8 @@ public class Loan {
         return this.card_no;
     }
 
-    public float getLoanAmount(){
-        return this.loan_amount;
+    public float getLoanValue(){
+        return this.loan_value;
     }
 
     public float getInterestRate(){
@@ -118,8 +118,8 @@ public class Loan {
         this.card_no = card_no;
     }
 
-    public void setLoanAmount(float loan_amount){
-        this.loan_amount = loan_amount;
+    public void setLoanValue(float loan_value){
+        this.loan_value = loan_value;
     }
 
     public void setInterestRate(float interest_rate){
@@ -137,17 +137,17 @@ public class Loan {
 
         String ret =
                 """
-                LOAN
+                \nLOAN
                 Loan ID: %d
                 Loan Date: %s
                 Card No: %d
-                Loan Amount: ₹%.2f 
+                Loan Value: ₹%.2f
                 Interest Rate: %.2f
                 Is Active: %b
                 """;
 
         return String.format(ret, this.loan_id, this.loan_date, this.card_no,
-                this.loan_amount, this.interest_rate, this.is_active);
+                this.loan_value, this.interest_rate, this.is_active);
 
     }
 

@@ -14,6 +14,10 @@ import java.util.Map;
 
 public class CustomerImplement implements CustomerDAO {
 
+    public CustomerImplement(){
+        super();
+    }
+
 
     @Override
     public void addCustomer(String first_name, String middle_name, String last_name, long aadhaar,
@@ -66,7 +70,11 @@ public class CustomerImplement implements CustomerDAO {
 
         ResultSet rs = c.selectSQL(sql);
 
-        return rs.next();
+        boolean exists = rs.next();
+
+        c.closeConnection();
+
+        return exists;
 
     }
 
@@ -177,9 +185,9 @@ public class CustomerImplement implements CustomerDAO {
     }
 
     @Override
-    public ResultSet getAllCustomerInfo() throws SQLException {
+    public ResultSet getAllCustomersInfo() throws SQLException {
 
-        String sql = QUERY.getAllCustomerInfo;
+        String sql = QUERY.getAllCustomersInfo;
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
@@ -191,9 +199,9 @@ public class CustomerImplement implements CustomerDAO {
     }
 
     @Override
-    public ResultSet getAllCustomerAccountInfo() throws SQLException { // Customer AND card details
+    public ResultSet getAllCustomersAccountInfo() throws SQLException { // Customer AND card details
 
-        String sql = QUERY.getAllCustomerAccountInfo;
+        String sql = QUERY.getAllCustomersAccountInfo;
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
@@ -211,82 +219,82 @@ public class CustomerImplement implements CustomerDAO {
     @Override
     public String getCustomerName(long card_no) throws SQLException {
 
-            String sql = String.format(QUERY.getCustomerName, card_no);
+        String sql = String.format(QUERY.getCustomerName, card_no);
 
-            DatabaseConnection c = new DatabaseConnection();
-            Connection newConnection = c.getConnection();
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
 
-            ResultSet rs = c.selectSQL(sql);
+        ResultSet rs = c.selectSQL(sql);
 
-            return String.format("%s %s %s", rs.getString("first_name"),
-                    rs.getString("middle_name"), rs.getString("last_name"));
+        return String.format("%s %s %s", rs.getString("first_name"),
+                rs.getString("middle_name"), rs.getString("last_name"));
 
     }
 
     @Override
     public String getCustomerAadhaar(long card_no) throws SQLException {
 
-            String sql = String.format(QUERY.getCustomerAadhaar, card_no);
+        String sql = String.format(QUERY.getCustomerAadhaar, card_no);
 
-            DatabaseConnection c = new DatabaseConnection();
-            Connection newConnection = c.getConnection();
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
 
-            ResultSet rs = c.selectSQL(sql);
+        ResultSet rs = c.selectSQL(sql);
 
-            return String.valueOf(rs.getLong("aadhaar"));
+        return String.valueOf(rs.getLong("aadhaar"));
 
     }
 
     @Override
     public Map<String, String> getCustomerAddress(long card_no) throws SQLException {
 
-            String sql = String.format(QUERY.getCustomerAddress, card_no);
+        String sql = String.format(QUERY.getCustomerAddress, card_no);
 
-            DatabaseConnection c = new DatabaseConnection();
-            Connection newConnection = c.getConnection();
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
 
-            ResultSet rs = c.selectSQL(sql);
+        ResultSet rs = c.selectSQL(sql);
 
-            Map<String, String> addressMap = new HashMap<>() {{
-                put("house_no", rs.getString("house_no"));
-                put("street_name", rs.getString("street_name"));
-                put("city", rs.getString("city"));
-                put("state", rs.getString("state"));
-                put("country", rs.getString("country"));
-                put("zip_code", rs.getString("zip_code"));
-            }};
+        Map<String, String> addressMap = new HashMap<>() {{
+            put("house_no", rs.getString("house_no"));
+            put("street_name", rs.getString("street_name"));
+            put("city", rs.getString("city"));
+            put("state", rs.getString("state"));
+            put("country", rs.getString("country"));
+            put("zip_code", rs.getString("zip_code"));
+        }};
 
-            rs.close();
+        rs.close();
 
-            return addressMap;
+        return addressMap;
 
     }
 
     @Override
     public String getCustomerPhone(long card_no) throws SQLException {
 
-                String sql = String.format(QUERY.getCustomerPhone, card_no);
+        String sql = String.format(QUERY.getCustomerPhone, card_no);
 
-                DatabaseConnection c = new DatabaseConnection();
-                Connection newConnection = c.getConnection();
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
 
-                ResultSet rs = c.selectSQL(sql);
+        ResultSet rs = c.selectSQL(sql);
 
-                return rs.getString("phone");
+        return rs.getString("phone");
 
     }
 
     @Override
     public String getCustomerEmail(long card_no) throws SQLException {
 
-                String sql = String.format(QUERY.getCustomerEmail, card_no);
+        String sql = String.format(QUERY.getCustomerEmail, card_no);
 
-                DatabaseConnection c = new DatabaseConnection();
-                Connection newConnection = c.getConnection();
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
 
-                ResultSet rs = c.selectSQL(sql);
+        ResultSet rs = c.selectSQL(sql);
 
-                return rs.getString("email");
+        return rs.getString("email");
 
     }
 
@@ -347,9 +355,9 @@ public class CustomerImplement implements CustomerDAO {
 
     }
 
-    public String getAllCustomerInfoString() throws SQLException {
+    public String getAllCustomersInfoString() throws SQLException {
 
-        String sql = QUERY.getAllCustomerInfo;
+        String sql = QUERY.getAllCustomersInfo;
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
@@ -368,9 +376,9 @@ public class CustomerImplement implements CustomerDAO {
 
     }
 
-    public String getAllCustomerAccountInfoString() throws SQLException {
+    public String getAllCustomersAccountInfoString() throws SQLException {
 
-        String sql = QUERY.getAllCustomerAccountInfo;
+        String sql = QUERY.getAllCustomersAccountInfo;
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
@@ -390,7 +398,7 @@ public class CustomerImplement implements CustomerDAO {
     }
 
 
-    // convertRowToCustomer creates a Customer object from a ResultSet row
+    // HELPER METHODS
 
     @Override
     public Customer convertRowToCustomer(ResultSet rs) throws SQLException {

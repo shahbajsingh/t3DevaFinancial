@@ -190,13 +190,13 @@ public class Employee {
 
         String ret =
                 """
-               EMPLOYEE
-               Employee ID: %d
-               Name: %s %s %s
-               Aadhaar: %d
-               Address: %s %s, %s, %s, %s %s
-               Phone: %s
-               Email: %s
+                \nEMPLOYEE
+                Employee ID: %d
+                Name: %s %s %s
+                Aadhaar: %d
+                Address: %s %s, %s, %s, %s %s
+                Phone: %s
+                Email: %s
                 """;
 
         return String.format(ret, employee_id, first_name, middle_name, last_name, aadhaar,

@@ -20,8 +20,8 @@ public class CustomerRun {
             System.out.println("[0] Exit Customer Portal");
             System.out.println("[1] Check Customer Info");
             System.out.println("[2] Check Customer Account Info");
-            System.out.println("[3] Check All Customer Info");
-            System.out.println("[4] check All Customer Account Info");
+            System.out.println("[3] Check All Customers Info");
+            System.out.println("[4] Check All Customers Account Info");
             System.out.println("[5] Modify Customer Info");
             System.out.println("[6] Add New Customer");
             System.out.println("[7] Delete Customer");
@@ -57,11 +57,11 @@ public class CustomerRun {
             }
 
             if (userInput == 3) {
-                System.out.println(c.getAllCustomerInfoString());
+                System.out.println(c.getAllCustomersInfoString());
             }
 
             if (userInput == 4) {
-                System.out.println(c.getAllCustomerAccountInfoString());
+                System.out.println(c.getAllCustomersAccountInfoString());
             }
 
             if (userInput == 5){

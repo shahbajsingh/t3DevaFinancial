@@ -35,7 +35,7 @@ public interface EmployeeDAO {
 
     ResultSet getEmployeeInfoByLastName(String last_name) throws SQLException; // access schema by last name
 
-    ResultSet getAllEmployeeInfo() throws SQLException; // employee schema details for all customers
+    ResultSet getAllEmployeesInfo() throws SQLException; // employee schema details for all customers
 
     String getEmployeeName(int employee_id) throws SQLException;
 
@@ -46,7 +46,6 @@ public interface EmployeeDAO {
     String getEmployeePhone(int employee_id) throws SQLException;
 
     String getEmployeeEmail(int employee_id) throws SQLException;
-
 
     Employee convertRowToEmployee(ResultSet rs) throws SQLException;
 

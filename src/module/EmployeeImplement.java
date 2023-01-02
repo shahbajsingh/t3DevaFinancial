@@ -13,6 +13,10 @@ import java.util.Map;
 
 public class EmployeeImplement implements EmployeeDAO {
 
+    public EmployeeImplement(){
+        super();
+    }
+
 
     @Override
     public void addEmployee(String password, String first_name, String middle_name, String last_name, long aadhaar,
@@ -43,7 +47,7 @@ public class EmployeeImplement implements EmployeeDAO {
 
         c.executeSQL(sql);
 
-        System.out.println(String.format("Employee with employee_id %d deleted from the database", employee_id));
+        System.out.println(String.format("Employee with employee ID %d deleted from the database", employee_id));
 
         c.closeConnection();
 
@@ -52,14 +56,18 @@ public class EmployeeImplement implements EmployeeDAO {
     @Override
     public boolean checkEmployeeExists(int employee_id) throws SQLException {
 
-        String sql = String.format(QUERY.getEmployeeInfo, employee_id);
+        String sql = String.format(QUERY.checkEmployeeExists, employee_id);
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
 
         ResultSet rs = c.selectSQL(sql);
 
-        return rs.next();
+        boolean exists = rs.next();
+
+        c.closeConnection();
+
+        return exists;
 
     }
 
@@ -170,7 +178,7 @@ public class EmployeeImplement implements EmployeeDAO {
 
     @Override
     public ResultSet getEmployeeInfo(int employee_id) throws SQLException {
-
+    // TO-DO: Refactor query to not use * which returns password info as well
         String sql = String.format(QUERY.getEmployeeInfo, employee_id);
 
         DatabaseConnection c = new DatabaseConnection();
@@ -198,9 +206,9 @@ public class EmployeeImplement implements EmployeeDAO {
     }
 
     @Override
-    public ResultSet getAllEmployeeInfo() throws SQLException {
+    public ResultSet getAllEmployeesInfo() throws SQLException {
 
-        String sql = QUERY.getAllEmployeeInfo;
+        String sql = QUERY.getAllEmployeesInfo;
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
@@ -215,6 +223,7 @@ public class EmployeeImplement implements EmployeeDAO {
     // These methods are used in command line tests and populating GUI text fields
     // They return a String or string representation of an object to the calling method
 
+    @Override
     public String getEmployeeName(int employee_id) throws SQLException {
 
         String sql = String.format(QUERY.getEmployeeName, employee_id);
@@ -229,6 +238,7 @@ public class EmployeeImplement implements EmployeeDAO {
 
     }
 
+    @Override
     public String getEmployeeAadhaar(int employee_id) throws SQLException {
 
         String sql = String.format(QUERY.getEmployeeAadhaar, employee_id);
@@ -242,6 +252,7 @@ public class EmployeeImplement implements EmployeeDAO {
 
     }
 
+    @Override
     public Map<String, String> getEmployeeAddress(int employee_id) throws SQLException {
 
         String sql = String.format(QUERY.getEmployeeAddress, employee_id);
@@ -266,6 +277,7 @@ public class EmployeeImplement implements EmployeeDAO {
 
     }
 
+    @Override
     public String getEmployeePhone(int employee_id) throws SQLException {
 
         String sql = String.format(QUERY.getEmployeePhone, employee_id);
@@ -279,6 +291,7 @@ public class EmployeeImplement implements EmployeeDAO {
 
     }
 
+    @Override
     public String getEmployeeEmail(int employee_id) throws SQLException {
 
         String sql = String.format(QUERY.getEmployeeEmail, employee_id);
@@ -316,9 +329,9 @@ public class EmployeeImplement implements EmployeeDAO {
 
     }
 
-    public String getAllEmployeeInfoString() throws SQLException {
+    public String getAllEmployeesInfoString() throws SQLException {
 
-        String sql = QUERY.getAllEmployeeInfo;
+        String sql = QUERY.getAllEmployeesInfo;
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
@@ -336,6 +349,8 @@ public class EmployeeImplement implements EmployeeDAO {
         return sb.toString();
 
     }
+
+    // HELPER METHODS
 
     @Override
     public Employee convertRowToEmployee(ResultSet rs) throws SQLException {

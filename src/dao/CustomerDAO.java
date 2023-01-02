@@ -31,9 +31,9 @@ public interface CustomerDAO {
 
     ResultSet getCustomerAccountInfo(long card_no) throws SQLException; // customer + card schema details
 
-    ResultSet getAllCustomerInfo() throws SQLException; // customer schema details for all customers
+    ResultSet getAllCustomersInfo() throws SQLException; // customer schema details for all customers
 
-    ResultSet getAllCustomerAccountInfo() throws SQLException; // customer + card schema details for all customers
+    ResultSet getAllCustomersAccountInfo() throws SQLException; // customer + card schema details for all customers
 
     String getCustomerName(long card_no) throws SQLException;
 

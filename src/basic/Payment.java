@@ -12,33 +12,33 @@ public class Payment {
     // PAYMENT ATTRIBUTES
 
     private long payment_id, card_no, loan_id;
-    private Timestamp date_payment;
-    private float amt_payment;
+    private Timestamp payment_date;
+    private float payment_value;
 
 
     // CONSTRUCTORS
 
     // Following constructor takes all parameters
 
-    public Payment(long payment_id, Timestamp date_payment, float amt_payment, long card_no, long loan_id){
+    public Payment(long payment_id, Timestamp payment_date, long card_no, float payment_value, long loan_id){
 
         this.payment_id = payment_id;
-        this.date_payment = date_payment;
-        this.amt_payment = amt_payment;
+        this.payment_date = payment_date;
         this.card_no = card_no;
+        this.payment_value = payment_value;
         this.loan_id = loan_id;
 
     }
 
-    // Following constructor takes four parameters: payment_id, amt_payment, card_no, and loan_id
-    // date_payment is set to current date
+    // Following constructor takes four parameters: payment_id, card_no, payment_value and loan_id
+    // payment_date is set to current date
 
-    public Payment(long payment_id, float amt_payment, long card_no, long loan_id){
+    public Payment(long payment_id, long card_no, float payment_value, long loan_id){
 
         this.payment_id = payment_id;
-        this.date_payment = CURRENT_TIME;
-        this.amt_payment = amt_payment;
+        this.payment_date = CURRENT_TIME;
         this.card_no = card_no;
+        this.payment_value = payment_value;
         this.loan_id = loan_id;
 
     }
@@ -49,9 +49,9 @@ public class Payment {
     public Payment(long payment_id, long card_no){
 
         this.payment_id = payment_id;
-        this.date_payment = CURRENT_TIME;
-        this.amt_payment = 0.00f;
+        this.payment_date = CURRENT_TIME;
         this.card_no = card_no;
+        this.payment_value = 0.00f;
         this.loan_id = 0;
 
     }
@@ -62,9 +62,9 @@ public class Payment {
     public Payment(){
 
         this.payment_id = 0;
-        this.date_payment = CURRENT_TIME;
-        this.amt_payment = 0.00f;
+        this.payment_date = CURRENT_TIME;
         this.card_no = 0;
+        this.payment_value = 0.00f;
         this.loan_id = 0;
 
     }
@@ -76,16 +76,16 @@ public class Payment {
         return this.payment_id;
     }
 
-    public Timestamp getDatePayment(){
-        return this.date_payment;
-    }
-
-    public float getAmtPayment(){
-        return this.amt_payment;
-    }
-
     public long getCardNo(){
         return this.card_no;
+    }
+
+    public Timestamp getPaymentDate(){
+        return this.payment_date;
+    }
+
+    public float getPaymentValue(){
+        return this.payment_value;
     }
 
     public long getLoanID(){
@@ -99,16 +99,16 @@ public class Payment {
         this.payment_id = payment_id;
     }
 
-    public void setDatePayment(Timestamp date_payment){
-        this.date_payment = date_payment;
-    }
-
-    public void setAmtPayment(float amt_payment){
-        this.amt_payment = amt_payment;
+    public void setPaymentDate(Timestamp payment_date){
+        this.payment_date = payment_date;
     }
 
     public void setCardNo(long card_no){
         this.card_no = card_no;
+    }
+
+    public void setPaymentValue(float payment_value){
+        this.payment_value = payment_value;
     }
 
     public void setLoanID(long loan_id){
@@ -122,15 +122,15 @@ public class Payment {
 
         String ret =
                 """
-                PAYMENT
+                \nPAYMENT
                 Payment ID: %d
                 Payment Date: %s
-                Payment Amount: ₹%.2f
                 Card Number: %d
+                Payment Value: ₹%.2f
                 Loan ID: %d
                 """;
 
-        return String.format(ret, this.payment_id, this.date_payment, this.amt_payment, this.card_no, this.loan_id);
+        return String.format(ret, this.payment_id, this.payment_date, this.card_no, this.payment_value, this.loan_id);
 
     }
 
