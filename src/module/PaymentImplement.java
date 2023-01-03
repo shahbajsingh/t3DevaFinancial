@@ -20,7 +20,6 @@ public class PaymentImplement implements PaymentDAO {
         super();
     }
 
-
     @Override
     public void addPayment(long card_no, float payment_value) throws SQLException {
 

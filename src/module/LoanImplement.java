@@ -18,7 +18,6 @@ public class LoanImplement implements LoanDAO {
         super();
     }
 
-
     @Override
     public void addLoan(long card_no, float loan_value, float interest_rate) throws SQLException {
 

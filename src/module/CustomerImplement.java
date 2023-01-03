@@ -18,7 +18,6 @@ public class CustomerImplement implements CustomerDAO {
         super();
     }
 
-
     @Override
     public void addCustomer(String first_name, String middle_name, String last_name, long aadhaar,
                             String house_no, String street_name, String city, String state, String country,
