@@ -2,6 +2,8 @@ package basic;
 
 import java.sql.*;
 
+import static basic.CONSTANTS.*;
+
 public class DatabaseConnection {
 
     /*
@@ -23,9 +25,9 @@ public class DatabaseConnection {
     public DatabaseConnection() {
 
         try{
-            databaseURL = "jdbc:mysql://127.0.0.1:3306/?user=root";
-            hostname = "root";
-            password = "foobar88";
+            databaseURL = DATABASE_URL;
+            hostname = HOSTNAME;
+            password = PASSWORD;
         } catch(Exception ex){
             ex.printStackTrace();
         }

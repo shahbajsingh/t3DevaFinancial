@@ -146,6 +146,14 @@ public class QUERY {
             "SET balance = balance + %.2f " +
             "WHERE card_no = %d";
 
+    public static final String subtractBalanceFromCard = "UPDATE TDF2.CARDS " +
+            "SET balance = balance - %.2f " +
+            "WHERE card_no = %d";
+
+    public static final String setDateAndAmountLastPayment = "UPDATE TDF2.CARDS " +
+            "SET date_last_payment = '%s', amt_last_payment = %.2f " +
+            "WHERE card_no = %d";
+
     public static final String getCardInfo = "SELECT * FROM TDF2.CARDS " +
             "WHERE card_no = %d";
 
@@ -172,14 +180,30 @@ public class QUERY {
     // LOAN RELATED QUERIES
 
     public static final String addLoan = "INSERT INTO TDF2.LOANS " + // loan_id is auto-incremented
-            "(loan_date, card_no, loan_value, interest_rate, is_active) " +
-            "VALUES ('%s', %d, %.2f, %.2f, %b)";
+            "(loan_date, card_no, loan_value, interest_rate, amt_remaining) " + // interest_accrued defaults to 0
+            "VALUES ('%s', %d, %.2f, %.2f, %.2f)"; // is_active defaults to true
 
     public static final String deleteLoan = "DELETE FROM TDF2.LOANS " +
             "WHERE loan_id = %d";
 
     public static final String checkLoanExists = "SELECT * FROM TDF2.LOANS " +
             "WHERE loan_id = %d";
+
+    public static final String setLoanAmtRemaining = "UPDATE TDF2.LOANS " +
+            "SET amt_remaining = %.2f " +
+            "WHERE loan_id = %d";
+
+    public static final String setLoanInterestAccrued = "UPDATE TDF2.LOANS " +
+            "SET interest_accrued = %.2f " +
+            "WHERE loan_id = %d";
+
+    public static final String setLoanIsActive = "UPDATE TDF2.LOANS " +
+            "SET is_active = %b " +
+            "WHERE loan_id = %d";
+
+    public static final String getOldestActiveLoanIDByCardNo = "SELECT * FROM TDF2.LOANS " +
+            "WHERE card_no = %d AND is_active = TRUE " +
+            "ORDER BY loan_date ASC LIMIT 1";
 
     public static final String getLoanInfoByID = "SELECT * FROM TDF2.LOANS " +
             "WHERE loan_id = %d";
@@ -194,6 +218,12 @@ public class QUERY {
             "WHERE loan_id = %d";
 
     public static final String getLoanInterestRateByID = "SELECT interest_rate FROM TDF2.LOANS " +
+            "WHERE loan_id = %d";
+
+    public static final String getLoanAmtRemainingByID = "SELECT amt_remaining FROM TDF2.LOANS " +
+            "WHERE loan_id = %d";
+
+    public static final String getLoanInterestAccruedByID = "SELECT interest_accrued FROM TDF2.LOANS " +
             "WHERE loan_id = %d";
 
     public static final String getLoanIsActiveByID = "SELECT is_active FROM TDF2.LOANS " +

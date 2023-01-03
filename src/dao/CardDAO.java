@@ -4,6 +4,7 @@ import basic.Card;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 public interface CardDAO {
 
@@ -11,15 +12,21 @@ public interface CardDAO {
 
     void deleteCard(long card_no) throws SQLException;
 
-    float addBalanceToCard(float amount, long card_no) throws SQLException;
+    float addBalanceToCard(float amount, long card_no) throws SQLException; // returns amount added
+
+    float subtractBalanceFromCard(float amount, long card_no) throws SQLException; // returns amount subtracted
+
+    void setDateAndAmountLastPayment(Timestamp date, float amount, long card_no) throws SQLException;
 
     boolean checkCardExists(long card_no) throws SQLException;
 
-    long createUniqueCardNo();
+    // RESULT SET METHODS
 
     ResultSet getCardInfo(long card_no) throws SQLException;
 
     ResultSet getAllCardInfo() throws SQLException;
+
+    // STRING METHODS
 
     String getCardIssueDate(long card_no) throws SQLException;
 
@@ -30,6 +37,10 @@ public interface CardDAO {
     String getDateLastPayment(long card_no) throws SQLException;
 
     String getAmountLastPayment(long card_no) throws SQLException;
+
+    // HELPER METHODS
+
+    long createUniqueCardNo();
 
     Card convertRowToCard(ResultSet rs) throws SQLException;
 

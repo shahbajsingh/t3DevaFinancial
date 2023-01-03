@@ -226,8 +226,14 @@ public class CustomerImplement implements CustomerDAO {
 
         ResultSet rs = c.selectSQL(sql);
 
-        return String.format("%s %s %s", rs.getString("first_name"),
-                rs.getString("middle_name"), rs.getString("last_name"));
+        String name = String.format("%s %s %s",
+                rs.getString("first_name"),
+                rs.getString("middle_name"),
+                rs.getString("last_name"));
+
+        c.closeConnection();
+
+        return name;
 
     }
 
@@ -241,7 +247,11 @@ public class CustomerImplement implements CustomerDAO {
 
         ResultSet rs = c.selectSQL(sql);
 
-        return String.valueOf(rs.getLong("aadhaar"));
+        String aadhaar = String.valueOf(rs.getLong("aadhaar"));
+
+        c.closeConnection();
+
+        return aadhaar;
 
     }
 
@@ -264,7 +274,7 @@ public class CustomerImplement implements CustomerDAO {
             put("zip_code", rs.getString("zip_code"));
         }};
 
-        rs.close();
+        c.closeConnection();
 
         return addressMap;
 
@@ -280,7 +290,11 @@ public class CustomerImplement implements CustomerDAO {
 
         ResultSet rs = c.selectSQL(sql);
 
-        return rs.getString("phone");
+        String phone = rs.getString("phone");
+
+        c.closeConnection();
+
+        return phone;
 
     }
 
@@ -294,7 +308,11 @@ public class CustomerImplement implements CustomerDAO {
 
         ResultSet rs = c.selectSQL(sql);
 
-        return rs.getString("email");
+        String email = rs.getString("email");
+
+        c.closeConnection();
+
+        return email;
 
     }
 

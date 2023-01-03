@@ -19,7 +19,7 @@ public class LoanRun {
         while (true){
 
             System.out.println("\nPlease choose from the following options: ");
-            System.out.println("[0] Exit Customer Portal");
+            System.out.println("[0] Exit Loan Portal");
             System.out.println("[1] Check Loan Info By ID");
             System.out.println("[2] Check All Loans");
             System.out.println("[3] Check All Loans In Date Range");
@@ -151,6 +151,8 @@ public class LoanRun {
     private static void handleLoanAdd() throws SQLException {
 
         LoanImplement l = new LoanImplement();
+        CustomerImplement c = new CustomerImplement();
+
         Scanner loan_details = new Scanner(System.in).useDelimiter("\n");
 
         System.out.println("\nPlease enter the following details: ");
@@ -164,7 +166,11 @@ public class LoanRun {
         System.out.println("\nInterest Rate (Integer): ");
         float interest_rate = loan_details.nextFloat();
 
-        l.addLoan(card_no, loan_value, interest_rate);
+        if (!c.checkCustomerExists(card_no)) {
+            System.out.println("\nThe card number provided does not exist in the database");
+        } else {
+            l.addLoan(card_no, loan_value, interest_rate);
+        }
 
     }
 

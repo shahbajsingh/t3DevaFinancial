@@ -13,7 +13,7 @@ public class Loan {
 
     private long loan_id, card_no;
     private Timestamp loan_date;
-    private float loan_value, interest_rate;
+    private float loan_value, interest_rate, amt_remaining, interest_accrued;
     private boolean is_active;
 
 
@@ -21,28 +21,34 @@ public class Loan {
 
     // Following constructor takes all parameters
 
-    public Loan(long loan_id, Timestamp loan_date, long card_no,
-                float loan_value, float interest_rate, boolean is_active){
+    public Loan(long loan_id, Timestamp loan_date, long card_no, float loan_value,
+                float interest_rate, float amt_remaining, float interest_accrued, boolean is_active){
 
         this.loan_id = loan_id;
         this.loan_date = loan_date;
         this.card_no = card_no;
         this.loan_value = loan_value;
         this.interest_rate = interest_rate;
+        this.amt_remaining = amt_remaining;
+        this.interest_accrued = interest_accrued;
         this.is_active = is_active;
 
     }
 
-    // Following constructor takes four parameters: loan_id, card_no, loan_date, loan_value, and interest rate
+    // Following constructor takes six parameters:
+    // loan_id, card_no, loan_date, loan_value, amt_remaining, interest_accrued and interest rate
     // is_active is set to true
 
-    public Loan(long loan_id, Timestamp loan_date, long card_no, float loan_value, float interest_rate){
+    public Loan(long loan_id, Timestamp loan_date, long card_no, float loan_value,
+                float interest_rate, float amt_remaining, float interest_accrued){
 
         this.loan_id = loan_id;
         this.loan_date = loan_date;
         this.card_no = card_no;
         this.loan_value = loan_value;
         this.interest_rate = interest_rate;
+        this.amt_remaining = amt_remaining;
+        this.interest_accrued = interest_accrued;
         this.is_active = true;
 
     }
@@ -58,6 +64,8 @@ public class Loan {
         this.card_no = card_no;
         this.loan_value = 0.00f;
         this.interest_rate = 0.00f;
+        this.amt_remaining = 0.00f;
+        this.interest_accrued = 0.00f;
         this.is_active = true;
 
     }
@@ -72,6 +80,8 @@ public class Loan {
         this.card_no = 0;
         this.loan_value = 0.00f;
         this.interest_rate = 0.00f;
+        this.amt_remaining = 0.00f;
+        this.interest_accrued = 0.00f;
         this.is_active = true;
 
     }
@@ -99,8 +109,16 @@ public class Loan {
         return this.interest_rate;
     }
 
-    public boolean getIsActive(){
-        return this.is_active;
+    public float getAmtRemaining(){
+        return this.amt_remaining;
+    }
+
+    public float getInterestAccrued(){
+        return this.interest_accrued;
+    }
+
+    public String getIsActive(){
+        return this.is_active ? "Yes" : "No";
     }
 
 
@@ -126,6 +144,14 @@ public class Loan {
         this.interest_rate = interest_rate;
     }
 
+    public void setAmtRemaining(float amt_remaining){
+        this.amt_remaining = amt_remaining;
+    }
+
+    public void setInterestAccrued(float interest_accrued){
+        this.interest_accrued = interest_accrued;
+    }
+
     public void setIsActive(boolean is_active){
         this.is_active = is_active;
     }
@@ -143,11 +169,13 @@ public class Loan {
                 Card No: %d
                 Loan Value: ₹%.2f
                 Interest Rate: %.2f
-                Is Active: %b
+                Amount Remaining: ₹%.2f
+                Interest Accrued: ₹%.2f
+                Is Active: %s
                 """;
 
-        return String.format(ret, this.loan_id, this.loan_date, this.card_no,
-                this.loan_value, this.interest_rate, this.is_active);
+        return String.format(ret, this.loan_id, this.loan_date, this.card_no, this.loan_value,
+                this.interest_rate, this.amt_remaining, this.interest_accrued, getIsActive());
 
     }
 

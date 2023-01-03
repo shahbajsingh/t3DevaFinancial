@@ -13,6 +13,8 @@ public interface PaymentDAO {
 
     boolean checkPaymentExists(long payment_id) throws SQLException;
 
+    // RESULT SET METHODS
+
     ResultSet getPaymentInfoByID(long payment_id) throws SQLException;
 
     ResultSet getPaymentsByCardNo(long card_no) throws SQLException;
@@ -39,6 +41,8 @@ public interface PaymentDAO {
 
     ResultSet getAllPaymentsAfterDate(String date) throws SQLException;
 
+    // STRING METHODS
+
     String getPaymentDate(long payment_id) throws SQLException;
 
     String getPaymentCardNo(long payment_id) throws SQLException;
@@ -47,7 +51,10 @@ public interface PaymentDAO {
 
     String getPaymentLoanID(long payment_id) throws SQLException;
 
-    void connectPaymentToLoan(float payment_value, long card_no) throws SQLException;
+    // HELPER METHODS
+
+    float connectPaymentToLoan(float payment_value, long card_no,
+                                long oldest_loan_id, float amt_remaining) throws SQLException; // returns leftover
 
     Payment convertRowToPayment(ResultSet rs) throws SQLException;
 

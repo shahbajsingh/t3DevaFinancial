@@ -81,7 +81,11 @@ public class EmployeeImplement implements EmployeeDAO {
 
         ResultSet rs = c.selectSQL(sql);
 
-        return rs.next();
+        boolean correct = rs.next();
+
+        c.closeConnection();
+
+        return correct;
 
     }
 
@@ -233,8 +237,14 @@ public class EmployeeImplement implements EmployeeDAO {
 
         ResultSet rs = c.selectSQL(sql);
 
-        return String.format("%s %s %s", rs.getString("first_name"),
-                rs.getString("middle_name"), rs.getString("last_name"));
+        String name = String.format("%s %s %s",
+                rs.getString("first_name"),
+                rs.getString("middle_name"),
+                rs.getString("last_name"));
+
+        c.closeConnection();
+
+        return name;
 
     }
 
@@ -248,7 +258,11 @@ public class EmployeeImplement implements EmployeeDAO {
 
         ResultSet rs = c.selectSQL(sql);
 
-        return String.valueOf(rs.getLong("aadhaar"));
+        String aadhaar = String.valueOf(rs.getLong("aadhaar"));
+
+        c.closeConnection();
+
+        return aadhaar;
 
     }
 
@@ -271,7 +285,7 @@ public class EmployeeImplement implements EmployeeDAO {
             put("zip_code", rs.getString("zip_code"));
         }};
 
-        rs.close();
+        c.closeConnection();
 
         return addressMap;
 
@@ -287,7 +301,11 @@ public class EmployeeImplement implements EmployeeDAO {
 
         ResultSet rs = c.selectSQL(sql);
 
-        return rs.getString("phone");
+        String phone = rs.getString("phone");
+
+        c.closeConnection();
+
+        return phone;
 
     }
 
@@ -301,7 +319,11 @@ public class EmployeeImplement implements EmployeeDAO {
 
         ResultSet rs = c.selectSQL(sql);
 
-        return rs.getString("email");
+        String email = rs.getString("email");
+
+        c.closeConnection();
+
+        return email;
 
     }
 

@@ -31,11 +31,15 @@ public interface EmployeeDAO {
 
     void changeEmployeeEmail(String email, int employee_id) throws SQLException;
 
+    // RESULT SET METHODS
+
     ResultSet getEmployeeInfo(int employee_id) throws SQLException; // employee schema details
 
     ResultSet getEmployeeInfoByLastName(String last_name) throws SQLException; // access schema by last name
 
     ResultSet getAllEmployeesInfo() throws SQLException; // employee schema details for all customers
+
+    // STRING METHODS
 
     String getEmployeeName(int employee_id) throws SQLException;
 
@@ -46,6 +50,8 @@ public interface EmployeeDAO {
     String getEmployeePhone(int employee_id) throws SQLException;
 
     String getEmployeeEmail(int employee_id) throws SQLException;
+
+    // HELPER METHODS
 
     Employee convertRowToEmployee(ResultSet rs) throws SQLException;
 

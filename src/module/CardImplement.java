@@ -81,6 +81,36 @@ public class CardImplement implements CardDAO {
     }
 
     @Override
+    public float subtractBalanceFromCard(float amount, long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.subtractBalanceFromCard, amount, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        c.executeSQL(sql);
+
+        c.closeConnection();
+
+        return amount;
+
+    }
+
+    @Override
+    public void setDateAndAmountLastPayment(Timestamp date, float amount, long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.setDateAndAmountLastPayment, date, amount, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        c.executeSQL(sql);
+
+        c.closeConnection();
+
+    }
+
+    @Override
     public boolean checkCardExists(long card_no) throws SQLException {
 
         String sql = String.format(QUERY.checkCustomerCardPaired, card_no);
@@ -91,23 +121,6 @@ public class CardImplement implements CardDAO {
         ResultSet rs = c.selectSQL(sql);
 
         return rs.next();
-
-    }
-
-    @Override
-    public long createUniqueCardNo() { // TO-DO: Fix complexity to reduce queries
-
-        long card_no = 0L;
-
-        try {
-            do {
-                card_no = (long) (Math.random() * 10000000000000000L);
-            } while (checkCardExists(card_no));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return card_no;
 
     }
 
@@ -260,6 +273,23 @@ public class CardImplement implements CardDAO {
 
 
     // HELPER METHODS
+
+    @Override
+    public long createUniqueCardNo() { // TO-DO: Fix complexity to reduce queries
+
+        long card_no = 0L;
+
+        try {
+            do {
+                card_no = (long) (Math.random() * 10000000000000000L);
+            } while (checkCardExists(card_no));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return card_no;
+
+    }
 
     @Override
     public Card convertRowToCard(ResultSet rs) throws SQLException {

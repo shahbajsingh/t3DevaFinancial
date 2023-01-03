@@ -27,6 +27,8 @@ public interface CustomerDAO {
 
     void changeCustomerEmail(String email, long card_no) throws SQLException;
 
+    // RESULT SET METHODS
+
     ResultSet getCustomerInfo(long card_no) throws SQLException; // customer schema details
 
     ResultSet getCustomerAccountInfo(long card_no) throws SQLException; // customer + card schema details
@@ -34,6 +36,8 @@ public interface CustomerDAO {
     ResultSet getAllCustomersInfo() throws SQLException; // customer schema details for all customers
 
     ResultSet getAllCustomersAccountInfo() throws SQLException; // customer + card schema details for all customers
+
+    // STRING METHODS
 
     String getCustomerName(long card_no) throws SQLException;
 
@@ -44,6 +48,8 @@ public interface CustomerDAO {
     String getCustomerPhone(long card_no) throws SQLException;
 
     String getCustomerEmail(long card_no) throws SQLException;
+
+    // HELPER METHODS
 
     Customer convertRowToCustomer(ResultSet rs) throws SQLException;
 

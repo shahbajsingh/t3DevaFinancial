@@ -11,7 +11,23 @@ public interface LoanDAO {
 
     void deleteLoan(long loan_id) throws SQLException;
 
+    float handlePaidInFull(float payment_value, long loan_id) throws SQLException; // returns money leftover
+
+    float getLoanAmtRemainingFloat(long loan_id) throws SQLException;
+
+    float getLoanValueFloat(long loan_id) throws SQLException;
+
+    long getOldestActiveLoanIDByCardNo(long card_no) throws SQLException; // used for payment identification logic
+
+    void setLoanAmtRemaining(float payment_value, long loan_id) throws SQLException;
+
+    // void setInterestAccrued() throws SQLException;
+
+    void setLoanIsActive(boolean is_active, long loan_id) throws SQLException;
+
     boolean checkLoanExists(long loan_id) throws SQLException;
+
+    // RESULT SET METHODS
 
     ResultSet getLoanInfoByID(long loan_id) throws SQLException;
 
@@ -47,6 +63,8 @@ public interface LoanDAO {
 
     ResultSet getAllActiveLoansAfterDate(String date) throws SQLException;
 
+    // STRING METHODS
+
     String getLoanDate(long loan_id) throws SQLException;
 
     String getLoanCardNo(long loan_id) throws SQLException;
@@ -55,9 +73,17 @@ public interface LoanDAO {
 
     String getLoanInterestRate(long loan_id) throws SQLException;
 
+    String getLoanAmtRemaining(long loan_id) throws SQLException;
+
+    String getLoanInterestAccrued(long loan_id) throws SQLException;
+
     String getLoanIsActive(long loan_id) throws SQLException;
 
+    // HELPER METHODS
+
     void connectLoanToCard(float loan_value, long card_no) throws SQLException;
+
+    void disconnectLoanFromCard(long loan_id) throws SQLException;
 
     Loan convertRowToLoan(ResultSet rs) throws SQLException;
 
