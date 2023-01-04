@@ -58,8 +58,6 @@ public class CardImplement implements CardDAO {
 
         c.executeSQL(sql);
 
-        System.out.println("Card has been deleted from the database: " + card_no);
-
         c.closeConnection();
 
     }
@@ -97,9 +95,168 @@ public class CardImplement implements CardDAO {
     }
 
     @Override
-    public void setDateAndAmountLastPayment(Timestamp date, float amount, long card_no) throws SQLException {
+    public boolean checkCardExists(long card_no) throws SQLException { // check if a customer-card pair exists
 
-        String sql = String.format(QUERY.setDateAndAmountLastPayment, date, amount, card_no);
+        String sql = String.format(QUERY.checkCustomerCardPaired, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        boolean exists = rs.next();
+
+        c.closeConnection();
+
+        return exists;
+
+    }
+
+
+
+
+    // GETTERS
+    // These methods return the value of the specified column
+    // in the actual data type specified in the database
+
+    @Override
+    public Timestamp getCardIssueDate(long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.getCardIssueDate, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        Timestamp issue_date = null;
+
+        if (rs.next()) {
+            issue_date = rs.getTimestamp("issue_date");
+        }
+
+        c.closeConnection();
+
+        return issue_date;
+
+    }
+
+    @Override
+    public Timestamp getCardExpiryDate(long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.getCardExpiryDate, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        Timestamp expiry_date = null;
+
+        if (rs.next()) {
+            expiry_date = rs.getTimestamp("expiry_date");
+        }
+
+        c.closeConnection();
+
+        return expiry_date;
+
+    }
+
+    @Override
+    public float getCardBalance(long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.getCardBalance, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        float balance = 0.00f;
+
+        if (rs.next()) {
+            balance = rs.getFloat("balance");
+        }
+
+        c.closeConnection();
+
+        return balance;
+
+    }
+
+    @Override
+    public Timestamp getCardDateLastPayment(long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.getCardDateLastPayment, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        Timestamp date_last_payment = null;
+
+        if (rs.next()) {
+            date_last_payment = rs.getTimestamp("date_last_payment");
+        }
+
+        c.closeConnection();
+
+        return date_last_payment;
+    }
+
+    @Override
+    public float getCardAmtLastPayment(long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.getCardAmtLastPayment, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        float amount_last_payment = 0.00f;
+
+        if (rs.next()) {
+            amount_last_payment = rs.getFloat("amt_last_payment");
+        }
+
+        c.closeConnection();
+
+        return amount_last_payment;
+
+    }
+
+
+
+
+    // SETTERS
+    // These methods update the value of the specified column
+    // in the database using the passed value
+
+    @Override
+    public void setCardInfo(Card card) throws SQLException {
+
+        long card_no = card.getCardNo();
+        Timestamp issue_date = card.getIssueDate(); Timestamp expiry_date = card.getExpiryDate();
+        float balance = card.getBalance(); Timestamp date_last_payment = card.getDateLastPayment();
+        float amt_last_payment = card.getAmtLastPayment();
+
+        String sql = String.format(QUERY.setCardInfo, issue_date, expiry_date,
+                balance, date_last_payment, amt_last_payment, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        c.executeSQL(sql);
+
+        System.out.println(
+                String.format("Card number %d updated in database\n", card_no)
+        );
+
+        c.closeConnection();
+
+    }
+
+    @Override
+    public void setCardIssueDate(Timestamp issue_date, long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.setCardIssueDate, issue_date, card_no);
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
@@ -111,18 +268,61 @@ public class CardImplement implements CardDAO {
     }
 
     @Override
-    public boolean checkCardExists(long card_no) throws SQLException {
+    public void setCardExpiryDate(Timestamp expiry_date, long card_no) throws SQLException {
 
-        String sql = String.format(QUERY.checkCustomerCardPaired, card_no);
+        String sql = String.format(QUERY.setCardExpiryDate, expiry_date, card_no);
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
 
-        ResultSet rs = c.selectSQL(sql);
+        c.executeSQL(sql);
 
-        return rs.next();
+        c.closeConnection();
 
     }
+
+    @Override
+    public void setCardBalance(float balance, long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.setCardBalance, balance, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        c.executeSQL(sql);
+
+        c.closeConnection();
+
+    }
+
+    @Override
+    public void setCardDateLastPayment(Timestamp date_last_payment, long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.setCardDateLastPayment, date_last_payment, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        c.executeSQL(sql);
+
+    }
+
+    @Override
+    public void setCardAmtLastPayment(float amt_last_payment, long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.setCardAmtLastPayment, amt_last_payment, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        c.executeSQL(sql);
+
+        c.closeConnection();
+
+    }
+
+
+
 
     // RESULT SET METHODS
     // These methods are used to return a ResultSet object to the calling method for further processing
@@ -141,9 +341,9 @@ public class CardImplement implements CardDAO {
     }
 
     @Override
-    public ResultSet getAllCardInfo() throws SQLException {
+    public ResultSet getAllCardsInfo() throws SQLException {
 
-        String sql = QUERY.getAllCardInfo;
+        String sql = QUERY.getAllCardsInfo;
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
@@ -152,77 +352,50 @@ public class CardImplement implements CardDAO {
 
     }
 
+
+
+
     // STRING METHODS
     // These methods are used in command line tests and populating GUI text fields
     // They return a String or string representation of an object to the calling method
 
     @Override
-    public String getCardIssueDate(long card_no) throws SQLException {
+    public String getCardIssueDateString(long card_no) throws SQLException {
 
-        String sql = String.format(QUERY.getCardIssueDate, card_no);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        return rs.getTimestamp("issue_date").toString();
+        Timestamp issue_date = getCardIssueDate(card_no);
+        return issue_date.toString();
 
     }
 
     @Override
-    public String getCardExpiryDate(long card_no) throws SQLException {
+    public String getCardExpiryDateString(long card_no) throws SQLException {
 
-        String sql = String.format(QUERY.getCardExpiryDate, card_no);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        return rs.getTimestamp("expiry_date").toString();
+        Timestamp expiry_date = getCardExpiryDate(card_no);
+        return expiry_date.toString();
 
     }
 
     @Override
-    public String getCardBalance(long card_no) throws SQLException {
+    public String getCardBalanceString(long card_no) throws SQLException {
 
-        String sql = String.format(QUERY.getCardBalance, card_no);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        return String.valueOf(rs.getFloat("balance"));
+        float balance = getCardBalance(card_no);
+        return Float.toString(balance);
 
     }
 
     @Override
-    public String getDateLastPayment(long card_no) throws SQLException {
+    public String getCardDateLastPaymentString(long card_no) throws SQLException {
 
-        String sql = String.format(QUERY.getCardLastPaymentDate, card_no);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        return rs.getTimestamp("last_payment_date").toString();
+        Timestamp date_last_payment = getCardDateLastPayment(card_no);
+        return date_last_payment.toString();
 
     }
 
     @Override
-    public String getAmountLastPayment(long card_no) throws SQLException {
+    public String getCardAmtLastPaymentString(long card_no) throws SQLException {
 
-        String sql = String.format(QUERY.getCardLastPaymentAmount, card_no);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        return String.valueOf(rs.getFloat("last_payment_amount"));
+        float amt_last_payment = getCardAmtLastPayment(card_no);
+        return Float.toString(amt_last_payment);
 
     }
 
@@ -236,12 +409,8 @@ public class CardImplement implements CardDAO {
 
         ResultSet rs = c.selectSQL(sql);
 
-        if (!rs.next()){
-            System.out.println("No card found with card number: " + card_no);
-        } else {
-            do {
-                tempCard = convertRowToCard(rs);
-            } while (rs.next());
+        if (rs.next()) {
+            tempCard = convertRowToCard(rs);
         }
 
         c.closeConnection();
@@ -250,9 +419,9 @@ public class CardImplement implements CardDAO {
 
     }
 
-    public String getAllCardInfoString() throws SQLException {
+    public String getAllCardsInfoString() throws SQLException {
 
-        String sql = QUERY.getAllCardInfo;
+        String sql = QUERY.getAllCardsInfo;
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
@@ -270,6 +439,8 @@ public class CardImplement implements CardDAO {
         return sb.toString();
 
     }
+
+
 
 
     // HELPER METHODS

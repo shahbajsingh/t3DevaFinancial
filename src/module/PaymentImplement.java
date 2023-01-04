@@ -14,7 +14,7 @@ import static basic.CONSTANTS.*;
 
 public class PaymentImplement implements PaymentDAO {
 
-    static float money_used;
+    float money_used;
 
     public PaymentImplement() {
         super();
@@ -23,46 +23,7 @@ public class PaymentImplement implements PaymentDAO {
     @Override
     public void addPayment(long card_no, float payment_value) throws SQLException {
 
-        Timestamp payment_date = CURRENT_TIME;
-        float full_payment_value = payment_value;
-        float leftover = full_payment_value;
-        long loan_id = 0L;
-        float loan_remaining = 0.00f;
 
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        String sql1 = String.format(QUERY.getOldestActiveLoanIDByCardNo, card_no);
-
-        ResultSet rs = c.selectSQL(sql1);
-
-        if(rs.next()) {
-            loan_id = rs.getLong("loan_id");
-            loan_remaining = rs.getFloat("amt_remaining");
-
-            if(payment_value > loan_remaining) {
-                full_payment_value = loan_remaining;
-            }
-
-            String sql2 = String.format(QUERY.addPayment, payment_date, card_no, full_payment_value, loan_id);
-
-            c.executeSQL(sql2);
-        }
-
-        money_used += full_payment_value;
-
-        leftover = connectPaymentToLoan(payment_value, card_no, loan_id, loan_remaining);
-
-        if(leftover > 0.00f && loan_id != 0L) {
-            addPayment(card_no, leftover);
-        }
-
-        CardImplement tempCard = new CardImplement();
-        tempCard.setDateAndAmountLastPayment(payment_date, payment_value, card_no);
-
-        System.out.println("Payment of ₹" + money_used + " made under card number " + card_no);
-
-        c.closeConnection();
 
     }
 
@@ -100,14 +61,193 @@ public class PaymentImplement implements PaymentDAO {
 
     }
 
+
+
+
+    // GETTERS
+    // These methods return the value of the specified column
+    // in the actual data type specified in the database
+
+    @Override
+    public Timestamp getPaymentDate(long payment_id) throws SQLException {
+
+        String sql = String.format(QUERY.getPaymentDate, payment_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        Timestamp date = null;
+
+        if (rs.next()) {
+            date = rs.getTimestamp("payment_date");
+        }
+
+        c.closeConnection();
+
+        return date;
+
+    }
+
+    @Override
+    public long getPaymentCardNo(long payment_id) throws SQLException {
+
+        String sql = String.format(QUERY.getPaymentCardNo, payment_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        long card_no = 0L;
+
+        if (rs.next()) {
+            card_no = rs.getLong("card_no");
+        }
+
+        c.closeConnection();
+
+        return card_no;
+
+    }
+
+    @Override
+    public float getPaymentValue(long payment_id) throws SQLException {
+
+        String sql = String.format(QUERY.getPaymentValue, payment_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        float payment_value = 0.00f;
+
+        if (rs.next()) {
+            payment_value = rs.getFloat("payment_value");
+        }
+
+        c.closeConnection();
+
+        return payment_value;
+
+    }
+
+    @Override
+    public long getPaymentLoanID(long payment_id) throws SQLException {
+
+        String sql = String.format(QUERY.getPaymentLoanID, payment_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        long loan_id = 0L;
+
+        if (rs.next()) {
+            loan_id = rs.getLong("loan_id");
+        }
+
+        c.closeConnection();
+
+        return loan_id;
+
+    }
+
+
+
+
+    // SETTERS
+    // These methods update the value of the specified column
+    // in the database using the passed value
+
+    @Override
+    public void setPaymentInfo(Payment payment) throws SQLException {
+
+        long payment_id = payment.getPaymentID(); Timestamp payment_date = payment.getPaymentDate();
+        long card_no = payment.getCardNo(); float payment_value = payment.getPaymentValue();
+        long loan_id = payment.getLoanID();
+
+        String sql = String.format(QUERY.setPaymentInfo, payment_date, card_no, payment_value, loan_id, payment_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        c.executeSQL(sql);
+
+        System.out.println(
+                String.format("Payment with ID %d updated in database\n", payment_id)
+        );
+
+        c.closeConnection();
+
+    }
+
+    @Override
+    public void setPaymentDate(Timestamp payment_date, long payment_id) throws SQLException {
+
+        String sql = String.format(QUERY.setPaymentDate, payment_date, payment_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        c.executeSQL(sql);
+
+        c.closeConnection();
+
+    }
+
+    @Override
+    public void setPaymentCardNo(long card_no, long payment_id) throws SQLException {
+
+        String sql = String.format(QUERY.setPaymentCardNo, card_no, payment_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        c.executeSQL(sql);
+
+        c.closeConnection();
+
+    }
+
+    @Override
+    public void setPaymentValue(float payment_value, long payment_id) throws SQLException {
+
+        String sql = String.format(QUERY.setPaymentValue, payment_value, payment_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        c.executeSQL(sql);
+
+        c.closeConnection();
+
+    }
+
+    @Override
+    public void setPaymentLoanID(long loan_id, long payment_id) throws SQLException {
+
+        String sql = String.format(QUERY.setPaymentLoanID, loan_id, payment_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        c.executeSQL(sql);
+
+        c.closeConnection();
+
+    }
+
+
+
+
     // RESULT SET METHODS
     // These methods are used to return a ResultSet object to the calling method for further processing
     // and will be used to construct table models to populate the GUI
 
     @Override
-    public ResultSet getPaymentInfoByID(long payment_id) throws SQLException {
+    public ResultSet getPaymentInfo(long payment_id) throws SQLException {
 
-        String sql = String.format(QUERY.getPaymentInfoByID, payment_id);
+        String sql = String.format(QUERY.getPaymentInfo, payment_id);
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
@@ -115,7 +255,6 @@ public class PaymentImplement implements PaymentDAO {
         ResultSet rs = c.selectSQL(sql);
 
         return rs;
-
 
     }
 
@@ -289,97 +428,57 @@ public class PaymentImplement implements PaymentDAO {
 
     }
 
+
+
+
     // STRING METHODS
     // These methods are used in command line tests and populating GUI text fields
     // They return a String or string representation of an object to the calling method
 
     @Override
-    public String getPaymentDate(long payment_id) throws SQLException {
+    public String getPaymentDateString(long payment_id) throws SQLException {
 
-        String sql = String.format(QUERY.getPaymentDateByID, payment_id);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        String date = rs.getTimestamp("payment_date").toString();
-
-        c.closeConnection();
-
-        return date;
+        Timestamp payment_date = getPaymentDate(payment_id);
+        return payment_date.toString();
     }
 
     @Override
-    public String getPaymentCardNo(long payment_id) throws SQLException {
+    public String getPaymentCardNoString(long payment_id) throws SQLException {
 
-        String sql = String.format(QUERY.getPaymentCardNoByID, payment_id);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        String card_no = String.valueOf(rs.getLong("card_no"));
-
-        c.closeConnection();
-
-        return card_no;
+        long card_no = getPaymentCardNo(payment_id);
+        return Long.toString(card_no);
 
     }
 
     @Override
-    public String getPaymentValue(long payment_id) throws SQLException {
+    public String getPaymentValueString(long payment_id) throws SQLException {
 
-        String sql = String.format(QUERY.getPaymentValueByID, payment_id);
 
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        String value = String.valueOf(rs.getFloat("payment_value"));
-
-        c.closeConnection();
-
-        return value;
+        float payment_value = getPaymentValue(payment_id);
+        return Float.toString(payment_value);
 
     }
 
     @Override
-    public String getPaymentLoanID(long payment_id) throws SQLException {
+    public String getPaymentLoanIDString(long payment_id) throws SQLException {
 
-        String sql = String.format(QUERY.getPaymentLoanIDByID, payment_id);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        String loan_id = String.valueOf(rs.getLong("loan_id"));
-
-        c.closeConnection();
-
-        return loan_id;
+        long loan_id = getPaymentLoanID(payment_id);
+        return Long.toString(loan_id);
 
     }
 
-    public Payment getPaymentInfoByIDString(long payment_id) throws SQLException {
+    public Payment getPaymentInfoString(long payment_id) throws SQLException {
 
         Payment tempPayment = new Payment();
-        String sql = String.format(QUERY.getPaymentInfoByID, payment_id);
+        String sql = String.format(QUERY.getPaymentInfo, payment_id);
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
 
         ResultSet rs = c.selectSQL(sql);
 
-        if (!rs.next()) {
-            System.out.println("No payment found with ID: " + payment_id);
-        } else {
-            do {
-                tempPayment = convertRowToPayment(rs);
-            } while (rs.next());
+        if (rs.next()){
+            tempPayment = convertRowToPayment(rs);
         }
 
         c.closeConnection();
@@ -522,32 +621,8 @@ public class PaymentImplement implements PaymentDAO {
     public float connectPaymentToLoan(float payment_value, long card_no,
                                        long oldest_loan_id, float amt_remaining) throws SQLException {
 
-        CardImplement tempCard = new CardImplement();
-        LoanImplement tempLoan = new LoanImplement();
 
-        long loan_id = oldest_loan_id;
-        float loan_remaining = amt_remaining;
-
-        float leftover = payment_value;
-
-            if (leftover >= loan_remaining){ // if the payment value is greater than the remaining loan amount
-
-                leftover -= loan_remaining; // subtract the remaining loan amount from the payment value (leftover)
-
-                tempCard.subtractBalanceFromCard(loan_remaining, card_no); // subtract from outstanding balance
-                tempLoan.setLoanAmtRemaining(0.00f, loan_id); // set remaining loan amount to 0.00
-                tempLoan.setLoanIsActive(false, loan_id); // set loan to inactive
-
-            } else if (leftover < loan_remaining){ // if the payment value is less than the remaining loan amount
-
-                tempCard.subtractBalanceFromCard(leftover, card_no);
-                tempLoan.setLoanAmtRemaining(loan_remaining - leftover, loan_id);
-
-                leftover = 0.00f;
-
-            }
-
-        return leftover;
+        return 0;
 
     }
 

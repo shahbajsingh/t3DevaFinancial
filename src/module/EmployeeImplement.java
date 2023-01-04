@@ -30,7 +30,9 @@ public class EmployeeImplement implements EmployeeDAO {
 
         c.executeSQL(sql);
 
-        System.out.println(String.format("Employee %s %s %s added to the database", first_name, middle_name, last_name));
+        System.out.println(
+                String.format("Employee %s %s %s added to the database\n", first_name, middle_name, last_name)
+        );
 
         c.closeConnection();
 
@@ -46,7 +48,9 @@ public class EmployeeImplement implements EmployeeDAO {
 
         c.executeSQL(sql);
 
-        System.out.println(String.format("Employee with employee ID %d deleted from the database", employee_id));
+        System.out.println(
+                String.format("Employee with employee ID %d deleted from the database\n", employee_id)
+        );
 
         c.closeConnection();
 
@@ -88,10 +92,301 @@ public class EmployeeImplement implements EmployeeDAO {
 
     }
 
-    @Override
-    public void changeEmployeePassword(String password, int employee_id) throws SQLException {
 
-        String sql = String.format(QUERY.changeEmployeePassword, password, employee_id);
+
+
+    // GETTERS
+    // These methods return the value of the specified column
+    // in the actual data type specified in the database
+
+    @Override
+    public String getEmployeeFirstName(int employee_id) throws SQLException {
+
+        String sql = String.format(QUERY.getEmployeeName, employee_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        String first_name = null;
+
+        if(rs.next()){
+            first_name = rs.getString("first_name");
+        }
+
+        c.closeConnection();
+
+        return first_name;
+
+    }
+
+    @Override
+    public String getEmployeeMiddleName(int employee_id) throws SQLException {
+
+        String sql = String.format(QUERY.getEmployeeName, employee_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        String middle_name = null;
+
+        if (rs.getString("middle_name") != null) {
+            middle_name = rs.getString("middle_name");
+        }
+
+        c.closeConnection();
+
+        return middle_name;
+
+    }
+
+    @Override
+    public String getEmployeeLastName(int employee_id) throws SQLException {
+
+        String sql = String.format(QUERY.getEmployeeName, employee_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        String last_name = null;
+
+        if(rs.next()){
+            last_name = rs.getString("last_name");
+        }
+
+        c.closeConnection();
+
+        return last_name;
+
+    }
+
+    @Override
+    public long getEmployeeAadhaar(int employee_id) throws SQLException {
+
+        String sql = String.format(QUERY.getEmployeeAadhaar, employee_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        long aadhaar = 0L;
+
+        if(rs.next()){
+            aadhaar = rs.getLong("aadhaar");
+        }
+
+        c.closeConnection();
+
+        return aadhaar;
+
+    }
+
+    @Override
+    public String getEmployeeHouseNo(int employee_id) throws SQLException {
+
+        String sql = String.format(QUERY.getEmployeeAddress, employee_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        String house_no = null;
+
+        if(rs.next()){
+            house_no = rs.getString("house_no");
+        }
+
+        c.closeConnection();
+
+        return house_no;
+
+    }
+
+    @Override
+    public String getEmployeeStreetName(int employee_id) throws SQLException {
+
+        String sql = String.format(QUERY.getEmployeeAddress, employee_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        String street_name = null;
+
+        if(rs.next()){
+            street_name = rs.getString("street_name");
+        }
+
+        c.closeConnection();
+
+        return street_name;
+
+    }
+
+    @Override
+    public String getEmployeeCity(int employee_id) throws SQLException {
+
+        String sql = String.format(QUERY.getEmployeeAddress, employee_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        String city = null;
+
+        if(rs.next()){
+            city = rs.getString("city");
+        }
+
+        c.closeConnection();
+
+        return city;
+
+    }
+
+    @Override
+    public String getEmployeeState(int employee_id) throws SQLException {
+
+        String sql = String.format(QUERY.getEmployeeAddress, employee_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        String state = null;
+
+        if(rs.next()){
+            state = rs.getString("state");
+        }
+
+        c.closeConnection();
+
+        return state;
+
+    }
+
+    @Override
+    public String getEmployeeCountry(int employee_id) throws SQLException {
+
+        String sql = String.format(QUERY.getEmployeeAddress, employee_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        String country = null;
+
+        if(rs.next()){
+            country = rs.getString("country");
+        }
+
+        c.closeConnection();
+
+        return country;
+
+    }
+
+    @Override
+    public String getEmployeeZipCode(int employee_id) throws SQLException {
+
+        String sql = String.format(QUERY.getEmployeeAddress, employee_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        String zip_code = null;
+
+        if (rs.next()) {
+            zip_code = rs.getString("zip_code");
+        }
+
+        c.closeConnection();
+
+        return zip_code;
+
+    }
+
+    @Override
+    public String getEmployeePhone(int employee_id) throws SQLException {
+
+        String sql = String.format(QUERY.getEmployeePhone, employee_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        String phone = null;
+
+        if (rs.next()) {
+            phone = rs.getString("phone");
+        }
+
+        c.closeConnection();
+
+        return phone;
+
+    }
+
+    @Override
+    public String getEmployeeEmail(int employee_id) throws SQLException {
+
+        String sql = String.format(QUERY.getEmployeeEmail, employee_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        String email = null;
+
+        if (rs.next()) {
+            email = rs.getString("email");
+        }
+
+        c.closeConnection();
+
+        return email;
+
+    }
+
+
+
+
+    // SETTERS
+    // These methods update the value of the specified column
+    // in the database using the passed value
+
+    @Override
+    public void setEmployeeInfo(Employee employee) throws SQLException { // excludes password
+        int employee_id = employee.getEmployeeID(); String first_name = employee.getFirstName();
+        String middle_name = employee.getMiddleName(); String last_name = employee.getLastName();
+        long aadhaar = employee.getAadhaar(); String house_no = employee.getHouseNo();
+        String street_name = employee.getStreetName(); String city = employee.getCity();
+        String state = employee.getState(); String country = employee.getCountry();
+        String zip_code = employee.getZipCode(); String phone = employee.getPhone();
+        String email = employee.getEmail();
+
+        String sql = String.format(QUERY.setEmployeeInfo, first_name, middle_name, last_name, aadhaar,
+                house_no, street_name, city, state, country, zip_code, phone, email, employee_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        c.executeSQL(sql);
+
+        System.out.println(
+                String.format("Employee with ID %d updated in database\n", employee_id)
+        );
+
+        c.closeConnection();
+    }
+
+    @Override
+    public void setEmployeePassword(String password, int employee_id) throws SQLException {
+
+        String sql = String.format(QUERY.setEmployeePassword, password, employee_id);
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
@@ -103,10 +398,10 @@ public class EmployeeImplement implements EmployeeDAO {
     }
 
     @Override
-    public void changeEmployeeName(String first_name, String middle_name,
+    public void setEmployeeName(String first_name, String middle_name,
                                    String last_name, int employee_id) throws SQLException {
 
-        String sql = String.format(QUERY.changeEmployeeName, first_name, middle_name, last_name, employee_id);
+        String sql = String.format(QUERY.setEmployeeName, first_name, middle_name, last_name, employee_id);
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
@@ -118,9 +413,9 @@ public class EmployeeImplement implements EmployeeDAO {
     }
 
     @Override
-    public void changeEmployeeAadhaar(long aadhaar, int employee_id) throws SQLException {
+    public void setEmployeeAadhaar(long aadhaar, int employee_id) throws SQLException {
 
-        String sql = String.format(QUERY.changeEmployeeAadhaar, aadhaar, employee_id);
+        String sql = String.format(QUERY.setEmployeeAadhaar, aadhaar, employee_id);
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
@@ -132,10 +427,10 @@ public class EmployeeImplement implements EmployeeDAO {
     }
 
     @Override
-    public void changeEmployeeAddress(String house_no, String street_name, String city, String state,
+    public void setEmployeeAddress(String house_no, String street_name, String city, String state,
                                       String country, String zip_code, int employee_id) throws SQLException {
 
-        String sql = String.format(QUERY.changeEmployeeAddress, house_no, street_name, city,
+        String sql = String.format(QUERY.setEmployeeAddress, house_no, street_name, city,
                 state, country, zip_code, employee_id);
 
         DatabaseConnection c = new DatabaseConnection();
@@ -148,9 +443,9 @@ public class EmployeeImplement implements EmployeeDAO {
     }
 
     @Override
-    public void changeEmployeePhone(String phone, int employee_id) throws SQLException {
+    public void setEmployeePhone(String phone, int employee_id) throws SQLException {
 
-        String sql = String.format(QUERY.changeEmployeePhone, phone, employee_id);
+        String sql = String.format(QUERY.setEmployeePhone, phone, employee_id);
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
@@ -162,9 +457,9 @@ public class EmployeeImplement implements EmployeeDAO {
     }
 
     @Override
-    public void changeEmployeeEmail(String email, int employee_id) throws SQLException {
+    public void setEmployeeEmail(String email, int employee_id) throws SQLException {
 
-        String sql = String.format(QUERY.changeEmployeeEmail, email, employee_id);
+        String sql = String.format(QUERY.setEmployeeEmail, email, employee_id);
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
@@ -174,6 +469,9 @@ public class EmployeeImplement implements EmployeeDAO {
         c.closeConnection();
 
     }
+
+
+
 
     // RESULT SET METHODS
     // These methods are used to return a ResultSet object to the calling method for further processing
@@ -222,51 +520,47 @@ public class EmployeeImplement implements EmployeeDAO {
 
     }
 
+
+
+
     // STRING METHODS
     // These methods are used in command line tests and populating GUI text fields
     // They return a String or string representation of an object to the calling method
 
     @Override
-    public String getEmployeeName(int employee_id) throws SQLException {
+    public String getEmployeeFirstNameString(int employee_id) throws SQLException {
 
-        String sql = String.format(QUERY.getEmployeeName, employee_id);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        String name = String.format("%s %s %s",
-                rs.getString("first_name"),
-                rs.getString("middle_name"),
-                rs.getString("last_name"));
-
-        c.closeConnection();
-
-        return name;
+        String first_name = getEmployeeFirstName(employee_id);
+        return first_name;
 
     }
 
     @Override
-    public String getEmployeeAadhaar(int employee_id) throws SQLException {
+    public String getEmployeeMiddleNameString(int employee_id) throws SQLException {
 
-        String sql = String.format(QUERY.getEmployeeAadhaar, employee_id);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        String aadhaar = String.valueOf(rs.getLong("aadhaar"));
-
-        c.closeConnection();
-
-        return aadhaar;
+        String middle_name = getEmployeeMiddleName(employee_id);
+        return middle_name;
 
     }
 
     @Override
-    public Map<String, String> getEmployeeAddress(int employee_id) throws SQLException {
+    public String getEmployeeLastNameString(int employee_id) throws SQLException {
+
+        String last_name = getEmployeeLastName(employee_id);
+        return last_name;
+
+    }
+
+    @Override
+    public String getEmployeeAadhaarString(int employee_id) throws SQLException {
+
+        long aadhaar = getEmployeeAadhaar(employee_id);
+        return String.valueOf(aadhaar);
+
+    }
+
+    @Override
+    public Map<String, String> getEmployeeAddressMap(int employee_id) throws SQLException {
 
         String sql = String.format(QUERY.getEmployeeAddress, employee_id);
 
@@ -291,37 +585,17 @@ public class EmployeeImplement implements EmployeeDAO {
     }
 
     @Override
-    public String getEmployeePhone(int employee_id) throws SQLException {
+    public String getEmployeePhoneString(int employee_id) throws SQLException {
 
-        String sql = String.format(QUERY.getEmployeePhone, employee_id);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        String phone = rs.getString("phone");
-
-        c.closeConnection();
-
+        String phone = getEmployeePhone(employee_id);
         return phone;
 
     }
 
     @Override
-    public String getEmployeeEmail(int employee_id) throws SQLException {
+    public String getEmployeeEmailString(int employee_id) throws SQLException {
 
-        String sql = String.format(QUERY.getEmployeeEmail, employee_id);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        String email = rs.getString("email");
-
-        c.closeConnection();
-
+        String email = getEmployeeEmail(employee_id);
         return email;
 
     }
@@ -336,12 +610,8 @@ public class EmployeeImplement implements EmployeeDAO {
 
         ResultSet rs = c.selectSQL(sql);
 
-        if (!rs.next()){
-            System.out.println("No employee found with ID number: " + employee_id);
-        } else {
-            do {
-                tempEmployee = convertRowToEmployee(rs);
-            } while (rs.next());
+        if (rs.next()) {
+            tempEmployee = convertRowToEmployee(rs);
         }
 
         c.closeConnection();
@@ -370,6 +640,9 @@ public class EmployeeImplement implements EmployeeDAO {
         return sb.toString();
 
     }
+
+
+
 
     // HELPER METHODS
 

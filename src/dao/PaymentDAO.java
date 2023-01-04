@@ -4,6 +4,7 @@ import basic.Payment;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 public interface PaymentDAO {
 
@@ -13,9 +14,32 @@ public interface PaymentDAO {
 
     boolean checkPaymentExists(long payment_id) throws SQLException;
 
+    // GETTERS
+
+    Timestamp getPaymentDate(long payment_id) throws SQLException;
+
+    long getPaymentCardNo(long payment_id) throws SQLException;
+
+    float getPaymentValue(long payment_id) throws SQLException;
+
+    long getPaymentLoanID(long payment_id) throws SQLException;
+
+    // SETTERS
+
+    void setPaymentInfo(Payment payment) throws SQLException;
+
+    void setPaymentDate(Timestamp payment_date, long payment_id) throws SQLException;
+
+    void setPaymentCardNo(long card_no, long payment_id) throws SQLException;
+
+    void setPaymentValue(float payment_value, long payment_id) throws SQLException;
+
+    void setPaymentLoanID(long loan_id, long payment_id) throws SQLException;
+
+
     // RESULT SET METHODS
 
-    ResultSet getPaymentInfoByID(long payment_id) throws SQLException;
+    ResultSet getPaymentInfo(long payment_id) throws SQLException;
 
     ResultSet getPaymentsByCardNo(long card_no) throws SQLException;
 
@@ -43,13 +67,13 @@ public interface PaymentDAO {
 
     // STRING METHODS
 
-    String getPaymentDate(long payment_id) throws SQLException;
+    String getPaymentDateString(long payment_id) throws SQLException;
 
-    String getPaymentCardNo(long payment_id) throws SQLException;
+    String getPaymentCardNoString(long payment_id) throws SQLException;
 
-    String getPaymentValue(long payment_id) throws SQLException;
+    String getPaymentValueString(long payment_id) throws SQLException;
 
-    String getPaymentLoanID(long payment_id) throws SQLException;
+    String getPaymentLoanIDString(long payment_id) throws SQLException;
 
     // HELPER METHODS
 

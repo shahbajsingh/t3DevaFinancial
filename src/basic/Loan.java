@@ -117,8 +117,8 @@ public class Loan {
         return this.interest_accrued;
     }
 
-    public String getIsActive(){
-        return this.is_active ? "Yes" : "No";
+    public boolean getIsActive(){
+        return this.is_active;
     }
 
 
@@ -175,7 +175,7 @@ public class Loan {
                 """;
 
         return String.format(ret, this.loan_id, this.loan_date, this.card_no, this.loan_value,
-                this.interest_rate, this.amt_remaining, this.interest_accrued, getIsActive());
+                this.interest_rate, this.amt_remaining, this.interest_accrued, (this.is_active ? "Yes" : "No"));
 
     }
 

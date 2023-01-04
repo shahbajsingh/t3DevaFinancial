@@ -102,14 +102,14 @@ public class EmployeeRun {
             System.out.println("Please enter new last name: ");
             String last_name = employee_details.next();
 
-            e.changeEmployeeName(first_name, middle_name, last_name, employee_id);
+            e.setEmployeeName(first_name, middle_name, last_name, employee_id);
         }
 
         if (choose_number == 2) {
             System.out.println("Please enter new Aadhar Number: ");
             long aadhaar = employee_details.nextLong();
 
-            e.changeEmployeeAadhaar(aadhaar, employee_id);
+            e.setEmployeeAadhaar(aadhaar, employee_id);
         }
 
         if (choose_number == 3) {
@@ -131,28 +131,28 @@ public class EmployeeRun {
             System.out.println("Please enter zip code: ");
             String zip_code = employee_details.next();
 
-            e.changeEmployeeAddress(house_no, street, city, state, country, zip_code, employee_id);
+            e.setEmployeeAddress(house_no, street, city, state, country, zip_code, employee_id);
         }
 
         if (choose_number == 4) {
             System.out.println("Please enter new phone number: ");
             String phone = Long.toString(employee_details.nextLong());
 
-            e.changeEmployeePhone(phone, employee_id);
+            e.setEmployeePhone(phone, employee_id);
         }
 
         if (choose_number == 5) {
             System.out.println("Please enter new email address: ");
             String email = employee_details.next();
 
-            e.changeEmployeeEmail(email, employee_id);
+            e.setEmployeeEmail(email, employee_id);
         }
 
         if (choose_number == 6) {
             System.out.println("Please enter new password: ");
             String password = employee_details.next();
 
-            e.changeEmployeePassword(password, employee_id);
+            e.setEmployeePassword(password, employee_id);
         }
 
     }

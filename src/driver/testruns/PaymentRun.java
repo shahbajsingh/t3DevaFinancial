@@ -48,7 +48,7 @@ public class PaymentRun {
                 if (!p.checkPaymentExists(payment_id)) {
                     System.out.println("\nThe payment ID provided does not exist in the database");
                 } else {
-                    System.out.println(p.getPaymentInfoByIDString(payment_id));
+                    System.out.println(p.getPaymentInfoString(payment_id));
                 }
             }
 

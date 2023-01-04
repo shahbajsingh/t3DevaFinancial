@@ -118,14 +118,14 @@ public class CustomerRun {
             System.out.println("Please enter new last name: ");
             String last_name = customer_details.next();
 
-            c.changeCustomerName(first_name, middle_name, last_name, card_no);
+            c.setCustomerName(first_name, middle_name, last_name, card_no);
         }
 
         if (choose_number == 2) {
             System.out.println("Please enter new Aadhar Number: ");
             long aadhaar = customer_details.nextLong();
 
-            c.changeCustomerAadhaar(aadhaar, card_no);
+            c.setCustomerAadhaar(aadhaar, card_no);
         }
 
         if (choose_number == 3) {
@@ -147,21 +147,21 @@ public class CustomerRun {
             System.out.println("Please enter zip code: ");
             String zip_code = customer_details.next();
 
-            c.changeCustomerAddress(house_no, street, city, state, country, zip_code, card_no);
+            c.setCustomerAddress(house_no, street, city, state, country, zip_code, card_no);
         }
 
         if (choose_number == 4) {
             System.out.println("Please enter new phone number: ");
             String phone = Long.toString(customer_details.nextLong());
 
-            c.changeCustomerPhone(phone, card_no);
+            c.setCustomerPhone(phone, card_no);
         }
 
         if (choose_number == 5) {
             System.out.println("Please enter new email address: ");
             String email = customer_details.next();
 
-            c.changeCustomerEmail(email, card_no);
+            c.setCustomerEmail(email, card_no);
         }
 
     }

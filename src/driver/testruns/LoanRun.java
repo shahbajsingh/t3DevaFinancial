@@ -47,7 +47,7 @@ public class LoanRun {
                 if (!l.checkLoanExists(loan_id)) {
                     System.out.println("\nThe loan ID provided does not exist in the database");
                 } else {
-                    System.out.println(l.getLoanInfoByIDString(loan_id));
+                    System.out.println(l.getLoanInfoString(loan_id));
                 }
             }
 

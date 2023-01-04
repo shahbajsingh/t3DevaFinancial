@@ -31,11 +31,12 @@ public class LoanImplement implements LoanDAO {
         Connection newConnection = c.getConnection();
 
         c.executeSQL(sql);
-
         connectLoanToCard(loan_value, card_no);
 
-        System.out.println("Loan of ₹" + loan_value + " added to card number " +
-                card_no + " at " + interest_rate + "% interest rate");
+        System.out.println(
+                String.format("Loan of ₹%.2f added to card number %d at %.2f%% interest rate\n",
+                        loan_value, card_no, interest_rate)
+        );
 
         c.closeConnection();
 
@@ -52,82 +53,12 @@ public class LoanImplement implements LoanDAO {
         disconnectLoanFromCard(loan_id);
         c.executeSQL(sql);
 
-        System.out.println("Loan with ID " + loan_id + " deleted from database");
+
+        System.out.println(
+                String.format("Loan with ID %d deleted from database\n", loan_id)
+        );
 
         c.closeConnection();
-
-    }
-
-
-    public float handlePaidInFull(float payment_value, long loan_id) throws SQLException { // returns leftover money
-
-        float leftover = 0.00f;
-
-        String sql = String.format(QUERY.getLoanInfoByID, loan_id);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        if (rs.next()) {
-            float amt_remaining = rs.getFloat("amt_remaining");
-            if (payment_value > amt_remaining) {
-                leftover = payment_value - amt_remaining;
-                setLoanAmtRemaining(0.00f, loan_id);
-                setLoanIsActive(false, loan_id);
-            } else {
-                setLoanAmtRemaining(amt_remaining - payment_value, loan_id);
-            }
-        }
-
-        c.closeConnection();
-
-        return leftover;
-
-    }
-
-    @Override
-    public float getLoanAmtRemainingFloat(long loan_id) throws SQLException {
-
-        float amt_remaining = 0.00f;
-
-        String sql = String.format(QUERY.getLoanInfoByID, loan_id);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        if (rs.next()) {
-            amt_remaining = rs.getFloat("amt_remaining");
-        }
-
-        c.closeConnection();
-
-        return amt_remaining;
-
-    }
-
-    @Override
-    public float getLoanValueFloat(long loan_id) throws SQLException {
-
-        float loan_value = 0.00f;
-
-        String sql = String.format(QUERY.getLoanInfoByID, loan_id);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        if (rs.next()) {
-            loan_value = rs.getFloat("loan_value");
-        }
-
-        c.closeConnection();
-
-        return loan_value;
 
     }
 
@@ -153,33 +84,6 @@ public class LoanImplement implements LoanDAO {
     }
 
     @Override
-    public void setLoanAmtRemaining(float amt_remaining, long loan_id) throws SQLException {
-
-        String sql = String.format(QUERY.setLoanAmtRemaining, amt_remaining, loan_id);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        c.executeSQL(sql);
-
-        c.closeConnection();
-
-    }
-
-    @Override
-    public void setLoanIsActive(boolean isActive, long loan_id) throws SQLException {
-
-        String sql = String.format(QUERY.setLoanIsActive, isActive, loan_id);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        c.executeSQL(sql);
-
-        c.closeConnection();
-
-    }
-
     public boolean checkLoanExists(long loan_id) throws SQLException {
 
         String sql = String.format(QUERY.checkLoanExists, loan_id);
@@ -197,14 +101,300 @@ public class LoanImplement implements LoanDAO {
 
     }
 
+
+
+
+    // GETTERS
+    // These methods return the value of the specified column
+    // in the actual data type specified in the database
+
+    @Override
+    public Timestamp getLoanDate(long loan_id) throws SQLException {
+
+        String sql = String.format(QUERY.getLoanDate, loan_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        Timestamp loan_date = null;
+
+        if(rs.next()) {
+            loan_date = rs.getTimestamp("loan_date");
+        }
+
+        c.closeConnection();
+
+        return loan_date;
+
+    }
+
+    @Override
+    public long getLoanCardNo(long loan_id) throws SQLException {
+
+        String sql = String.format(QUERY.getLoanCardNo, loan_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        long card_no = 0L;
+
+        if(rs.next()) {
+            card_no = rs.getLong("card_no");
+        }
+
+        c.closeConnection();
+
+        return card_no;
+
+    }
+
+    @Override
+    public float getLoanValue(long loan_id) throws SQLException {
+
+        String sql = String.format(QUERY.getLoanValue, loan_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        float loan_value = 0.00f;
+
+        if(rs.next()) {
+            loan_value = rs.getFloat("loan_value");
+        }
+
+        c.closeConnection();
+
+        return loan_value;
+
+    }
+
+    @Override
+    public float getLoanInterestRate(long loan_id) throws SQLException {
+
+        String sql = String.format(QUERY.getLoanInterestRate, loan_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        float interest_rate = 0.00f;
+
+        if(rs.next()) {
+            interest_rate = rs.getFloat("interest_rate");
+        }
+
+        c.closeConnection();
+
+        return interest_rate;
+
+    }
+
+    @Override
+    public float getLoanAmtRemaining(long loan_id) throws SQLException {
+
+        String sql = String.format(QUERY.getLoanAmtRemaining, loan_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        float amt_remaining = 0.00f;
+
+        if(rs.next()) {
+            amt_remaining = rs.getFloat("amt_remaining");
+        }
+
+        c.closeConnection();
+
+        return amt_remaining;
+
+    }
+
+    @Override
+    public float getLoanInterestAccrued(long loan_id) throws SQLException {
+
+        String sql = String.format(QUERY.getLoanInterestAccrued, loan_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        float interest_accrued = 0.00f;
+
+        if(rs.next()) {
+            interest_accrued = rs.getFloat("interest_accrued");
+        }
+
+        c.closeConnection();
+
+        return interest_accrued;
+
+    }
+
+    @Override
+    public boolean getLoanIsActive(long loan_id) throws SQLException {
+
+        String sql = String.format(QUERY.getLoanIsActive, loan_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        boolean is_active = false;
+
+        if(rs.next()) {
+            is_active = rs.getBoolean("is_active");
+        }
+
+        c.closeConnection();
+
+        return is_active;
+
+    }
+
+
+
+
+    // SETTERS
+    // These methods update the value of the specified column
+    // in the database using the passed value
+
+    @Override
+    public void setLoanInfo(Loan loan) throws SQLException {
+
+        long loan_id = loan.getLoanID(); Timestamp loan_date = loan.getLoanDate();
+        long card_no = loan.getCardNo(); float loan_value = loan.getLoanValue();
+        float interest_rate = loan.getInterestRate(); float amt_remaining = loan.getAmtRemaining();
+        float interest_accrued = loan.getInterestAccrued(); boolean is_active = loan.getIsActive();
+
+        String sql = String.format(QUERY.setLoanInfo, loan_date, card_no, loan_value,
+                interest_rate, amt_remaining, interest_accrued, is_active, loan_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        c.executeSQL(sql);
+
+        System.out.println(
+                String.format("Loan with ID %d updated in database\n", loan_id)
+        );
+
+        c.closeConnection();
+
+    }
+
+    @Override
+    public void setLoanDate(Timestamp loan_date, long loan_id) throws SQLException {
+
+        String sql = String.format(QUERY.setLoanDate, loan_date, loan_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        c.executeSQL(sql);
+
+        c.closeConnection();
+
+    }
+
+    @Override
+    public void setLoanCardNo(long card_no, long loan_id) throws SQLException {
+
+        String sql = String.format(QUERY.setLoanCardNo, card_no, loan_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        c.executeSQL(sql);
+
+        c.closeConnection();
+
+    }
+
+    @Override
+    public void setLoanValue(float loan_value, long loan_id) throws SQLException {
+
+        String sql = String.format(QUERY.setLoanValue, loan_value, loan_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        c.executeSQL(sql);
+
+        c.closeConnection();
+
+    }
+
+    @Override
+    public void setLoanInterestRate(float interest_rate, long loan_id) throws SQLException {
+
+        String sql = String.format(QUERY.setLoanInterestRate, interest_rate, loan_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        c.executeSQL(sql);
+
+        c.closeConnection();
+
+    }
+
+    @Override
+    public void setLoanAmtRemaining(float amt_remaining, long loan_id) throws SQLException {
+
+        String sql = String.format(QUERY.setLoanAmtRemaining, amt_remaining, loan_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        c.executeSQL(sql);
+
+        c.closeConnection();
+
+    }
+
+    @Override
+    public void setLoanInterestAccrued(float interest_accrued, long loan_id) throws SQLException {
+
+        String sql = String.format(QUERY.setLoanInterestAccrued, interest_accrued, loan_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        c.executeSQL(sql);
+
+        c.closeConnection();
+
+    }
+
+    @Override
+    public void setLoanIsActive(boolean is_active, long loan_id) throws SQLException {
+
+        String sql = String.format(QUERY.setLoanIsActive, is_active, loan_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        c.executeSQL(sql);
+
+        c.closeConnection();
+
+    }
+
+
+
+
     // RESULT SET METHODS
     // These methods are used to return a ResultSet object to the calling method for further processing
     // and will be used to construct table models to populate the GUI
 
     @Override
-    public ResultSet getLoanInfoByID(long loan_id) throws SQLException {
+    public ResultSet getLoanInfo(long loan_id) throws SQLException {
 
-        String sql = String.format(QUERY.getLoanInfoByID, loan_id);
+        String sql = String.format(QUERY.getLoanInfo, loan_id);
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
@@ -330,62 +520,6 @@ public class LoanImplement implements LoanDAO {
     }
 
     @Override
-    public ResultSet getAllLoans() throws SQLException {
-
-        String sql = QUERY.getAllLoans;
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        return rs;
-
-    }
-
-    @Override
-    public ResultSet getAllLoansInDateRange(String start_date, String end_date) throws SQLException {
-
-        String sql = String.format(QUERY.getAllLoansInDateRange, start_date, end_date);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        return rs;
-
-    }
-
-    @Override
-    public ResultSet getAllLoansBeforeDate(String date) throws SQLException { // For GUI use only
-
-        String sql = String.format(QUERY.getAllLoansBeforeDate, date);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        return rs;
-
-    }
-
-    @Override
-    public ResultSet getAllLoansAfterDate(String date) throws SQLException { // For GUI use only
-
-        String sql = String.format(QUERY.getAllLoansAfterDate, date);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        return rs;
-
-    }
-
-    @Override
     public ResultSet getAllActiveLoans() throws SQLException {
 
         String sql = QUERY.getAllActiveLoans;
@@ -441,138 +575,137 @@ public class LoanImplement implements LoanDAO {
 
     }
 
+    @Override
+    public ResultSet getAllLoans() throws SQLException {
+
+        String sql = QUERY.getAllLoans;
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+
+        return rs;
+
+    }
+
+    @Override
+    public ResultSet getAllLoansInDateRange(String start_date, String end_date) throws SQLException {
+
+        String sql = String.format(QUERY.getAllLoansInDateRange, start_date, end_date);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+
+        return rs;
+
+    }
+
+    @Override
+    public ResultSet getAllLoansBeforeDate(String date) throws SQLException { // For GUI use only
+
+        String sql = String.format(QUERY.getAllLoansBeforeDate, date);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+
+        return rs;
+
+    }
+
+    @Override
+    public ResultSet getAllLoansAfterDate(String date) throws SQLException { // For GUI use only
+
+        String sql = String.format(QUERY.getAllLoansAfterDate, date);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+
+        return rs;
+
+    }
+
+
+
+
     // STRING METHODS
     // These methods are used in command line tests and populating GUI text fields
     // They return a String or string representation of an object to the calling method
 
     @Override
-    public String getLoanDate(long loan_id) throws SQLException {
+    public String getLoanDateString(long loan_id) throws SQLException {
 
-        String sql = String.format(QUERY.getLoanDateByID, loan_id);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        String loan_date = rs.getTimestamp("loan_date").toString();
-
-        return loan_date;
+        Timestamp loan_date = getLoanDate(loan_id);
+        return loan_date.toString();
 
     }
 
     @Override
-    public String getLoanCardNo(long loan_id) throws SQLException {
+    public String getLoanCardNoString(long loan_id) throws SQLException {
 
-        String sql = String.format(QUERY.getLoanCardNoByID, loan_id);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        String card_no = String.valueOf(rs.getLong("card_no"));
-
-        return card_no;
+        long card_no = getLoanCardNo(loan_id);
+        return Long.toString(card_no);
 
     }
 
     @Override
-    public String getLoanValue(long loan_id) throws SQLException {
+    public String getLoanValueString(long loan_id) throws SQLException {
 
-        String sql = String.format(QUERY.getLoanValueByID, loan_id);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        String loan_value = String.valueOf(rs.getFloat("loan_value"));
-
-        return loan_value;
+        float loan_value = getLoanValue(loan_id);
+        return Float.toString(loan_value);
 
     }
 
     @Override
-    public String getLoanInterestRate(long loan_id) throws SQLException {
+    public String getLoanInterestRateString(long loan_id) throws SQLException {
 
-        String sql = String.format(QUERY.getLoanInterestRateByID, loan_id);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        String interest_rate = String.valueOf(rs.getFloat("interest_rate"));
-
-        return interest_rate;
+        float interest_rate = getLoanInterestRate(loan_id);
+        return Float.toString(interest_rate);
 
     }
 
     @Override
-    public String getLoanAmtRemaining(long loan_id) throws SQLException {
+    public String getLoanAmtRemainingString(long loan_id) throws SQLException {
 
-        String sql = String.format(QUERY.getLoanAmtRemainingByID, loan_id);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        String amt_remaining = String.valueOf(rs.getFloat("amt_remaining"));
-
-        return amt_remaining;
+        float amt_remaining = getLoanAmtRemaining(loan_id);
+        return Float.toString(amt_remaining);
 
     }
 
     @Override
-    public String getLoanInterestAccrued(long loan_id) throws SQLException {
+    public String getLoanInterestAccruedString(long loan_id) throws SQLException {
 
-        String sql = String.format(QUERY.getLoanInterestAccruedByID, loan_id);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        String interest_accrued = String.valueOf(rs.getFloat("interest_accrued"));
-
-        return interest_accrued;
+        float interest_accrued = getLoanInterestAccrued(loan_id);
+        return Float.toString(interest_accrued);
 
     }
 
     @Override
-    public String getLoanIsActive(long loan_id) throws SQLException {
+    public String getLoanIsActiveString(long loan_id) throws SQLException {
 
-        String sql = String.format(QUERY.getLoanIsActiveByID, loan_id);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        String is_active = rs.getBoolean("is_active") ? "Yes" : "No";
-
-        return is_active;
+        boolean is_active = getLoanIsActive(loan_id);
+        return is_active ? "Yes" : "No";
 
     }
 
-    public Loan getLoanInfoByIDString(long loan_id) throws SQLException {
+    public Loan getLoanInfoString(long loan_id) throws SQLException {
 
         Loan tempLoan = new Loan();
-        String sql = String.format(QUERY.getLoanInfoByID, loan_id);
+        String sql = String.format(QUERY.getLoanInfo, loan_id);
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
 
         ResultSet rs = c.selectSQL(sql);
 
-        if (!rs.next()){
-            System.out.println("No loan found with ID: " + loan_id);
-        } else {
-            do {
-                tempLoan = convertRowToLoan(rs);
-            } while (rs.next());
+        if (rs.next()) {
+            tempLoan = convertRowToLoan(rs);
         }
 
         c.closeConnection();
@@ -751,6 +884,9 @@ public class LoanImplement implements LoanDAO {
 
     }
 
+
+
+
     // HELPER METHODS
 
     @Override
@@ -764,7 +900,7 @@ public class LoanImplement implements LoanDAO {
     @Override
     public void disconnectLoanFromCard(long loan_id) throws SQLException {
 
-        String sql = String.format(QUERY.getLoanInfoByID, loan_id);
+        String sql = String.format(QUERY.getLoanInfo, loan_id);
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();

@@ -34,8 +34,10 @@ public class CustomerImplement implements CustomerDAO {
 
         c.executeSQL(sql);
 
-        System.out.println(String.format("Customer '%s %s %s' added to the database with card number %d",
-                first_name, middle_name, last_name, card_no));
+        System.out.println(
+                String.format("Customer '%s %s %s' added to the database with card number %d\n",
+                first_name, middle_name, last_name, card_no)
+        );
 
         c.closeConnection();
 
@@ -53,7 +55,9 @@ public class CustomerImplement implements CustomerDAO {
         c.executeSQL(sql);
         tempCardImplement.deleteCard(card_no);
 
-        System.out.println(String.format("Customer with card number %d deleted from the database", card_no));
+        System.out.println(
+                String.format("Customer with card number %d deleted from the database\n", card_no)
+        );
 
         c.closeConnection();
 
@@ -68,7 +72,6 @@ public class CustomerImplement implements CustomerDAO {
         Connection newConnection = c.getConnection();
 
         ResultSet rs = c.selectSQL(sql);
-
         boolean exists = rs.next();
 
         c.closeConnection();
@@ -77,11 +80,304 @@ public class CustomerImplement implements CustomerDAO {
 
     }
 
+
+
+
+    // GETTERS
+    // These methods return the value of the specified column
+    // in the actual data type specified in the database
+
     @Override
-    public void changeCustomerName(String first_name, String middle_name,
+    public String getCustomerFirstName(long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.getCustomerName, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        String first_name = null;
+
+        if(rs.next()){
+            first_name = rs.getString("first_name");
+        }
+
+        c.closeConnection();
+
+        return first_name;
+
+    }
+
+    @Override
+    public String getCustomerMiddleName(long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.getCustomerName, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        String middle_name = null;
+
+        if (rs.getString("middle_name") != null) {
+            middle_name = rs.getString("middle_name");
+        }
+
+        c.closeConnection();
+
+        return middle_name;
+
+    }
+
+    @Override
+    public String getCustomerLastName(long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.getCustomerName, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        String last_name = null;
+
+        if(rs.next()){
+            last_name = rs.getString("last_name");
+        }
+
+        c.closeConnection();
+
+        return last_name;
+
+    }
+
+    @Override
+    public long getCustomerAadhaar(long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.getCustomerAadhaar, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        long aadhaar = 0L;
+
+        if(rs.next()){
+            aadhaar = rs.getLong("aadhaar");
+        }
+
+        c.closeConnection();
+
+        return aadhaar;
+
+    }
+
+    @Override
+    public String getCustomerHouseNo(long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.getCustomerAddress, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        String house_no = null;
+
+        if(rs.next()){
+            house_no = rs.getString("house_no");
+        }
+
+        c.closeConnection();
+
+        return house_no;
+
+    }
+
+    @Override
+    public String getCustomerStreetName(long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.getCustomerAddress, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        String street_name = null;
+
+        if(rs.next()){
+            street_name = rs.getString("street_name");
+        }
+
+        c.closeConnection();
+
+        return street_name;
+
+    }
+
+    @Override
+    public String getCustomerCity(long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.getCustomerAddress, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        String city = null;
+
+        if(rs.next()){
+            city = rs.getString("city");
+        }
+
+        c.closeConnection();
+
+        return city;
+
+    }
+
+    @Override
+    public String getCustomerState(long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.getCustomerAddress, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        String state = null;
+
+        if(rs.next()){
+            state = rs.getString("state");
+        }
+
+        c.closeConnection();
+
+        return state;
+
+    }
+
+    @Override
+    public String getCustomerCountry(long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.getCustomerAddress, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        String country = null;
+
+        if(rs.next()){
+            country = rs.getString("country");
+        }
+
+        c.closeConnection();
+
+        return country;
+
+    }
+
+    @Override
+    public String getCustomerZipCode(long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.getCustomerAddress, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        String zip_code = null;
+
+        if (rs.next()) {
+            zip_code = rs.getString("zip_code");
+        }
+
+        c.closeConnection();
+
+        return zip_code;
+
+    }
+
+    @Override
+    public String getCustomerPhone(long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.getCustomerPhone, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        String phone = null;
+
+        if (rs.next()) {
+            phone = rs.getString("phone");
+        }
+
+        c.closeConnection();
+
+        return phone;
+
+    }
+
+    @Override
+    public String getCustomerEmail(long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.getCustomerEmail, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        String email = null;
+
+        if (rs.next()) {
+            email = rs.getString("email");
+        }
+
+        c.closeConnection();
+
+        return email;
+
+    }
+
+
+
+
+    // SETTERS
+    // These methods update the value of the specified column
+    // in the database using the passed value
+
+    @Override
+    public void setCustomerInfo(Customer customer) throws SQLException {
+
+        long card_no = customer.getCardNo(); String first_name = customer.getFirstName();
+        String middle_name = customer.getMiddleName(); String last_name = customer.getLastName();
+        long aadhaar = customer.getAadhaar(); String house_no = customer.getHouseNo();
+        String street_name = customer.getStreetName(); String city = customer.getCity();
+        String state = customer.getState(); String country = customer.getCountry();
+        String zip_code = customer.getZipCode(); String phone = customer.getPhone();
+        String email = customer.getEmail();
+
+        String sql = String.format(QUERY.setCustomerInfo, first_name, middle_name, last_name, aadhaar,
+                                   house_no, street_name, city, state, country, zip_code, phone, email, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        c.executeSQL(sql);
+
+        System.out.println(
+                String.format("Customer with card number %d updated in database\n", card_no)
+        );
+
+        c.closeConnection();
+
+    }
+
+    @Override
+    public void setCustomerName(String first_name, String middle_name,
                                    String last_name, long card_no) throws SQLException {
 
-        String sql = String.format(QUERY.changeCustomerName, first_name, middle_name, last_name, card_no);
+        String sql = String.format(QUERY.setCustomerName, first_name, middle_name, last_name, card_no);
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
@@ -93,9 +389,9 @@ public class CustomerImplement implements CustomerDAO {
     }
 
     @Override
-    public void changeCustomerAadhaar(long aadhaar, long card_no) throws SQLException {
+    public void setCustomerAadhaar(long aadhaar, long card_no) throws SQLException {
 
-        String sql = String.format(QUERY.changeCustomerAadhaar, aadhaar, card_no);
+        String sql = String.format(QUERY.setCustomerAadhaar, aadhaar, card_no);
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
@@ -107,10 +403,10 @@ public class CustomerImplement implements CustomerDAO {
     }
 
     @Override
-    public void changeCustomerAddress(String house_no, String street_name, String city, String state,
+    public void setCustomerAddress(String house_no, String street_name, String city, String state,
                                       String country, String zip_code, long card_no) throws SQLException {
 
-        String sql = String.format(QUERY.changeCustomerAddress, house_no,
+        String sql = String.format(QUERY.setCustomerAddress, house_no,
                 street_name, city, state, country, zip_code, card_no);
 
         DatabaseConnection c = new DatabaseConnection();
@@ -123,9 +419,9 @@ public class CustomerImplement implements CustomerDAO {
     }
 
     @Override
-    public void changeCustomerPhone(String phone, long card_no) throws SQLException {
+    public void setCustomerPhone(String phone, long card_no) throws SQLException {
 
-        String sql = String.format(QUERY.changeCustomerPhone, phone, card_no);
+        String sql = String.format(QUERY.setCustomerPhone, phone, card_no);
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
@@ -137,9 +433,9 @@ public class CustomerImplement implements CustomerDAO {
     }
 
     @Override
-    public void changeCustomerEmail(String email, long card_no) throws SQLException {
+    public void setCustomerEmail(String email, long card_no) throws SQLException {
 
-        String sql = String.format(QUERY.changeCustomerEmail, email, card_no);
+        String sql = String.format(QUERY.setCustomerEmail, email, card_no);
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
@@ -150,6 +446,9 @@ public class CustomerImplement implements CustomerDAO {
 
 
     }
+
+
+
 
     // RESULT SET METHODS
     // These methods are used to return a ResultSet object to the calling method for further processing
@@ -211,51 +510,47 @@ public class CustomerImplement implements CustomerDAO {
 
     }
 
+
+
+
     // STRING METHODS
     // These methods are used in command line tests and populating GUI text fields
     // They return a String or string representation of an object to the calling method
 
     @Override
-    public String getCustomerName(long card_no) throws SQLException {
+    public String getCustomerFirstNameString(long card_no) throws SQLException {
 
-        String sql = String.format(QUERY.getCustomerName, card_no);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        String name = String.format("%s %s %s",
-                rs.getString("first_name"),
-                rs.getString("middle_name"),
-                rs.getString("last_name"));
-
-        c.closeConnection();
-
-        return name;
+        String first_name = getCustomerFirstName(card_no);
+        return first_name;
 
     }
 
     @Override
-    public String getCustomerAadhaar(long card_no) throws SQLException {
+    public String getCustomerMiddleNameString(long card_no) throws SQLException {
 
-        String sql = String.format(QUERY.getCustomerAadhaar, card_no);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        String aadhaar = String.valueOf(rs.getLong("aadhaar"));
-
-        c.closeConnection();
-
-        return aadhaar;
+        String middle_name = getCustomerMiddleName(card_no);
+        return middle_name;
 
     }
 
     @Override
-    public Map<String, String> getCustomerAddress(long card_no) throws SQLException {
+    public String getCustomerLastNameString(long card_no) throws SQLException {
+
+        String last_name = getCustomerLastName(card_no);
+        return last_name;
+
+    }
+
+    @Override
+    public String getCustomerAadhaarString(long card_no) throws SQLException {
+
+        long aadhaar = getCustomerAadhaar(card_no);
+        return String.valueOf(aadhaar);
+
+    }
+
+    @Override
+    public Map<String, String> getCustomerAddressMap(long card_no) throws SQLException {
 
         String sql = String.format(QUERY.getCustomerAddress, card_no);
 
@@ -280,37 +575,17 @@ public class CustomerImplement implements CustomerDAO {
     }
 
     @Override
-    public String getCustomerPhone(long card_no) throws SQLException {
+    public String getCustomerPhoneString(long card_no) throws SQLException {
 
-        String sql = String.format(QUERY.getCustomerPhone, card_no);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        String phone = rs.getString("phone");
-
-        c.closeConnection();
-
+        String phone = getCustomerPhone(card_no);
         return phone;
 
     }
 
     @Override
-    public String getCustomerEmail(long card_no) throws SQLException {
+    public String getCustomerEmailString(long card_no) throws SQLException {
 
-        String sql = String.format(QUERY.getCustomerEmail, card_no);
-
-        DatabaseConnection c = new DatabaseConnection();
-        Connection newConnection = c.getConnection();
-
-        ResultSet rs = c.selectSQL(sql);
-
-        String email = rs.getString("email");
-
-        c.closeConnection();
-
+        String email = getCustomerEmail(card_no);
         return email;
 
     }
@@ -325,12 +600,8 @@ public class CustomerImplement implements CustomerDAO {
 
         ResultSet rs = c.selectSQL(sql);
 
-        if (!rs.next()){
-            System.out.println("No customer found with card number: " + card_no);
-        } else {
-            do {
-                tempCustomer = convertRowToCustomer(rs);
-            } while (rs.next());
+        if (rs.next()) {
+            convertRowToCustomer(rs);
         }
 
         c.closeConnection();
@@ -354,9 +625,7 @@ public class CustomerImplement implements CustomerDAO {
 
         ResultSet rs = c.selectSQL(sql);
 
-        if (!rs.next()){
-            System.out.println("No customer found with card number: " + card_no);
-        } else {
+        if (rs.next()){
             do {
                 tempCustomer = convertRowToCustomer(rs);
                 tempCard = tempCardImplement.convertRowToCard(rs);
@@ -413,6 +682,8 @@ public class CustomerImplement implements CustomerDAO {
         return sb.toString();
 
     }
+
+
 
 
     // HELPER METHODS
