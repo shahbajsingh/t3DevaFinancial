@@ -14,8 +14,6 @@ import static basic.CONSTANTS.*;
 
 public class PaymentImplement implements PaymentDAO {
 
-    float money_used;
-
     public PaymentImplement() {
         super();
     }
@@ -23,7 +21,69 @@ public class PaymentImplement implements PaymentDAO {
     @Override
     public void addPayment(long card_no, float payment_value) throws SQLException {
 
+        LoanImplement tempLoan = new LoanImplement();
+        CardImplement tempCard = new CardImplement();
+        Timestamp payment_date = CURRENT_TIME;
 
+        float total_payment_value = 0.00f;
+        float leftover = payment_value;
+
+        long loan_id = 0L; // loan_id of the loan that is being paid off (oldest active)
+        float loan_remaining = 0.00f; // balance remaining on oldest active loan
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        // recursive method to add payments to all active loans while there is still money left
+        // and while there are active loans
+
+        while (leftover > 0.00f && tempCard.getCardBalance(card_no) > 0.00f) {
+
+            loan_id = tempLoan.getOldestActiveLoanIDByCardNo(card_no);
+            loan_remaining = tempLoan.getLoanAmtRemaining(loan_id);
+
+            if (leftover >= loan_remaining) {
+
+                leftover -= loan_remaining;
+                total_payment_value += loan_remaining;
+
+                tempLoan.setLoanAmtRemaining(0.00f, loan_id);
+                tempLoan.setLoanIsActive(false, loan_id);
+
+                tempCard.subtractBalanceFromCard(loan_remaining, card_no);
+
+                // add payment to database
+
+                String sql = String.format(QUERY.addPayment, payment_date, card_no, loan_remaining, loan_id);
+
+                c.executeSQL(sql);
+
+            } else {
+
+                tempLoan.setLoanAmtRemaining(loan_remaining - leftover, loan_id);
+                tempCard.subtractBalanceFromCard(loan_remaining - leftover, card_no);
+
+                total_payment_value += (loan_remaining - leftover);
+                leftover = 0.00f;
+
+                // add payment to database
+
+                String sql = String.format(QUERY.addPayment, payment_date, card_no, loan_remaining - leftover, loan_id);
+
+                c.executeSQL(sql);
+
+            }
+        }
+
+        tempCard.setCardAmtLastPayment(total_payment_value, card_no);
+        tempCard.setCardDateLastPayment(payment_date, card_no);
+
+        c.closeConnection();
+
+        System.out.println(
+                String.format("Payment of ₹%.2f made under card no. %d with ₹%.2f left over",
+                        total_payment_value, card_no, leftover)
+        );
 
     }
 
@@ -615,14 +675,17 @@ public class PaymentImplement implements PaymentDAO {
 
     }
 
+
+
+
     // HELPER METHODS
 
     @Override
-    public float connectPaymentToLoan(float payment_value, long card_no,
+    public void connectPaymentToLoan(float payment_value, long card_no,
                                        long oldest_loan_id, float amt_remaining) throws SQLException {
 
 
-        return 0;
+
 
     }
 

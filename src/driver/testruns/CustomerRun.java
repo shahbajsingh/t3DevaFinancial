@@ -29,7 +29,7 @@ public class CustomerRun {
             int userInput = input.nextInt();
 
             if (userInput == 0) {
-                System.out.println("\nThank you for using the Customer Portal");
+                System.out.println("\nThank you for using Customer Portal");
                 TestRun.main(null);
                 break;
             }

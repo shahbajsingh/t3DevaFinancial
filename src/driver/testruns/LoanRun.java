@@ -1,9 +1,11 @@
 package driver.testruns;
 
+import basic.Loan;
 import module.CustomerImplement;
 import module.LoanImplement;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Scanner;
 
 public class LoanRun {
@@ -30,12 +32,13 @@ public class LoanRun {
             System.out.println("[8] Check Active Loans Under Card Number");
             System.out.println("[9] Check Active Loans Under Card Number In Date Range");
             System.out.println("[10] Add Loan");
-            System.out.println("[11] Delete Loan");
+            System.out.println("[11] Modify Loan");
+            System.out.println("[12] Delete Loan");
 
             int userInput = input.nextInt();
 
             if (userInput == 0) {
-                System.out.println("\nThank you for using the Customer Portal");
+                System.out.println("\nThank you for using Loan Portal");
                 TestRun.main(null);
                 break;
             }
@@ -134,6 +137,10 @@ public class LoanRun {
             }
 
             if (userInput == 11) {
+                handleLoanModify();
+            }
+
+            if (userInput == 12) {
                 System.out.println("\nPlease enter loan ID to delete: ");
                 long loan_id = input.nextLong();
 
@@ -144,6 +151,41 @@ public class LoanRun {
                 }
             }
 
+        }
+
+    }
+
+    private static void handleLoanModify() throws SQLException {
+
+        LoanImplement l = new LoanImplement();
+
+        Scanner loan_details = new Scanner(System.in).useDelimiter("\n");
+
+        System.out.println("\nPlease enter loan ID to modify: ");
+        long loan_id = loan_details.nextLong();
+
+        if (!l.checkLoanExists(loan_id)) {
+            System.out.println("\nThe loan ID provided does not exist in the database");
+        } else {
+
+            System.out.println("\nPlease enter new loan date (YYYY-MM-DD): ");
+            Timestamp loan_date = Timestamp.valueOf(loan_details.next() + " 00:00:00");
+
+            System.out.println("\nPlease enter new loan card number: ");
+            long card_no = loan_details.nextLong();
+
+            System.out.println("\nPlease enter new loan value: ");
+            float loan_value = loan_details.nextFloat();
+
+            System.out.println("\nPlease enter new loan interest rate: ");
+            float interest_rate = loan_details.nextFloat();
+
+            System.out.println("\nPlease enter new loan status (0 for inactive, 1 for active): ");
+            boolean is_active = loan_details.nextInt() == 1;
+
+            Loan tempLoan = new Loan(loan_id, loan_date, card_no, loan_value, interest_rate, is_active);
+
+            l.setLoanInfo(tempLoan);
         }
 
     }

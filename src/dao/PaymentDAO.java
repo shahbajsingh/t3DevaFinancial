@@ -77,8 +77,8 @@ public interface PaymentDAO {
 
     // HELPER METHODS
 
-    float connectPaymentToLoan(float payment_value, long card_no,
-                                long oldest_loan_id, float amt_remaining) throws SQLException; // returns leftover
+    void connectPaymentToLoan(float payment_value, long card_no,
+                                long oldest_loan_id, float amt_remaining) throws SQLException;
 
     Payment convertRowToPayment(ResultSet rs) throws SQLException;
 

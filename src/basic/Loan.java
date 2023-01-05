@@ -9,6 +9,9 @@ public class Loan {
     // Note that interest rate is calculated as a percentage of the loan value by the employee
     // and total accrued interest will either be calculated at time of payment or per unit of time
 
+    // Also note that the variable interest_rate is decimalized before insertion into the database
+    // in ALL CONSTRUCTORS and is converted back to an integer percentage when retrieved from the database
+
     // LOAN ATTRIBUTES
 
     private long loan_id, card_no;
@@ -19,7 +22,7 @@ public class Loan {
 
     // CONSTRUCTORS
 
-    // Following constructor takes all parameters
+    // Following constructor takes all EIGHT parameters
 
     public Loan(long loan_id, Timestamp loan_date, long card_no, float loan_value,
                 float interest_rate, float amt_remaining, float interest_accrued, boolean is_active){
@@ -28,15 +31,15 @@ public class Loan {
         this.loan_date = loan_date;
         this.card_no = card_no;
         this.loan_value = loan_value;
-        this.interest_rate = interest_rate;
+        this.interest_rate = interest_rate / 100;
         this.amt_remaining = amt_remaining;
         this.interest_accrued = interest_accrued;
         this.is_active = is_active;
 
     }
 
-    // Following constructor takes six parameters:
-    // loan_id, card_no, loan_date, loan_value, amt_remaining, interest_accrued and interest rate
+    // Following constructor takes SEVEN parameters:
+    // loan_id, loan_date, card_no, loan_value, amt_remaining, interest_accrued and interest rate
     // is_active is set to true
 
     public Loan(long loan_id, Timestamp loan_date, long card_no, float loan_value,
@@ -46,9 +49,46 @@ public class Loan {
         this.loan_date = loan_date;
         this.card_no = card_no;
         this.loan_value = loan_value;
-        this.interest_rate = interest_rate;
+        this.interest_rate = interest_rate / 100;
         this.amt_remaining = amt_remaining;
         this.interest_accrued = interest_accrued;
+        this.is_active = true;
+
+    }
+
+    // Following constructor takes SIX parameters:
+    // loan_id, loan_date, card_no, loan_value, interest rate, and is_active
+    // amt_remaining is set to loan_value and interest_accrued is set to 0
+
+    public Loan(long loan_id, Timestamp loan_date, long card_no, float loan_value,
+                float interest_rate, boolean is_active){
+
+        this.loan_id = loan_id;
+        this.loan_date = loan_date;
+        this.card_no = card_no;
+        this.loan_value = loan_value;
+        this.interest_rate = interest_rate / 100;
+        this.amt_remaining = loan_value;
+        this.interest_accrued = 0;
+        this.is_active = is_active;
+
+    }
+
+    // Following constructor takes FIVE parameters:
+    // loan_id, loan_date, card_no loan_value, and interest rate
+    // amt_remaining is set to loan_value, interest_accrued is set to 0,
+    // and is_active is set to true
+
+    public Loan(long loan_id, Timestamp loan_date, long card_no,
+                float loan_value, float interest_rate){
+
+        this.loan_id = loan_id;
+        this.loan_date = loan_date;
+        this.card_no = card_no;
+        this.loan_value = loan_value;
+        this.interest_rate = interest_rate / 100;
+        this.amt_remaining = loan_value;
+        this.interest_accrued = 0;
         this.is_active = true;
 
     }
@@ -70,7 +110,7 @@ public class Loan {
 
     }
 
-    // Following constructor takes no parameters and sets all attributes to null or default
+    // Following constructor takes ZERO parameters and sets all attributes to null or default
     // Note that loan_id, loan_date, card_no, loan_value, and interest_rate are defined as NON-NULL in the database
 
     public Loan(){
@@ -141,7 +181,7 @@ public class Loan {
     }
 
     public void setInterestRate(float interest_rate){
-        this.interest_rate = interest_rate;
+        this.interest_rate = interest_rate / 100;
     }
 
     public void setAmtRemaining(float amt_remaining){
@@ -168,14 +208,14 @@ public class Loan {
                 Loan Date: %s
                 Card No: %d
                 Loan Value: ₹%.2f
-                Interest Rate: %.2f
+                Interest Rate: %.2f%%
                 Amount Remaining: ₹%.2f
                 Interest Accrued: ₹%.2f
                 Is Active: %s
                 """;
 
         return String.format(ret, this.loan_id, this.loan_date, this.card_no, this.loan_value,
-                this.interest_rate, this.amt_remaining, this.interest_accrued, (this.is_active ? "Yes" : "No"));
+                this.interest_rate * 100, this.amt_remaining, this.interest_accrued, (this.is_active ? "Yes" : "No"));
 
     }
 

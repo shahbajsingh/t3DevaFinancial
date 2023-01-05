@@ -601,7 +601,7 @@ public class CustomerImplement implements CustomerDAO {
         ResultSet rs = c.selectSQL(sql);
 
         if (rs.next()) {
-            convertRowToCustomer(rs);
+            tempCustomer = convertRowToCustomer(rs);
         }
 
         c.closeConnection();

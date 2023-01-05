@@ -9,7 +9,7 @@ public class EmployeeRun {
 
     public static void main(String[] args) throws SQLException {
 
-        System.out.println("Welcome to Customer Portal");
+        System.out.println("Welcome to Employee Portal");
 
         EmployeeImplement e = new EmployeeImplement();
         Scanner input = new Scanner(System.in).useDelimiter("\n");
@@ -28,7 +28,7 @@ public class EmployeeRun {
             int userInput = input.nextInt();
 
             if (userInput == 0){
-                System.out.println("\nThank you for using the Employee Portal");
+                System.out.println("\nThank you for using Employee Portal");
                 TestRun.main(null);
                 break;
             }

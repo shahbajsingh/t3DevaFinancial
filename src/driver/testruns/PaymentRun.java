@@ -36,7 +36,7 @@ public class PaymentRun {
             int userInput = input.nextInt();
 
             if (userInput == 0) {
-                System.out.println("\nThank you for using the Customer Portal");
+                System.out.println("\nThank you for using Payment Portal");
                 TestRun.main(null);
                 break;
             }
