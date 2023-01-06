@@ -36,7 +36,6 @@ public interface PaymentDAO {
 
     void setPaymentLoanID(long loan_id, long payment_id) throws SQLException;
 
-
     // RESULT SET METHODS
 
     ResultSet getPaymentInfo(long payment_id) throws SQLException;

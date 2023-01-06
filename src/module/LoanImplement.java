@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 
 import static basic.CONSTANTS.*;
 
-public class LoanImplement implements LoanDAO {
+public class LoanImplement implements LoanDAO { // TO-DO: optimize / determine best time to update loan interest accrued
 
     public LoanImplement() {
         super();
@@ -31,7 +31,7 @@ public class LoanImplement implements LoanDAO {
         Connection newConnection = c.getConnection();
 
         c.executeSQL(sql);
-        connectLoanToCard(loan_value, card_no);
+        connectLoan(loan_value, card_no);
 
         System.out.println(
                 String.format("Loan of ₹%.2f added to card number %d at %.2f%% interest rate\n",
@@ -50,7 +50,7 @@ public class LoanImplement implements LoanDAO {
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
 
-        disconnectLoanFromCard(loan_id);
+        disconnectLoan(loan_id);
         c.executeSQL(sql);
 
 
@@ -59,6 +59,52 @@ public class LoanImplement implements LoanDAO {
         );
 
         c.closeConnection();
+
+    }
+
+    @Override
+    public float calculateLoanSimpleInterestAccrued(long loan_id) throws SQLException {
+
+        CardImplement tempCard = new CardImplement();
+        long card_no = getLoanCardNo(loan_id);
+
+        Timestamp loan_date = getLoanDate(loan_id);
+        Timestamp current_date = CURRENT_TIME;
+
+        int days_since_loan = (int) ((current_date.getTime() - loan_date.getTime()) / (1000 * 60 * 60 * 24));
+
+        float interest_rate = getLoanInterestRate(loan_id);
+        float loan_remaining = getLoanAmtRemaining(loan_id);
+
+        float interest_accrued = (loan_remaining * interest_rate * days_since_loan) / 365;
+
+        setLoanInterestAccrued(interest_accrued, loan_id);
+        tempCard.addBalanceToCard(interest_accrued, card_no);
+
+        return interest_accrued;
+
+    }
+
+    @Override
+    public float calculateLoanCompoundInterestAccrued(long loan_id) throws SQLException {
+
+        CardImplement tempCard = new CardImplement();
+        long card_no = getLoanCardNo(loan_id);
+
+        Timestamp loan_date = getLoanDate(loan_id);
+        Timestamp current_date = CURRENT_TIME;
+
+        int days_since_loan = (int) ((current_date.getTime() - loan_date.getTime()) / (1000 * 60 * 60 * 24));
+
+        float interest_rate = getLoanInterestRate(loan_id);
+        float loan_remaining = getLoanAmtRemaining(loan_id);
+
+        float interest_accrued = (float) (loan_remaining * Math.pow((1 + interest_rate), days_since_loan));
+
+        setLoanInterestAccrued(interest_accrued, loan_id);
+        tempCard.addBalanceToCard(interest_accrued, card_no);
+
+        return interest_accrued;
 
     }
 
@@ -269,6 +315,8 @@ public class LoanImplement implements LoanDAO {
         long card_no = loan.getCardNo(); float loan_value = loan.getLoanValue();
         float interest_rate = loan.getInterestRate(); float amt_remaining = loan.getAmtRemaining();
         float interest_accrued = loan.getInterestAccrued(); boolean is_active = loan.getIsActive();
+
+        interest_accrued = calculateLoanSimpleInterestAccrued(loan_id);
 
         String sql = String.format(QUERY.setLoanInfo, loan_date, card_no, loan_value,
                 interest_rate, amt_remaining, interest_accrued, is_active, loan_id);
@@ -890,7 +938,7 @@ public class LoanImplement implements LoanDAO {
     // HELPER METHODS
 
     @Override
-    public void connectLoanToCard(float loan_value, long card_no) throws SQLException {
+    public void connectLoan(float loan_value, long card_no) throws SQLException { // Connect loan to card
 
         CardImplement tempCard = new CardImplement();
         tempCard.addBalanceToCard(loan_value, card_no);
@@ -898,7 +946,7 @@ public class LoanImplement implements LoanDAO {
     }
 
     @Override
-    public void disconnectLoanFromCard(long loan_id) throws SQLException {
+    public void disconnectLoan(long loan_id) throws SQLException { // Disconnect loan from card
 
         String sql = String.format(QUERY.getLoanInfo, loan_id);
 
@@ -908,8 +956,12 @@ public class LoanImplement implements LoanDAO {
         ResultSet rs = c.selectSQL(sql);
 
         if(rs.next()){
+
+            float loan_value = rs.getFloat("loan_value");
+            long card_no = rs.getLong("card_no");
+
             CardImplement tempCard = new CardImplement();
-            tempCard.subtractBalanceFromCard(rs.getFloat("loan_value"), rs.getLong("card_no"));
+            tempCard.subtractBalanceFromCard(loan_value, card_no);
         }
 
         c.closeConnection();

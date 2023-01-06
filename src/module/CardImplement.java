@@ -452,7 +452,7 @@ public class CardImplement implements CardDAO {
 
         try {
             do {
-                card_no = (long) (Math.random() * 10000000000000000L);
+                card_no = (long) (Math.random() * 100000000L);
             } while (checkCardExists(card_no));
         } catch (SQLException e) {
             e.printStackTrace();

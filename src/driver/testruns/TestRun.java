@@ -9,12 +9,11 @@ public class TestRun {
 
 
         Scanner input = new Scanner(System.in);
-        int userInput = -1;
-        boolean continueProgram = true;
 
         System.out.println("Welcome to Deva Financial Services (test) via Command Line Interface");
 
-        while (continueProgram) {
+        while (true) {
+
             System.out.println("Please choose from the following options: ");
             System.out.println("[0] Exit Program");
             System.out.println("[1] Customer Portal");
@@ -23,12 +22,11 @@ public class TestRun {
             System.out.println("[4] Payment Portal");
 
 
-            userInput = input.nextInt();
+            int userInput = input.nextInt();
 
-            if(userInput == 0){
+            if(userInput == 0) {
                 System.out.println("Thank you for using Deva Financial Services");
-                continueProgram = false;
-                System.exit(0);
+                break;
             }
 
             if(userInput == 1) {
@@ -50,6 +48,7 @@ public class TestRun {
         }
 
         input.close();
+        System.exit(0);
 
 
     }

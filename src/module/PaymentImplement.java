@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 
 import static basic.CONSTANTS.*;
 
-public class PaymentImplement implements PaymentDAO {
+public class PaymentImplement implements PaymentDAO { // TO-DO: Add helper methods to add and delete payments
 
     public PaymentImplement() {
         super();
@@ -28,14 +28,11 @@ public class PaymentImplement implements PaymentDAO {
         float total_payment_value = 0.00f;
         float leftover = payment_value;
 
-        long loan_id = 0L; // loan_id of the loan that is being paid off (oldest active)
+        long loan_id = 0; // loan_id of the loan that is being paid off (oldest active)
         float loan_remaining = 0.00f; // balance remaining on oldest active loan
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
-
-        // recursive method to add payments to all active loans while there is still money left
-        // and while there are active loans
 
         while (leftover > 0.00f && tempCard.getCardBalance(card_no) > 0.00f) {
 
@@ -61,16 +58,17 @@ public class PaymentImplement implements PaymentDAO {
             } else {
 
                 tempLoan.setLoanAmtRemaining(loan_remaining - leftover, loan_id);
-                tempCard.subtractBalanceFromCard(loan_remaining - leftover, card_no);
+                tempCard.subtractBalanceFromCard(leftover, card_no);
 
-                total_payment_value += (loan_remaining - leftover);
-                leftover = 0.00f;
+                total_payment_value += leftover;
 
                 // add payment to database
 
-                String sql = String.format(QUERY.addPayment, payment_date, card_no, loan_remaining - leftover, loan_id);
+                String sql = String.format(QUERY.addPayment, payment_date, card_no, leftover, loan_id);
 
                 c.executeSQL(sql);
+
+                leftover = 0.00f;
 
             }
         }
@@ -89,6 +87,16 @@ public class PaymentImplement implements PaymentDAO {
 
     @Override
     public void deletePayment(long payment_id) throws SQLException {
+
+        LoanImplement tempLoan = new LoanImplement();
+        CardImplement tempCard = new CardImplement();
+
+        long card_no = getPaymentCardNo(payment_id);
+        float payment_value = getPaymentValue(payment_id);
+        long loan_id = getPaymentLoanID(payment_id);
+
+        tempCard.addBalanceToCard(payment_value, card_no);
+        tempLoan.setLoanIsActive(true, loan_id);
 
         String sql = String.format(QUERY.deletePayment, payment_id);
 
