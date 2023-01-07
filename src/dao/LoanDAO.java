@@ -12,6 +12,8 @@ public interface LoanDAO {
 
     void deleteLoan(long loan_id) throws SQLException;
 
+    void updateAllLoansInterestAccrued() throws SQLException;
+
     float calculateLoanSimpleInterestAccrued(long loan_id) throws SQLException;
 
     float calculateLoanCompoundInterestAccrued(long loan_id) throws SQLException;

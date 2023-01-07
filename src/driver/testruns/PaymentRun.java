@@ -143,9 +143,9 @@ public class PaymentRun {
 
         Scanner payment_details = new Scanner(System.in).useDelimiter("\n");
 
-        System.out.println("Please enter the following details: ");
+        System.out.println("\nPlease enter the following details: ");
 
-        System.out.println("Card Number: ");
+        System.out.println("\nCard Number: ");
         long card_no = payment_details.nextLong();
 
         System.out.println("\nPayment Amount: ");

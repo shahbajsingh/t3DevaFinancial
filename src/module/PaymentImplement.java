@@ -30,22 +30,40 @@ public class PaymentImplement implements PaymentDAO { // TO-DO: Add helper metho
 
         long loan_id = 0; // loan_id of the loan that is being paid off (oldest active)
         float loan_remaining = 0.00f; // balance remaining on oldest active loan
+        float loan_interest = 0.00f; // interest accrued on oldest active loan
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
 
-        while (leftover > 0.00f && tempCard.getCardBalance(card_no) > 0.00f) {
+        while (leftover > 0.005f && tempCard.getCardBalance(card_no) > 0.005f) {
 
             loan_id = tempLoan.getOldestActiveLoanIDByCardNo(card_no);
             loan_remaining = tempLoan.getLoanAmtRemaining(loan_id);
+            loan_interest = tempLoan.getLoanInterestAccrued(loan_id);
 
-            if (leftover >= loan_remaining) {
+            if (leftover >= loan_remaining + loan_interest) { // leftover can pay off loan principal AND interest
+
+                leftover -= (loan_remaining + loan_interest);
+                total_payment_value += (loan_remaining + loan_interest);
+
+                tempLoan.setLoanAmtRemaining(0.00f, loan_id);
+                tempLoan.setLoanIsActive(false, loan_id);
+
+                tempCard.subtractBalanceFromCard((loan_remaining + loan_interest), card_no);
+
+                // add payment to database
+
+                String sql = String.format(QUERY.addPayment, payment_date,
+                        card_no, (loan_remaining + loan_interest), loan_id);
+
+                c.executeSQL(sql);
+
+            } else if (leftover >= loan_remaining){ // leftover can pay off loan principal but NOT interest
 
                 leftover -= loan_remaining;
                 total_payment_value += loan_remaining;
 
                 tempLoan.setLoanAmtRemaining(0.00f, loan_id);
-                tempLoan.setLoanIsActive(false, loan_id);
 
                 tempCard.subtractBalanceFromCard(loan_remaining, card_no);
 
@@ -55,7 +73,7 @@ public class PaymentImplement implements PaymentDAO { // TO-DO: Add helper metho
 
                 c.executeSQL(sql);
 
-            } else {
+            } else { // leftover can only pay off PART of loan principal
 
                 tempLoan.setLoanAmtRemaining(loan_remaining - leftover, loan_id);
                 tempCard.subtractBalanceFromCard(leftover, card_no);
@@ -105,7 +123,10 @@ public class PaymentImplement implements PaymentDAO { // TO-DO: Add helper metho
 
         c.executeSQL(sql);
 
-        System.out.println("Payment with ID " + payment_id + " deleted from database");
+        System.out.println(
+                String.format("Payment of ₹%.2f with ID %d deleted from card no. %d in database\n",
+                        payment_value, payment_id, card_no)
+        );
 
         c.closeConnection();
 

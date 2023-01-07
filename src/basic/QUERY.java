@@ -220,6 +220,8 @@ public class QUERY {
     public static final String checkLoanExists = "SELECT * FROM TDF2.LOANS " +
             "WHERE loan_id = %d";
 
+    public static final String getAllLoanIDs = "SELECT loan_id FROM TDF2.LOANS";
+
     public static final String getOldestActiveLoanIDByCardNo = "SELECT * FROM TDF2.LOANS " +
             "WHERE card_no = %d AND is_active = TRUE " +
             "ORDER BY loan_date ASC LIMIT 1";
