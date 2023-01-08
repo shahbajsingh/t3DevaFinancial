@@ -12,11 +12,9 @@ public interface LoanDAO {
 
     void deleteLoan(long loan_id) throws SQLException;
 
+    void updateLoanInterestAccrued(long loan_id) throws SQLException;
+
     void updateAllLoansInterestAccrued() throws SQLException;
-
-    float calculateLoanSimpleInterestAccrued(long loan_id) throws SQLException;
-
-    float calculateLoanCompoundInterestAccrued(long loan_id) throws SQLException;
 
     long getOldestActiveLoanIDByCardNo(long card_no) throws SQLException; // used for payment identification logic
 
@@ -109,6 +107,10 @@ public interface LoanDAO {
     String getLoanIsActiveString(long loan_id) throws SQLException;
 
     // HELPER METHODS
+
+    float calculateLoanSimpleInterestAccrued(long loan_id) throws SQLException;
+
+    float calculateLoanCompoundInterestAccrued(long loan_id) throws SQLException;
 
     void connectLoan(float loan_value, long card_no) throws SQLException;
 

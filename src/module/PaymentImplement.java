@@ -112,9 +112,12 @@ public class PaymentImplement implements PaymentDAO { // TO-DO: Add helper metho
         long card_no = getPaymentCardNo(payment_id);
         float payment_value = getPaymentValue(payment_id);
         long loan_id = getPaymentLoanID(payment_id);
+        float loan_remaining = tempLoan.getLoanAmtRemaining(loan_id);
 
         tempCard.addBalanceToCard(payment_value, card_no);
         tempLoan.setLoanIsActive(true, loan_id);
+        tempLoan.setLoanAmtRemaining(loan_remaining + payment_value, loan_id);
+
 
         String sql = String.format(QUERY.deletePayment, payment_id);
 

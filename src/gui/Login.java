@@ -7,11 +7,6 @@ import java.sql.SQLException;
 
 public class Login extends JFrame {
 
-    private JPasswordField passwordTextField;
-    private JTextField usernameTextField;
-    private JButton btnLogIn;
-    private JPanel loginPanel;
-
     public Login() {
 
         super("Login");
@@ -53,7 +48,8 @@ public class Login extends JFrame {
             try {
                 if (checkEmployeeExists(username)) {
                     if (checkLogin(username, password)){
-                        JOptionPane.showMessageDialog(null, "Login Successful");
+                        PortalSelect portalSelect = new PortalSelect();
+                        this.dispose();
                     } else {
                         JOptionPane.showMessageDialog(null, "Login Failed");
                     }
@@ -67,15 +63,13 @@ public class Login extends JFrame {
         });
     }
 
-    private boolean checkEmployeeExists(int employee_id) throws SQLException {
-        EmployeeImplement employeeImplement = new EmployeeImplement();
-        return employeeImplement.checkEmployeeExists(employee_id);
-    }
 
-    private boolean checkLogin(int employee_id, String password) throws SQLException {
-        EmployeeImplement tempEmployee = new EmployeeImplement();
-        return tempEmployee.checkEmployeePassword(employee_id, password);
-    }
+
+
+    // GETTERS
+    // These methods return the value of the
+    // specified text field from the GUI
+    // parsed in the appropriate data type
 
     public int getUsername() {
         int username = 0;
@@ -90,5 +84,30 @@ public class Login extends JFrame {
     public String getPassword() {
         return String.valueOf(passwordTextField.getPassword());
     }
+
+
+
+
+    // HELPER METHODS
+
+    private boolean checkEmployeeExists(int employee_id) throws SQLException {
+        EmployeeImplement employeeImplement = new EmployeeImplement();
+        return employeeImplement.checkEmployeeExists(employee_id);
+    }
+
+    private boolean checkLogin(int employee_id, String password) throws SQLException {
+        EmployeeImplement tempEmployee = new EmployeeImplement();
+        return tempEmployee.checkEmployeePassword(employee_id, password);
+    }
+
+
+
+
+    // COMPONENT DECLARATION
+
+    private JPasswordField passwordTextField;
+    private JTextField usernameTextField;
+    private JButton btnLogIn;
+    private JPanel loginPanel;
 
 }
