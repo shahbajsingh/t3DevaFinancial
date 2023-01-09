@@ -2,12 +2,13 @@ package module;
 
 import static basic.CONSTANTS.*;
 
-import basic.CONSTANTS;
 import basic.Card;
 import basic.DatabaseConnection;
 import basic.QUERY;
 import dao.CardDAO;
+import net.proteanit.sql.DbUtils;
 
+import javax.swing.table.TableModel;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -349,6 +350,48 @@ public class CardImplement implements CardDAO {
         Connection newConnection = c.getConnection();
 
         return c.selectSQL(sql);
+
+    }
+
+
+
+
+    // TABLE MODEL METHODS
+    // These methods construct table models from passed ResultSet objects
+    // in order to populate GUI tables with connection-independent data captures
+
+    @Override
+    public TableModel getCardInfoTableModel(long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.getCardInfo, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
+    }
+
+    @Override
+    public TableModel getAllCardsInfoTableModel() throws SQLException {
+
+        String sql = QUERY.getAllCardsInfo;
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
 
     }
 

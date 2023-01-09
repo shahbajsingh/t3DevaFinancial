@@ -10,6 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
+import net.proteanit.sql.DbUtils;
+import javax.swing.table.TableModel;
+
 import static basic.CONSTANTS.*;
 
 public class LoanImplement implements LoanDAO { // TO-DO: optimize / determine best time to update loan interest accrued
@@ -659,6 +662,308 @@ public class LoanImplement implements LoanDAO { // TO-DO: optimize / determine b
         return rs;
 
     }
+
+
+
+
+    // TABLE MODEL METHODS
+    // These methods construct table models from passed ResultSet objects
+    // in order to populate GUI tables with connection-independent data captures
+
+    @Override
+    public TableModel getLoanInfoTableModel(long loan_id) throws SQLException {
+
+        String sql = String.format(QUERY.getLoanInfo, loan_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
+    }
+
+    @Override
+    public TableModel getLoansByCardNoTableModel(long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.getLoansByCardNo, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
+    }
+
+    @Override
+    public TableModel getLoansInDateRangeByCardNoTableModel(long card_no, String start_date,
+                                                     String end_date) throws SQLException {
+
+        String sql = String.format(QUERY.getLoansInDateRangeByCardNo, card_no, start_date, end_date);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
+    }
+
+    @Override
+    public TableModel getLoansBeforeDateByCardNoTableModel(long card_no, String date) throws SQLException {
+
+        String sql = String.format(QUERY.getLoansBeforeDateByCardNo, card_no, date);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
+    }
+
+    @Override
+    public TableModel getLoansAfterDateByCardNoTableModel(long card_no, String date) throws SQLException {
+
+        String sql = String.format(QUERY.getLoansAfterDateByCardNo, card_no, date);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
+    }
+
+    @Override
+    public TableModel getActiveLoansByCardNoTableModel(long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.getActiveLoansByCardNo, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
+    }
+
+    @Override
+    public TableModel getActiveLoansInDateRangeByCardNoTableModel(long card_no, String start_date,
+                                                                  String end_date) throws SQLException {
+
+        String sql = String.format(QUERY.getActiveLoansInDateRangeByCardNo, card_no, start_date, end_date);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
+    }
+
+    @Override
+    public TableModel getActiveLoansBeforeDateByCardNoTableModel(long card_no, String date) throws SQLException {
+
+        String sql = String.format(QUERY.getActiveLoansBeforeDateByCardNo, card_no, date);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
+    }
+
+    @Override
+    public TableModel getActiveLoansAfterDateByCardNoTableModel(long card_no, String date) throws SQLException {
+
+        String sql = String.format(QUERY.getActiveLoansAfterDateByCardNo, card_no, date);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
+    }
+
+    @Override
+    public TableModel getAllActiveLoansTableModel() throws SQLException {
+
+        String sql = QUERY.getAllActiveLoans;
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
+    }
+
+    @Override
+    public TableModel getAllActiveLoansInDateRangeTableModel(String start_date,
+                                                             String end_date) throws SQLException {
+
+        String sql = String.format(QUERY.getAllActiveLoansInDateRange, start_date, end_date);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
+    }
+
+    @Override
+    public TableModel getAllActiveLoansBeforeDateTableModel(String date) throws SQLException {
+
+        String sql = String.format(QUERY.getAllActiveLoansBeforeDate, date);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
+    }
+
+    @Override
+    public TableModel getAllActiveLoansAfterDateTableModel(String date) throws SQLException {
+
+        String sql = String.format(QUERY.getAllActiveLoansAfterDate, date);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
+    }
+
+    @Override
+    public TableModel getAllLoansTableModel() throws SQLException {
+
+        String sql = QUERY.getAllLoans;
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
+    }
+
+    @Override
+    public TableModel getAllLoansInDateRangeTableModel(String start_date,
+                                                       String end_date) throws SQLException {
+
+        String sql = String.format(QUERY.getAllLoansInDateRange, start_date, end_date);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
+    }
+
+    @Override
+    public TableModel getAllLoansBeforeDateTableModel(String date) throws SQLException {
+
+        String sql = String.format(QUERY.getAllLoansBeforeDate, date);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
+    }
+
+    @Override
+    public TableModel getAllLoansAfterDateTableModel(String date) throws SQLException {
+
+        String sql = String.format(QUERY.getAllLoansAfterDate, date);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
+    }
+
+
 
 
 

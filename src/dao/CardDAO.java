@@ -2,6 +2,7 @@ package dao;
 
 import basic.Card;
 
+import javax.swing.table.TableModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -49,6 +50,12 @@ public interface CardDAO {
     ResultSet getCardInfo(long card_no) throws SQLException;
 
     ResultSet getAllCardsInfo() throws SQLException;
+
+    // TABLE MODEL METHODS
+
+    TableModel getCardInfoTableModel(long card_no) throws SQLException;
+
+    TableModel getAllCardsInfoTableModel() throws SQLException;
 
     // STRING METHODS
 

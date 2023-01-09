@@ -2,6 +2,7 @@ package dao;
 
 import basic.Customer;
 
+import javax.swing.table.TableModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
@@ -15,6 +16,8 @@ public interface CustomerDAO {
     void deleteCustomer(long card_no) throws SQLException;
 
     boolean checkCustomerExists(long card_no) throws SQLException;
+
+    boolean checkCustomerExistsByAadhaar(long aadhaar) throws SQLException;
 
     // GETTERS
 
@@ -63,9 +66,27 @@ public interface CustomerDAO {
 
     ResultSet getCustomerAccountInfo(long card_no) throws SQLException; // customer + card schema details
 
+    ResultSet getCustomerInfoByAadhaar(long aadhaar) throws SQLException;
+
+    ResultSet getCustomerAccountInfoByAadhaar(long aadhaar) throws SQLException;
+
     ResultSet getAllCustomersInfo() throws SQLException; // customer schema details for all customers
 
     ResultSet getAllCustomersAccountInfo() throws SQLException; // customer + card schema details for all customers
+
+    // TABLE MODEL METHODS
+
+    TableModel getCustomerInfoTableModel(long card_no) throws SQLException;
+
+    TableModel getCustomerAccountInfoTableModel(long card_no) throws SQLException;
+
+    TableModel getCustomerInfoByAadhaarTableModel(long aadhaar) throws SQLException;
+
+    TableModel getCustomerAccountInfoByAadhaarTableModel(long aadhaar) throws SQLException;
+
+    TableModel getAllCustomersInfoTableModel() throws SQLException;
+
+    TableModel getAllCustomersAccountInfoTableModel() throws SQLException;
 
     // STRING METHODS
 

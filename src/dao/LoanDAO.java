@@ -2,6 +2,7 @@ package dao;
 
 import basic.Loan;
 
+import javax.swing.table.TableModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -68,11 +69,11 @@ public interface LoanDAO {
 
     ResultSet getActiveLoansByCardNo(long card_no) throws SQLException;
 
+    ResultSet getActiveLoansInDateRangeByCardNo(long card_no, String start_date, String end_date) throws SQLException;
+
     ResultSet getActiveLoansBeforeDateByCardNo(long card_no, String date) throws SQLException;
 
     ResultSet getActiveLoansAfterDateByCardNo(long card_no, String date) throws SQLException;
-
-    ResultSet getActiveLoansInDateRangeByCardNo(long card_no, String start_date, String end_date) throws SQLException;
 
     ResultSet getAllActiveLoans() throws SQLException;
 
@@ -89,6 +90,44 @@ public interface LoanDAO {
     ResultSet getAllLoansBeforeDate(String date) throws SQLException;
 
     ResultSet getAllLoansAfterDate(String date) throws SQLException;
+
+    // TABLE MODEL METHODS
+
+    TableModel getLoanInfoTableModel(long loan_id) throws SQLException;
+
+    TableModel getLoansByCardNoTableModel(long card_no) throws SQLException;
+
+    TableModel getLoansInDateRangeByCardNoTableModel(long card_no, String start_date,
+                                                     String end_date) throws SQLException;
+
+    TableModel getLoansBeforeDateByCardNoTableModel(long card_no, String date) throws SQLException;
+
+    TableModel getLoansAfterDateByCardNoTableModel(long card_no, String date) throws SQLException;
+
+    TableModel getActiveLoansByCardNoTableModel(long card_no) throws SQLException;
+
+    TableModel getActiveLoansInDateRangeByCardNoTableModel(long card_no, String start_date,
+                                                           String end_date) throws SQLException;
+
+    TableModel getActiveLoansBeforeDateByCardNoTableModel(long card_no, String date) throws SQLException;
+
+    TableModel getActiveLoansAfterDateByCardNoTableModel(long card_no, String date) throws SQLException;
+
+    TableModel getAllActiveLoansTableModel() throws SQLException;
+
+    TableModel getAllActiveLoansInDateRangeTableModel(String start_date, String end_date) throws SQLException;
+
+    TableModel getAllActiveLoansBeforeDateTableModel(String date) throws SQLException;
+
+    TableModel getAllActiveLoansAfterDateTableModel(String date) throws SQLException;
+
+    TableModel getAllLoansTableModel() throws SQLException;
+
+    TableModel getAllLoansInDateRangeTableModel(String start_date, String end_date) throws SQLException;
+
+    TableModel getAllLoansBeforeDateTableModel(String date) throws SQLException;
+
+    TableModel getAllLoansAfterDateTableModel(String date) throws SQLException;
 
     // STRING METHODS
 

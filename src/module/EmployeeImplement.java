@@ -4,7 +4,9 @@ import basic.DatabaseConnection;
 import basic.Employee;
 import basic.QUERY;
 import dao.EmployeeDAO;
+import net.proteanit.sql.DbUtils;
 
+import javax.swing.table.TableModel;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -60,6 +62,24 @@ public class EmployeeImplement implements EmployeeDAO {
     public boolean checkEmployeeExists(int employee_id) throws SQLException {
 
         String sql = String.format(QUERY.checkEmployeeExists, employee_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+
+        boolean exists = rs.next();
+
+        c.closeConnection();
+
+        return exists;
+
+    }
+
+    @Override
+    public boolean checkEmployeeExistsByLastName(String last_name) throws SQLException {
+
+        String sql = String.format(QUERY.checkEmployeeExistsByLastName, last_name);
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
@@ -517,6 +537,64 @@ public class EmployeeImplement implements EmployeeDAO {
         ResultSet rs = c.selectSQL(sql);
 
         return rs;
+
+    }
+
+
+
+
+    // TABLE MODEL METHODS
+    // These methods construct table models from passed ResultSet objects
+    // in order to populate GUI tables with connection-independent data captures
+
+    @Override
+    public TableModel getEmployeeInfoTableModel(int employee_id) throws SQLException {
+        // TO-DO: Refactor query to not use * which returns password info as well
+        String sql = String.format(QUERY.getEmployeeInfo, employee_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
+    }
+
+    @Override
+    public TableModel getEmployeeInfoByLastNameTableModel(String last_name) throws SQLException {
+
+        String sql = String.format(QUERY.getEmployeeInfoByLastName, last_name);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
+    }
+
+    @Override
+    public TableModel getAllEmployeesInfoTableModel() throws SQLException {
+
+        String sql = QUERY.getAllEmployeesInfo;
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
 
     }
 

@@ -2,6 +2,7 @@ package dao;
 
 import basic.Payment;
 
+import javax.swing.table.TableModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -63,6 +64,36 @@ public interface PaymentDAO {
     ResultSet getAllPaymentsBeforeDate(String date) throws SQLException;
 
     ResultSet getAllPaymentsAfterDate(String date) throws SQLException;
+
+    // TABLE MODEL METHODS
+
+    TableModel getPaymentInfoTableModel(long payment_id) throws SQLException;
+
+    TableModel getPaymentsByCardNoTableModel(long card_no) throws SQLException;
+
+    TableModel getPaymentsInDateRangeByCardNoTableModel(long card_no, String start_date,
+                                                        String end_date) throws SQLException;
+
+    TableModel getPaymentsBeforeDateByCardNoTableModel(long card_no, String date) throws SQLException;
+
+    TableModel getPaymentsAfterDateByCardNoTableModel(long card_no, String date) throws SQLException;
+
+    TableModel getPaymentsByLoanIDTableModel(long loan_id) throws SQLException;
+
+    TableModel getPaymentsInDateRangeByLoanIDTableModel(long loan_id, String start_date,
+                                                        String end_date) throws SQLException;
+
+    TableModel getPaymentsBeforeDateByLoanIDTableModel(long loan_id, String date) throws SQLException;
+
+    TableModel getPaymentsAfterDateByLoanIDTableModel(long loan_id, String date) throws SQLException;
+
+    TableModel getAllPaymentsTableModel() throws SQLException;
+
+    TableModel getAllPaymentsInDateRangeTableModel(String start_date, String end_date) throws SQLException;
+
+    TableModel getAllPaymentsBeforeDateTableModel(String date) throws SQLException;
+
+    TableModel getAllPaymentsAfterDateTableModel(String date) throws SQLException;
 
     // STRING METHODS
 

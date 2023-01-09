@@ -5,7 +5,9 @@ import basic.Customer;
 import basic.DatabaseConnection;
 import basic.QUERY;
 import dao.CustomerDAO;
+import net.proteanit.sql.DbUtils;
 
+import javax.swing.table.TableModel;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -67,6 +69,23 @@ public class CustomerImplement implements CustomerDAO {
     public boolean checkCustomerExists(long card_no) throws SQLException { // Check if a customer-card pair exists
 
         String sql = String.format(QUERY.checkCustomerCardPaired, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        boolean exists = rs.next();
+
+        c.closeConnection();
+
+        return exists;
+
+    }
+
+    @Override
+    public boolean checkCustomerExistsByAadhaar(long aadhaar) throws SQLException {
+
+        String sql = String.format(QUERY.checkCustomerExistsByAadhaar, aadhaar);
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();
@@ -483,6 +502,34 @@ public class CustomerImplement implements CustomerDAO {
     }
 
     @Override
+    public ResultSet getCustomerInfoByAadhaar(long aadhaar) throws SQLException { // GUI use only
+
+        String sql = String.format(QUERY.getCustomerInfoByAadhaar, aadhaar);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+
+        return rs;
+
+    }
+
+    @Override
+    public ResultSet getCustomerAccountInfoByAadhaar(long aadhaar) throws SQLException { // GUI use only
+
+        String sql = String.format(QUERY.getCustomerAccountInfoByAadhaar, aadhaar);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+
+        return rs;
+
+    }
+
+    @Override
     public ResultSet getAllCustomersInfo() throws SQLException {
 
         String sql = QUERY.getAllCustomersInfo;
@@ -507,6 +554,115 @@ public class CustomerImplement implements CustomerDAO {
         ResultSet rs = c.selectSQL(sql);
 
         return rs;
+
+    }
+
+
+
+
+    // TABLE MODEL METHODS
+    // These methods construct table models from passed ResultSet objects
+    // in order to populate GUI tables with connection-independent data captures
+
+    @Override
+    public TableModel getCustomerInfoTableModel(long card_no) throws SQLException {
+
+        String sql = String.format(QUERY.getCustomerInfo, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
+    }
+
+    @Override
+    public TableModel getCustomerAccountInfoTableModel(long card_no) throws SQLException { // Customer AND card details
+
+        String sql = String.format(QUERY.getCustomerAccountInfo, card_no);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
+    }
+
+    @Override
+    public TableModel getCustomerInfoByAadhaarTableModel(long aadhaar) throws SQLException { // GUI use only
+
+        String sql = String.format(QUERY.getCustomerInfoByAadhaar, aadhaar);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
+    }
+
+    @Override
+    public TableModel getCustomerAccountInfoByAadhaarTableModel(long aadhaar) throws SQLException { // GUI use only
+
+        String sql = String.format(QUERY.getCustomerAccountInfoByAadhaar, aadhaar);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
+    }
+
+    @Override
+    public TableModel getAllCustomersInfoTableModel() throws SQLException {
+
+        String sql = QUERY.getAllCustomersInfo;
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
+    }
+
+    @Override
+    public TableModel getAllCustomersAccountInfoTableModel() throws SQLException { // Customer AND card details
+
+        String sql = QUERY.getAllCustomersAccountInfo;
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
 
     }
 

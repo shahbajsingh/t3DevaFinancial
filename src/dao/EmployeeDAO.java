@@ -2,6 +2,7 @@ package dao;
 
 import basic.Employee;
 
+import javax.swing.table.TableModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
@@ -15,6 +16,8 @@ public interface EmployeeDAO {
     void deleteEmployee(int employee_id) throws SQLException;
 
     boolean checkEmployeeExists(int employee_id) throws SQLException;
+
+    boolean checkEmployeeExistsByLastName(String last_name) throws SQLException;
 
     boolean checkEmployeePassword(int employee_id, String password) throws SQLException;
 
@@ -68,6 +71,14 @@ public interface EmployeeDAO {
     ResultSet getEmployeeInfoByLastName(String last_name) throws SQLException; // access schema by last name
 
     ResultSet getAllEmployeesInfo() throws SQLException; // employee schema details for all customers
+
+    // TABLE MODEL METHODS
+
+    TableModel getEmployeeInfoTableModel(int employee_id) throws SQLException;
+
+    TableModel getEmployeeInfoByLastNameTableModel(String last_name) throws SQLException;
+
+    TableModel getAllEmployeesInfoTableModel() throws SQLException;
 
     // STRING METHODS
 

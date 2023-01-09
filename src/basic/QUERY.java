@@ -16,6 +16,9 @@ public class QUERY {
             "INNER JOIN TDF2.CARDS ON TDF2.CUSTOMERS.card_no = TDF2.CARDS.card_no " +
             "WHERE TDF2.CUSTOMERS.card_no = %d";
 
+    public static final String checkCustomerExistsByAadhaar = "SELECT * FROM TDF2.CUSTOMERS " +
+            "WHERE aadhaar = %d";
+
     public static final String getCustomerInfo = "SELECT * FROM TDF2.CUSTOMERS " +
             "WHERE card_no = %d";
 
@@ -27,6 +30,13 @@ public class QUERY {
 
     public static final String getAllCustomersAccountInfo = "SELECT * FROM TDF2.CUSTOMERS " +
             "INNER JOIN TDF2.CARDS ON TDF2.CUSTOMERS.card_no = TDF2.CARDS.card_no";
+
+    public static final String getCustomerInfoByAadhaar = "SELECT * FROM TDF2.CUSTOMERS " +
+            "WHERE aadhaar = %d";
+
+    public static final String getCustomerAccountInfoByAadhaar = "SELECT * FROM TDF2.CUSTOMERS " +
+            "INNER JOIN TDF2.CARDS ON TDF2.CUSTOMERS.card_no = TDF2.CARDS.card_no " +
+            "WHERE aadhaar = %d";
 
     public static final String getCustomerName = "SELECT first_name, middle_name, last_name " +
             "FROM TDF2.CUSTOMERS WHERE card_no = %d";
@@ -84,14 +94,16 @@ public class QUERY {
     public static final String checkEmployeeExists = "SELECT * FROM TDF2.EMPLOYEES " +
             "WHERE employee_id = %d";
 
+    public static final String checkEmployeeExistsByLastName = "SELECT * FROM TDF2.EMPLOYEES " +
+            "WHERE last_name = '%s'";
+
     public static final String getEmployeeInfo = "SELECT * FROM TDF2.EMPLOYEES " +
             "WHERE employee_id = %d"; // explicitly defined duplicate query for clarity
 
     public static final String getAllEmployeesInfo = "SELECT * FROM TDF2.EMPLOYEES";
 
-    public static final String getEmployeeInfoByLastName = "SELECT (employee_id, first_name, middle_name, " +
-            "last_name, aadhaar, house_no, street_name, city, state, country, zip_code, phone, email) " +
-            "FROM TDF2.EMPLOYEES WHERE last_name = '%s'";
+    public static final String getEmployeeInfoByLastName = "SELECT * FROM TDF2.EMPLOYEES " +
+            "WHERE last_name = '%s'";
 
     public static final String getEmployeeID = "SELECT employee_id FROM TDF2.EMPLOYEES " +
             "WHERE employee_id = %d";

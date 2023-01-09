@@ -1,14 +1,11 @@
 package gui;
 
-import module.CustomerImplement;
-import module.EmployeeImplement;
-import module.LoanImplement;
-import module.PaymentImplement;
+import module.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 
 public class PortalSelect extends JFrame {
 
@@ -48,6 +45,7 @@ public class PortalSelect extends JFrame {
     private void handleLoanPortal(){
 
         LoanImplement tempLoan = new LoanImplement();
+        CardImplement tempCard = new CardImplement();
 
         // VIEW TAB
 
@@ -55,30 +53,74 @@ public class PortalSelect extends JFrame {
         viewLoansComboBox.addItem("CARD NUMBER");
 
         btnViewLoansSubmit.addActionListener(e -> {
-            String selected = (String) viewLoansComboBox.getSelectedItem();
+
+            String boxSelected = (String) viewLoansComboBox.getSelectedItem();
 
             try {
 
-                if (selected.equals("LOAN ID")) {
+                if (boxSelected.equals("LOAN ID")) {
 
-                    if (!viewLoansTextField1.getText().isEmpty()){
+                    if (!viewLoansTextField.getText().isEmpty()) { // If loan ID entered
+                        long loan_id = Long.parseLong(viewLoansTextField.getText());
 
-                    } else { // Display all
-
+                        if (tempLoan.checkLoanExists(loan_id)) { // If loan exists
+                            viewLoansTable.setModel(tempLoan.getLoanInfoTableModel(loan_id));
+                        } else {
+                            JOptionPane.showMessageDialog(null, "INVALID LOAN ID");
+                        }
+                    } else { // If loan ID not entered
+                        viewSortedLoans(tempLoan);
                     }
 
+                } else if (boxSelected.equals("CARD NUMBER")) {
 
-                } else if (selected.equals("CARD NUMBER")) {
+                    if (!viewLoansTextField.getText().isEmpty()) { // If card number entered
+                        long card_no = Long.parseLong(viewLoansTextField.getText());
 
-                    if (!viewLoansTextField1.getText().isEmpty()){
-
-                    } else { // Display all
-
+                        if (tempCard.checkCardExists(card_no)) { // If card exists
+                            if (radioBtnIsActive.isSelected()) { // If active loans selected
+                                if (!viewLoansDateField1.getText().isEmpty()
+                                        && !viewLoansDateField2.getText().isEmpty()) {
+                                    viewLoansTable.setModel(tempLoan.getActiveLoansInDateRangeByCardNoTableModel(
+                                            card_no, viewLoansDateField1.getText(), viewLoansDateField2.getText()));
+                                } else if (!viewLoansDateField1.getText().isEmpty()) {
+                                    viewLoansTable.setModel(tempLoan.getActiveLoansAfterDateByCardNoTableModel(
+                                            card_no, viewLoansDateField1.getText()));
+                                } else if (!viewLoansDateField2.getText().isEmpty()) {
+                                    viewLoansTable.setModel(tempLoan.getActiveLoansBeforeDateByCardNoTableModel(
+                                            card_no, viewLoansDateField2.getText()));
+                                } else {
+                                    viewLoansTable.setModel(tempLoan.getActiveLoansByCardNoTableModel(card_no));
+                                }
+                            } else { // If all loans selected
+                                if (!viewLoansDateField1.getText().isEmpty()
+                                        && !viewLoansDateField2.getText().isEmpty()) {
+                                    viewLoansTable.setModel(tempLoan.getLoansInDateRangeByCardNoTableModel(
+                                            card_no, viewLoansDateField1.getText(), viewLoansDateField2.getText()));
+                                } else if (!viewLoansDateField1.getText().isEmpty()) {
+                                    viewLoansTable.setModel(tempLoan.getLoansAfterDateByCardNoTableModel(
+                                            card_no, viewLoansDateField1.getText()));
+                                } else if (!viewLoansDateField2.getText().isEmpty()) {
+                                    viewLoansTable.setModel(tempLoan.getLoansBeforeDateByCardNoTableModel(
+                                            card_no, viewLoansDateField2.getText()));
+                                } else {
+                                    viewLoansTable.setModel(tempLoan.getLoansByCardNoTableModel(card_no));
+                                }
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "INVALID CARD NUMBER");
+                        }
+                    } else { // If card number not entered
+                        viewSortedLoans(tempLoan);
                     }
 
                 }
 
-            } catch (Exception ex) {
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "SQL ERROR");
                 ex.printStackTrace();
             }
 
@@ -95,10 +137,99 @@ public class PortalSelect extends JFrame {
     private void handlePaymentPortal(){
 
         PaymentImplement tempPayment = new PaymentImplement();
+        LoanImplement tempLoan = new LoanImplement();
+        CardImplement tempCard = new CardImplement();
 
         // VIEW TAB
 
+        viewPaymentsComboBox.addItem("PAYMENT ID");
+        viewPaymentsComboBox.addItem("CARD NUMBER");
+        viewPaymentsComboBox.addItem("LOAN ID");
+
         btnViewPaymentsSubmit.addActionListener(e -> {
+
+            String boxSelected = (String) viewPaymentsComboBox.getSelectedItem();
+
+            try {
+
+                if (boxSelected.equals("PAYMENT ID")) {
+
+                    if (!viewPaymentsTextField.getText().isEmpty()) { // If payment ID entered
+                        long payment_id = Long.parseLong(viewPaymentsTextField.getText());
+
+                        if (tempPayment.checkPaymentExists(payment_id)) { // If payment exists
+                            viewPaymentsTable.setModel(tempPayment.getPaymentInfoTableModel(payment_id));
+                        } else {
+                            JOptionPane.showMessageDialog(null, "INVALID PAYMENT ID");
+                        }
+                    } else { // If payment ID not entered
+                        viewSortedPayments(tempPayment);
+                    }
+
+                } else if (boxSelected.equals("CARD NUMBER")) {
+
+                    if (!viewPaymentsTextField.getText().isEmpty()) { // If card number entered
+                        long card_no = Long.parseLong(viewPaymentsTextField.getText());
+
+                        if (tempCard.checkCardExists(card_no)) { // If card exists
+                            if (!viewPaymentsDateField1.getText().isEmpty()
+                                    && !viewPaymentsDateField2.getText().isEmpty()) {
+                                viewPaymentsTable.setModel(tempPayment.getPaymentsInDateRangeByCardNoTableModel(
+                                        card_no, viewPaymentsDateField1.getText(), viewPaymentsDateField2.getText()));
+                            } else if (!viewPaymentsDateField1.getText().isEmpty()) {
+                                viewPaymentsTable.setModel(tempPayment.getPaymentsAfterDateByCardNoTableModel(
+                                        card_no, viewPaymentsDateField1.getText()));
+                            } else if (!viewPaymentsDateField2.getText().isEmpty()) {
+                                viewPaymentsTable.setModel(tempPayment.getPaymentsBeforeDateByCardNoTableModel(
+                                        card_no, viewPaymentsDateField2.getText()));
+                            } else {
+                                viewPaymentsTable.setModel(tempPayment.getPaymentsByCardNoTableModel(card_no));
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "INVALID CARD NUMBER");
+                        }
+                    } else { // If card number not entered
+                        viewSortedPayments(tempPayment);
+                    }
+
+                } else if (boxSelected.equals("LOAN ID")) {
+
+                    if (!viewPaymentsTextField.getText().isEmpty()) { // If loan ID entered
+                        long loan_id = Long.parseLong(viewPaymentsTextField.getText());
+
+                        if (tempLoan.checkLoanExists(loan_id)) { // If loan exists
+                            if (!viewPaymentsDateField1.getText().isEmpty()
+                                    && !viewPaymentsDateField2.getText().isEmpty()) {
+                                viewPaymentsTable.setModel(tempPayment.getPaymentsInDateRangeByLoanIDTableModel(
+                                        loan_id, viewPaymentsDateField1.getText(), viewPaymentsDateField2.getText()));
+                            } else if (!viewPaymentsDateField1.getText().isEmpty()) {
+                                viewPaymentsTable.setModel(tempPayment.getPaymentsAfterDateByLoanIDTableModel(
+                                        loan_id, viewPaymentsDateField1.getText()));
+                            } else if (!viewPaymentsDateField2.getText().isEmpty()) {
+                                viewPaymentsTable.setModel(tempPayment.getPaymentsBeforeDateByLoanIDTableModel(
+                                        loan_id, viewPaymentsDateField2.getText()));
+                            } else {
+                                viewPaymentsTable.setModel(tempPayment.getPaymentsByLoanIDTableModel(loan_id));
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "INVALID LOAN ID");
+                        }
+                    } else { // If loan ID not entered
+                        viewSortedPayments(tempPayment);
+                    }
+
+                }
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "SQL ERROR");
+                ex.printStackTrace();
+            } catch (InputMismatchException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            }
 
         });
 
@@ -113,10 +244,77 @@ public class PortalSelect extends JFrame {
     private void handleCustomerPortal(){
 
         CustomerImplement tempCustomer = new CustomerImplement();
+        CardImplement tempCard = new CardImplement();
 
         // VIEW TAB
 
+        viewCustomersComboBox.addItem("CARD NUMBER");
+        viewCustomersComboBox.addItem("AADHAAR NUMBER");
+
         btnViewCustomersSubmit.addActionListener(e -> {
+
+            String boxSelected = (String) viewCustomersComboBox.getSelectedItem();
+
+            try {
+
+                if (boxSelected.equals("CARD NUMBER")) {
+
+                    if (!viewCustomersTextField.getText().isEmpty()) { // If card number entered
+                        long card_no = Long.parseLong(viewCustomersTextField.getText());
+
+                        if (tempCard.checkCardExists(card_no)) { // If card exists
+                            if (radioBtnAccountInfo.isSelected()) {
+                                viewCustomersTable.setModel(tempCustomer.getCustomerAccountInfoTableModel(card_no));
+                            } else {
+                                viewCustomersTable.setModel(tempCustomer.getCustomerInfoTableModel(card_no));
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "INVALID CARD NUMBER");
+                        }
+                    } else { // If card number not entered
+                        if (radioBtnAccountInfo.isSelected()) {
+                            viewCustomersTable.setModel(tempCustomer.getAllCustomersAccountInfoTableModel());
+                        } else {
+                            viewCustomersTable.setModel(tempCustomer.getAllCustomersInfoTableModel());
+                        }
+                    }
+
+                } else if (boxSelected.equals("AADHAAR NUMBER")) {
+
+                    if (!viewCustomersTextField.getText().isEmpty()) { // If aadhaar number entered
+                     long aadhaar = Long.parseLong(viewCustomersTextField.getText());
+
+                     if (tempCustomer.checkCustomerExistsByAadhaar(aadhaar)) { // If aadhaar number exists
+                         if (radioBtnAccountInfo.isSelected()) {
+                             viewCustomersTable.setModel(
+                                     tempCustomer.getCustomerAccountInfoByAadhaarTableModel(aadhaar));
+                         } else {
+                             viewCustomersTable.setModel(tempCustomer.getCustomerInfoByAadhaarTableModel(aadhaar));
+                         }
+                     } else {
+                         JOptionPane.showMessageDialog(null, "INVALID AADHAAR NUMBER");
+                        }
+                    } else { // If aadhaar number not entered
+                        if (radioBtnAccountInfo.isSelected()) {
+                            viewCustomersTable.setModel(tempCustomer.getAllCustomersAccountInfoTableModel());
+                        } else {
+                            viewCustomersTable.setModel(tempCustomer.getAllCustomersInfoTableModel());
+                        }
+                    }
+
+                }
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "SQL ERROR");
+                ex.printStackTrace();
+            } catch (InputMismatchException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            }
+
 
         });
 
@@ -138,30 +336,49 @@ public class PortalSelect extends JFrame {
         viewEmployeesComboBox.addItem("LAST NAME");
 
         btnViewEmployeesSubmit.addActionListener(e -> {
-            String selected = (String) viewEmployeesComboBox.getSelectedItem();
+
+            String boxSelected = (String) viewEmployeesComboBox.getSelectedItem();
 
             try {
 
-                if (selected.equals("EMPLOYEE ID")) {
+                if (boxSelected.equals("EMPLOYEE ID")) {
 
-                    if (!viewLoansTextField1.getText().isEmpty()){
+                    if (!viewEmployeesTextField.getText().isEmpty()) {
+                        int employee_id = Integer.parseInt(viewEmployeesTextField.getText());
 
-                    } else { // Display all
-
+                        if (tempEmployee.checkEmployeeExists(employee_id)) {
+                            viewEmployeesTable.setModel(tempEmployee.getEmployeeInfoTableModel(employee_id));
+                        } else {
+                            JOptionPane.showMessageDialog(null, "INVALID EMPLOYEE ID");
+                        }
+                    } else {
+                        viewEmployeesTable.setModel(tempEmployee.getAllEmployeesInfoTableModel());
                     }
 
+                } else if (boxSelected.equals("LAST NAME")) {
 
-                } else if (selected.equals("LAST NAME")) {
+                    if (!viewEmployeesTextField.getText().isEmpty()) {
+                        String last_name = viewEmployeesTextField.getText();
 
-                    if (!viewLoansTextField1.getText().isEmpty()){
-
-                    } else { // Display all
-
+                        if (tempEmployee.checkEmployeeExistsByLastName(last_name)) {
+                            viewEmployeesTable.setModel(tempEmployee.getEmployeeInfoByLastNameTableModel(last_name));
+                        } else {
+                            JOptionPane.showMessageDialog(null, "INVALID LAST NAME");
+                        }
+                    } else {
+                        viewEmployeesTable.setModel(tempEmployee.getAllEmployeesInfoTableModel());
                     }
 
                 }
 
-            } catch (Exception ex) {
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "SQL ERROR");
+                ex.printStackTrace();
+            } catch (InputMismatchException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
                 ex.printStackTrace();
             }
 
@@ -187,6 +404,57 @@ public class PortalSelect extends JFrame {
 
 
 
+    // HELPER METHODS
+
+    private void viewSortedLoans(LoanImplement tempLoan) throws SQLException {
+        if (radioBtnIsActive.isSelected()) { // If active loans selected
+            if (!viewLoansDateField1.getText().isEmpty() && !viewLoansDateField2.getText().isEmpty()) {
+                viewLoansTable.setModel(tempLoan.getAllActiveLoansInDateRangeTableModel(
+                        viewLoansDateField1.getText(), viewLoansDateField2.getText()));
+            } else if (!viewLoansDateField1.getText().isEmpty()) {
+                viewLoansTable.setModel(tempLoan.getAllActiveLoansAfterDateTableModel(
+                        viewLoansDateField1.getText()));
+            } else if (!viewLoansDateField2.getText().isEmpty()) {
+                viewLoansTable.setModel(tempLoan.getAllActiveLoansBeforeDateTableModel(
+                        viewLoansDateField2.getText()));
+            } else {
+                viewLoansTable.setModel(tempLoan.getAllActiveLoansTableModel());
+            }
+        } else { // If all loans selected
+            if (!viewLoansDateField1.getText().isEmpty() && !viewLoansDateField2.getText().isEmpty()) {
+                viewLoansTable.setModel(tempLoan.getAllLoansInDateRangeTableModel(
+                        viewLoansDateField1.getText(), viewLoansDateField2.getText()));
+            } else if (!viewLoansDateField1.getText().isEmpty()) {
+                viewLoansTable.setModel(tempLoan.getAllLoansAfterDateTableModel(
+                        viewLoansDateField1.getText()));
+            } else if (!viewLoansDateField2.getText().isEmpty()) {
+                viewLoansTable.setModel(tempLoan.getAllLoansBeforeDateTableModel(
+                        viewLoansDateField2.getText()));
+            } else {
+                viewLoansTable.setModel(tempLoan.getAllLoansTableModel());
+            }
+        }
+    }
+
+    private void viewSortedPayments(PaymentImplement tempPayment) throws SQLException {
+        if (!viewPaymentsDateField1.getText().isEmpty()
+                && !viewPaymentsDateField2.getText().isEmpty()) {
+            viewPaymentsTable.setModel(tempPayment.getAllPaymentsInDateRangeTableModel(
+                    viewPaymentsDateField1.getText(), viewPaymentsDateField2.getText()));
+        } else if (!viewPaymentsDateField1.getText().isEmpty()) {
+            viewPaymentsTable.setModel(tempPayment.getAllPaymentsAfterDateTableModel(
+                    viewPaymentsDateField1.getText()));
+        } else if (!viewPaymentsDateField2.getText().isEmpty()) {
+            viewPaymentsTable.setModel(tempPayment.getAllPaymentsBeforeDateTableModel(
+                    viewPaymentsDateField2.getText()));
+        } else {
+            viewPaymentsTable.setModel(tempPayment.getAllPaymentsTableModel());
+        }
+    }
+
+
+
+
     // COMPONENT DECLARATION
 
     private JPanel portalSelectPanel;
@@ -200,28 +468,28 @@ public class PortalSelect extends JFrame {
     private JTabbedPane employeeTabbedPane;
     private JTabbedPane loanTabbedPane;
     private JTabbedPane paymentTabbedPane;
-    private JTable viewCustomersTable;
     private JButton btnViewCustomersSubmit;
     private JTextField viewCustomersTextField;
-    private JTable viewEmployeesTable;
-    private JTextField viewEmployeesTextField;
     private JTable viewLoansTable;
-    private JTextField viewLoansTextField1;
-    private JFormattedTextField viewLoansTextField2;
-    private JFormattedTextField viewLoansTextField3;
+    private JTextField viewLoansTextField;
     private JRadioButton radioBtnAccountInfo;
-    private JTable viewPaymentsTable;
-    private JTextField viewPaymentsTextField2;
-    private JTextField viewPaymentsTextField3;
-    private JFormattedTextField viewPaymentsTextField4;
-    private JFormattedTextField viewPaymentsTextField5;
     private JComboBox viewEmployeesComboBox;
     private JButton btnViewEmployeesSubmit;
     private JButton btnViewLoansSubmit;
-    private JRadioButton radioBtnIsActive;
     private JComboBox viewLoansComboBox;
+    private JFormattedTextField viewLoansDateField1;
+    private JFormattedTextField viewLoansDateField2;
+    private JRadioButton radioBtnIsActive;
+    private JTable viewCustomersTable;
+    private JTable viewEmployeesTable;
     private JButton btnViewPaymentsSubmit;
-    private JTextField viewPaymentsTextField1;
+    private JTextField viewEmployeesTextField;
+    private JComboBox viewCustomersComboBox;
+    private JTable viewPaymentsTable;
+    private JFormattedTextField viewPaymentsDateField1;
+    private JFormattedTextField viewPaymentsDateField2;
+    private JComboBox viewPaymentsComboBox;
+    private JTextField viewPaymentsTextField;
 
 }
 
