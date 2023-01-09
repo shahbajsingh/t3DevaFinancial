@@ -47,7 +47,7 @@ public class Login extends JFrame {
 
             try {
                 if (checkEmployeeExists(username)) {
-                    if (checkLogin(username, password)){
+                    if (checkPassword(username, password)){
                         PortalSelect portalSelect = new PortalSelect();
                         this.dispose();
                     } else {
@@ -95,7 +95,7 @@ public class Login extends JFrame {
         return employeeImplement.checkEmployeeExists(employee_id);
     }
 
-    private boolean checkLogin(int employee_id, String password) throws SQLException {
+    private boolean checkPassword(int employee_id, String password) throws SQLException {
         EmployeeImplement tempEmployee = new EmployeeImplement();
         return tempEmployee.checkEmployeePassword(employee_id, password);
     }
