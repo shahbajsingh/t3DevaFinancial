@@ -22,7 +22,7 @@ public class PaymentImplement implements PaymentDAO { // TO-DO: Add helper metho
     }
 
     @Override
-    public void addPayment(long card_no, float payment_value) throws SQLException {
+    public float addPayment(long card_no, float payment_value) throws SQLException { // returns payment value leftover
 
         LoanImplement tempLoan = new LoanImplement();
         CardImplement tempCard = new CardImplement();
@@ -103,6 +103,8 @@ public class PaymentImplement implements PaymentDAO { // TO-DO: Add helper metho
                 String.format("Payment of ₹%.2f made under card no. %d with ₹%.2f left over",
                         total_payment_value, card_no, leftover)
         );
+
+        return leftover;
 
     }
 

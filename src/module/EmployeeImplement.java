@@ -95,6 +95,24 @@ public class EmployeeImplement implements EmployeeDAO {
     }
 
     @Override
+    public boolean checkEmployeeExistsByAadhaar(long aadhaar) throws SQLException {
+
+        String sql = String.format(QUERY.checkEmployeeExistsByAadhaar, aadhaar);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+
+        boolean exists = rs.next();
+
+        c.closeConnection();
+
+        return exists;
+
+    }
+
+    @Override
     public boolean checkEmployeePassword(int employee_id, String password) throws SQLException {
 
         String sql = String.format(QUERY.checkEmployeePassword, employee_id, password);
@@ -527,6 +545,21 @@ public class EmployeeImplement implements EmployeeDAO {
     }
 
     @Override
+    public ResultSet getEmployeeInfoByAadhaar(long aadhaar) // For GUI use only
+            throws SQLException {                               // No CLI string access equivalent
+
+        String sql = String.format(QUERY.getEmployeeInfoByAadhaar, aadhaar);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+
+        return rs;
+
+    }
+
+    @Override
     public ResultSet getAllEmployeesInfo() throws SQLException {
 
         String sql = QUERY.getAllEmployeesInfo;
@@ -568,6 +601,23 @@ public class EmployeeImplement implements EmployeeDAO {
     public TableModel getEmployeeInfoByLastNameTableModel(String last_name) throws SQLException {
 
         String sql = String.format(QUERY.getEmployeeInfoByLastName, last_name);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        TableModel tm = DbUtils.resultSetToTableModel(rs);
+
+        c.closeConnection();
+
+        return tm;
+
+    }
+
+    @Override
+    public TableModel getEmployeeInfoByAadhaarTableModel(long aadhaar) throws SQLException {
+
+        String sql = String.format(QUERY.getEmployeeInfoByAadhaar, aadhaar);
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();

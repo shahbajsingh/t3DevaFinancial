@@ -57,7 +57,7 @@
         </constraints>
         <properties>
           <font name="Dialog" size="14"/>
-          <text value="Log In"/>
+          <text value="LOG IN"/>
         </properties>
       </component>
     </children>

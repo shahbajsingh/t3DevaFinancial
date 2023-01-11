@@ -97,6 +97,9 @@ public class QUERY {
     public static final String checkEmployeeExistsByLastName = "SELECT * FROM TDF2.EMPLOYEES " +
             "WHERE last_name = '%s'";
 
+    public static final String checkEmployeeExistsByAadhaar = "SELECT * FROM TDF2.EMPLOYEES " +
+            "WHERE aadhaar = %d";
+
     public static final String getEmployeeInfo = "SELECT * FROM TDF2.EMPLOYEES " +
             "WHERE employee_id = %d"; // explicitly defined duplicate query for clarity
 
@@ -104,6 +107,9 @@ public class QUERY {
 
     public static final String getEmployeeInfoByLastName = "SELECT * FROM TDF2.EMPLOYEES " +
             "WHERE last_name = '%s'";
+
+    public static final String getEmployeeInfoByAadhaar = "SELECT * FROM TDF2.EMPLOYEES " +
+            "WHERE aadhaar = %d";
 
     public static final String getEmployeeID = "SELECT employee_id FROM TDF2.EMPLOYEES " +
             "WHERE employee_id = %d";
@@ -302,7 +308,7 @@ public class QUERY {
             "WHERE card_no = %d AND loan_date BETWEEN '%s' AND '%s'";
 
     public static final String getLoansBeforeDateByCardNo = "SELECT * FROM TDF2.LOANS " +
-            "WHERE card_no = %d AND loan_date <= '%s'";
+            "WHERE card_no = %d AND CAST(loan_date as DATE) <= '%s'";
 
     public static final String getLoansAfterDateByCardNo = "SELECT * FROM TDF2.LOANS " +
             "WHERE card_no = %d AND loan_date >= '%s'";
@@ -314,7 +320,7 @@ public class QUERY {
             "WHERE card_no = %d AND loan_date BETWEEN '%s' AND '%s' AND is_active = TRUE";
 
     public static final String getActiveLoansBeforeDateByCardNo = "SELECT * FROM TDF2.LOANS " +
-            "WHERE card_no = %d AND loan_date <= '%s' AND is_active = TRUE";
+            "WHERE card_no = %d AND CAST(loan_date as DATE) <= '%s' AND is_active = TRUE";
 
     public static final String getActiveLoansAfterDateByCardNo = "SELECT * FROM TDF2.LOANS " +
             "WHERE card_no = %d AND loan_date >= '%s' AND is_active = TRUE";
@@ -326,7 +332,7 @@ public class QUERY {
             "WHERE loan_date BETWEEN '%s' AND '%s' AND is_active = TRUE";
 
     public static final String getAllActiveLoansBeforeDate = "SELECT * FROM TDF2.LOANS " +
-            "WHERE loan_date <= '%s' AND is_active = TRUE";
+            "WHERE CAST(loan_date as DATE) <= '%s' AND is_active = TRUE";
 
     public static final String getAllActiveLoansAfterDate = "SELECT * FROM TDF2.LOANS " +
             "WHERE loan_date >= '%s' AND is_active = TRUE";
@@ -337,7 +343,7 @@ public class QUERY {
             "WHERE loan_date BETWEEN '%s' AND '%s'";
 
     public static final String getAllLoansBeforeDate = "SELECT * FROM TDF2.LOANS " +
-            "WHERE loan_date <= '%s'";
+            "WHERE CAST(loan_date as DATE) <= '%s'";
 
     public static final String getAllLoansAfterDate = "SELECT * FROM TDF2.LOANS " +
             "WHERE loan_date >= '%s'";
@@ -399,7 +405,7 @@ public class QUERY {
             "WHERE card_no = %d AND payment_date BETWEEN '%s' AND '%s'";
 
     public static final String getPaymentsBeforeDateByCardNo = "SELECT * FROM TDF2.PAYMENTS " +
-            "WHERE card_no = %d AND payment_date <= '%s'";
+            "WHERE card_no = %d AND CAST(payment_date as DATE) <= '%s'";
 
     public static final String getPaymentsAfterDateByCardNo = "SELECT * FROM TDF2.PAYMENTS " +
             "WHERE card_no = %d AND payment_date >= '%s'";
@@ -411,7 +417,7 @@ public class QUERY {
             "WHERE loan_id = %d AND payment_date BETWEEN '%s' AND '%s'";
 
     public static final String getPaymentsBeforeDateByLoanID = "SELECT * FROM TDF2.PAYMENTS " +
-            "WHERE loan_id = %d AND payment_date <= '%s'";
+            "WHERE loan_id = %d AND CAST(payment_date as DATE) <= '%s'";
 
     public static final String getPaymentsAfterDateByLoanID = "SELECT * FROM TDF2.PAYMENTS " +
             "WHERE loan_id = %d AND payment_date >= '%s'";
@@ -422,7 +428,7 @@ public class QUERY {
             "WHERE payment_date BETWEEN '%s' AND '%s'";
 
     public static final String getAllPaymentsBeforeDate = "SELECT * FROM TDF2.PAYMENTS " +
-            "WHERE payment_date <= '%s'";
+            "WHERE CAST(payment_date as DATE) <= '%s'";
 
     public static final String getAllPaymentsAfterDate = "SELECT * FROM TDF2.PAYMENTS " +
             "WHERE payment_date >= '%s'";

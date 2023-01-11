@@ -21,9 +21,9 @@ public class CustomerImplement implements CustomerDAO {
     }
 
     @Override
-    public void addCustomer(String first_name, String middle_name, String last_name, long aadhaar,
-                            String house_no, String street_name, String city, String state, String country,
-                            String zip_code, String phone, String email) throws SQLException {
+    public long addCustomer(String first_name, String middle_name, String last_name, long aadhaar, String house_no,
+                             String street_name, String city, String state, String country, String zip_code,
+                             String phone, String email) throws SQLException { // returns generated card_no
 
         CardImplement tempCardImplement = new CardImplement(); // Create a new card for the customer
         long card_no = tempCardImplement.addCard(); // Get the new card number and add it to CARDS schema
@@ -37,11 +37,13 @@ public class CustomerImplement implements CustomerDAO {
         c.executeSQL(sql);
 
         System.out.println(
-                String.format("Customer '%s %s %s' added to the database with card number %d\n",
+                String.format("Customer '%s %s %s' added to database with card number %d\n",
                 first_name, middle_name, last_name, card_no)
         );
 
         c.closeConnection();
+
+        return card_no;
 
     }
 

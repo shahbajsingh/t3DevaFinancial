@@ -9,9 +9,9 @@ import java.util.Map;
 
 public interface CustomerDAO {
 
-    void addCustomer(String first_name, String middle_name, String last_name, long aadhaar,
+    long addCustomer(String first_name, String middle_name, String last_name, long aadhaar,
                      String house_no, String street_name, String city, String state, String country,
-                     String zip_code, String phone, String email) throws SQLException;
+                     String zip_code, String phone, String email) throws SQLException; // returns generated card_no
 
     void deleteCustomer(long card_no) throws SQLException;
 

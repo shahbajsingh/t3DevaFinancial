@@ -19,6 +19,8 @@ public interface EmployeeDAO {
 
     boolean checkEmployeeExistsByLastName(String last_name) throws SQLException;
 
+    boolean checkEmployeeExistsByAadhaar(long aadhaar) throws SQLException;
+
     boolean checkEmployeePassword(int employee_id, String password) throws SQLException;
 
     // GETTERS
@@ -70,6 +72,8 @@ public interface EmployeeDAO {
 
     ResultSet getEmployeeInfoByLastName(String last_name) throws SQLException; // access schema by last name
 
+    ResultSet getEmployeeInfoByAadhaar(long aadhaar) throws SQLException; // access schema by aadhaar
+
     ResultSet getAllEmployeesInfo() throws SQLException; // employee schema details for all customers
 
     // TABLE MODEL METHODS
@@ -77,6 +81,8 @@ public interface EmployeeDAO {
     TableModel getEmployeeInfoTableModel(int employee_id) throws SQLException;
 
     TableModel getEmployeeInfoByLastNameTableModel(String last_name) throws SQLException;
+
+    TableModel getEmployeeInfoByAadhaarTableModel(long aadhaar) throws SQLException;
 
     TableModel getAllEmployeesInfoTableModel() throws SQLException;
 

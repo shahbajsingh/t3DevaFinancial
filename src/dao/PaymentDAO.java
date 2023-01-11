@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 
 public interface PaymentDAO {
 
-    void addPayment(long card_no, float payment_value) throws SQLException;
+    float addPayment(long card_no, float payment_value) throws SQLException; // returns payment value leftover
 
     void deletePayment(long payment_id) throws SQLException;
 

@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="portalSelectPanel" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="27" width="669" height="393"/>
+      <xy x="20" y="27" width="1035" height="463"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -14,7 +14,7 @@
         </constraints>
         <properties>
           <font name="Dialog" size="14"/>
-          <text value="Log Out"/>
+          <text value="LOG OUT"/>
         </properties>
       </component>
       <hspacer id="7bd3a">
@@ -66,7 +66,9 @@
                     <constraints>
                       <tabbedpane title="VIEW"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <font name="Dialog" size="12"/>
+                    </properties>
                     <border type="none"/>
                     <children>
                       <scrollpane id="a86a3">
@@ -106,9 +108,11 @@
                         <constraints>
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
-                        <properties/>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                        </properties>
                       </component>
-                      <component id="8fbf4" class="javax.swing.JFormattedTextField" binding="viewLoansDateField1">
+                      <component id="8fbf4" class="javax.swing.JFormattedTextField" binding="viewLoansStartDateField">
                         <constraints>
                           <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>
@@ -116,7 +120,7 @@
                         </constraints>
                         <properties/>
                       </component>
-                      <component id="e677" class="javax.swing.JFormattedTextField" binding="viewLoansDateField2">
+                      <component id="e677" class="javax.swing.JFormattedTextField" binding="viewLoansEndDateField">
                         <constraints>
                           <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>
@@ -152,21 +156,103 @@
                       </component>
                     </children>
                   </grid>
-                  <grid id="db45" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                  <grid id="db45" layout-manager="GridLayoutManager" row-count="2" column-count="8" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <tabbedpane title="ADD"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <font name="Dialog" size="12"/>
+                    </properties>
                     <border type="none"/>
-                    <children/>
+                    <children>
+                      <component id="dfb89" class="javax.swing.JTextField" binding="addLoanCardNoTextField">
+                        <constraints>
+                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="6049f" class="javax.swing.JTextField" binding="addLoanPrincipleTextField">
+                        <constraints>
+                          <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="458ac" class="javax.swing.JTextField" binding="addLoanInterestRateTextField">
+                        <constraints>
+                          <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="1fea8" class="javax.swing.JButton" binding="btnAddLoanSubmit">
+                        <constraints>
+                          <grid row="1" column="6" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="SUBMIT"/>
+                        </properties>
+                      </component>
+                      <component id="3a847" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="CARD NUMBER:"/>
+                        </properties>
+                      </component>
+                      <component id="c0b45" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="LOAN PRINCIPLE:"/>
+                        </properties>
+                      </component>
+                      <component id="b2a1b" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="INTEREST RATE:"/>
+                        </properties>
+                      </component>
+                      <component id="1bcc6" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="₹"/>
+                        </properties>
+                      </component>
+                      <component id="f9582" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="0" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="%"/>
+                        </properties>
+                      </component>
+                    </children>
                   </grid>
                   <grid id="60470" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <tabbedpane title="MODIFY"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <font name="Dialog" size="12"/>
+                    </properties>
                     <border type="none"/>
                     <children/>
                   </grid>
@@ -175,7 +261,9 @@
                     <constraints>
                       <tabbedpane title="DELETE"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <font name="Dialog" size="12"/>
+                    </properties>
                     <border type="none"/>
                     <children/>
                   </grid>
@@ -245,7 +333,7 @@
                           <text value="END DATE:"/>
                         </properties>
                       </component>
-                      <component id="381ba" class="javax.swing.JFormattedTextField" binding="viewPaymentsDateField1">
+                      <component id="381ba" class="javax.swing.JFormattedTextField" binding="viewPaymentsStartDateField">
                         <constraints>
                           <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>
@@ -253,7 +341,7 @@
                         </constraints>
                         <properties/>
                       </component>
-                      <component id="e3b3e" class="javax.swing.JFormattedTextField" binding="viewPaymentsDateField2">
+                      <component id="e3b3e" class="javax.swing.JFormattedTextField" binding="viewPaymentsEndDateField">
                         <constraints>
                           <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>
@@ -274,7 +362,9 @@
                         <constraints>
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
-                        <properties/>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                        </properties>
                       </component>
                       <component id="ccc0b" class="javax.swing.JTextField" binding="viewPaymentsTextField">
                         <constraints>
@@ -286,21 +376,77 @@
                       </component>
                     </children>
                   </grid>
-                  <grid id="a3433" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                  <grid id="a3433" layout-manager="GridLayoutManager" row-count="1" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <tabbedpane title="ADD"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <font name="Dialog" size="12"/>
+                    </properties>
                     <border type="none"/>
-                    <children/>
+                    <children>
+                      <component id="d0cbc" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="CARD NUMBER:"/>
+                        </properties>
+                      </component>
+                      <component id="a8133" class="javax.swing.JTextField" binding="addPaymentCardNoTextField">
+                        <constraints>
+                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="7d7f9" class="javax.swing.JTextField" binding="addPaymentAmountTextField">
+                        <constraints>
+                          <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="5ee7d" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="AMOUNT:"/>
+                        </properties>
+                      </component>
+                      <component id="45b84" class="javax.swing.JButton" binding="btnAddPaymentSubmit">
+                        <constraints>
+                          <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="SUBMIT"/>
+                        </properties>
+                      </component>
+                      <component id="26362" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="₹"/>
+                        </properties>
+                      </component>
+                    </children>
                   </grid>
                   <grid id="9e1d0" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <tabbedpane title="MODIFY"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <font name="Dialog" size="12"/>
+                    </properties>
                     <border type="none"/>
                     <children/>
                   </grid>
@@ -309,7 +455,9 @@
                     <constraints>
                       <tabbedpane title="DELETE"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <font name="Dialog" size="12"/>
+                    </properties>
                     <border type="none"/>
                     <children/>
                   </grid>
@@ -341,7 +489,9 @@
                     <constraints>
                       <tabbedpane title="VIEW"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <font name="Dialog" size="12"/>
+                    </properties>
                     <border type="none"/>
                     <children>
                       <scrollpane id="e7b1b">
@@ -389,25 +539,272 @@
                         <constraints>
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
-                        <properties/>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                        </properties>
                       </component>
                     </children>
                   </grid>
-                  <grid id="d8a44" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                  <grid id="b58e2" layout-manager="GridLayoutManager" row-count="9" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <tabbedpane title="ADD"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <font name="Dialog" size="12"/>
+                    </properties>
                     <border type="none"/>
-                    <children/>
+                    <children>
+                      <component id="75910" class="javax.swing.JButton" binding="btnAddCustomerSubmit">
+                        <constraints>
+                          <grid row="8" column="0" row-span="1" col-span="6" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="SUBMIT"/>
+                        </properties>
+                      </component>
+                      <component id="5a884" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="FIRST NAME:"/>
+                        </properties>
+                      </component>
+                      <component id="c60cc" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="MIDDLE NAME:"/>
+                        </properties>
+                      </component>
+                      <component id="cf9c8" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="6" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="14" style="3"/>
+                          <text value="CUSTOMER DETAILS"/>
+                        </properties>
+                      </component>
+                      <component id="262e6" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="3" column="0" row-span="1" col-span="6" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="14" style="3"/>
+                          <text value="ADDRESS DETAILS"/>
+                        </properties>
+                      </component>
+                      <component id="97e9d" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="6" column="0" row-span="1" col-span="6" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="14" style="3"/>
+                          <text value="CONTACT DETAILS"/>
+                        </properties>
+                      </component>
+                      <component id="2a6cf" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="HOUSE NO:"/>
+                        </properties>
+                      </component>
+                      <component id="2720a" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="STREET NAME:"/>
+                        </properties>
+                      </component>
+                      <component id="48dd6" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="STATE:"/>
+                        </properties>
+                      </component>
+                      <component id="cce3" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="COUNTRY:"/>
+                        </properties>
+                      </component>
+                      <component id="b7cb" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="PHONE NUMBER:"/>
+                        </properties>
+                      </component>
+                      <component id="c762f" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="EMAIL:"/>
+                        </properties>
+                      </component>
+                      <component id="aa905" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="AADHAAR:"/>
+                        </properties>
+                      </component>
+                      <component id="e78d6" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="LAST NAME:"/>
+                        </properties>
+                      </component>
+                      <component id="24e54" class="javax.swing.JTextField" binding="addCustomerLastNameTextField">
+                        <constraints>
+                          <grid row="1" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="d0582" class="javax.swing.JTextField" binding="addCustomerMiddleNameTextField">
+                        <constraints>
+                          <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="e36a0" class="javax.swing.JTextField" binding="addCustomerFirstNameTextField">
+                        <constraints>
+                          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="f7ca8" class="javax.swing.JTextField" binding="addCustomerAadhaarTextField">
+                        <constraints>
+                          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="4ffe7" class="javax.swing.JTextField" binding="addCustomerHouseNoTextField">
+                        <constraints>
+                          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="cd58d" class="javax.swing.JTextField" binding="addCustomerStateTextField">
+                        <constraints>
+                          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="cbcdf" class="javax.swing.JTextField" binding="addCustomerStreetNameTextField">
+                        <constraints>
+                          <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="963d1" class="javax.swing.JTextField" binding="addCustomerCountryTextField">
+                        <constraints>
+                          <grid row="5" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="75fc6" class="javax.swing.JTextField" binding="addCustomerPhoneTextField">
+                        <constraints>
+                          <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="9bd83" class="javax.swing.JTextField" binding="addCustomerEmailTextField">
+                        <constraints>
+                          <grid row="7" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="50c1" class="javax.swing.JTextField" binding="addCustomerCityTextField">
+                        <constraints>
+                          <grid row="4" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="2bd3c" class="javax.swing.JTextField" binding="addCustomerZipCodeTextField">
+                        <constraints>
+                          <grid row="5" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="ae733" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="CITY:"/>
+                        </properties>
+                      </component>
+                      <component id="e14db" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="5" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="ZIP CODE:"/>
+                        </properties>
+                      </component>
+                    </children>
                   </grid>
                   <grid id="7f870" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <tabbedpane title="MODIFY"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <font name="Dialog" size="12"/>
+                    </properties>
                     <border type="none"/>
                     <children/>
                   </grid>
@@ -416,7 +813,9 @@
                     <constraints>
                       <tabbedpane title="DELETE"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <font name="Dialog" size="12"/>
+                    </properties>
                     <border type="none"/>
                     <children/>
                   </grid>
@@ -448,7 +847,9 @@
                     <constraints>
                       <tabbedpane title="VIEW"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <font name="Dialog" size="12"/>
+                    </properties>
                     <border type="none"/>
                     <children>
                       <scrollpane id="37a23">
@@ -487,25 +888,289 @@
                         <constraints>
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
-                        <properties/>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                        </properties>
                       </component>
                     </children>
                   </grid>
-                  <grid id="eb923" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                  <grid id="f413a" layout-manager="GridLayoutManager" row-count="9" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <tabbedpane title="ADD"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <font name="Dialog" size="12"/>
+                    </properties>
                     <border type="none"/>
-                    <children/>
+                    <children>
+                      <component id="22ea6" class="javax.swing.JButton" binding="btnAddEmployeeSubmit">
+                        <constraints>
+                          <grid row="8" column="0" row-span="1" col-span="6" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="SUBMIT"/>
+                        </properties>
+                      </component>
+                      <component id="4a1ea" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="FIRST NAME:"/>
+                        </properties>
+                      </component>
+                      <component id="9fb0e" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="AADHAAR:"/>
+                        </properties>
+                      </component>
+                      <component id="af8a1" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="HOUSE NO:"/>
+                        </properties>
+                      </component>
+                      <component id="f385f" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="STATE:"/>
+                        </properties>
+                      </component>
+                      <component id="29cfe" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="MIDDLE NAME:"/>
+                        </properties>
+                      </component>
+                      <component id="1c87c" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="LAST NAME:"/>
+                        </properties>
+                      </component>
+                      <component id="2d3f0" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="6" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="14" style="3"/>
+                          <text value="EMPLOYEE DETAILS"/>
+                        </properties>
+                      </component>
+                      <component id="93d93" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="PHONE NUMBER:"/>
+                        </properties>
+                      </component>
+                      <component id="2af90" class="javax.swing.JTextField" binding="addEmployeeFirstNameTextField">
+                        <constraints>
+                          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="2e98a" class="javax.swing.JTextField" binding="addEmployeeLastNameTextField">
+                        <constraints>
+                          <grid row="1" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="f0f7e" class="javax.swing.JTextField" binding="addEmployeeMiddleNameTextField">
+                        <constraints>
+                          <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="c5c45" class="javax.swing.JTextField" binding="addEmployeeAadhaarTextField">
+                        <constraints>
+                          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="f4655" class="javax.swing.JPasswordField" binding="addEmployeePasswordTextField">
+                        <constraints>
+                          <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="16149" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="PASSWORD:"/>
+                        </properties>
+                      </component>
+                      <component id="d3037" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="3" column="0" row-span="1" col-span="6" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="14" style="3"/>
+                          <text value="ADDRESS DETAILS"/>
+                        </properties>
+                      </component>
+                      <component id="6e947" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="STREET NAME:"/>
+                        </properties>
+                      </component>
+                      <component id="6d831" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="CITY:"/>
+                        </properties>
+                      </component>
+                      <component id="aed3e" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="COUNTRY:"/>
+                        </properties>
+                      </component>
+                      <component id="50463" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="5" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="ZIP CODE:"/>
+                        </properties>
+                      </component>
+                      <component id="11f0b" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="12"/>
+                          <text value="EMAIL:"/>
+                        </properties>
+                      </component>
+                      <component id="2f10c" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="6" column="0" row-span="1" col-span="6" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Dialog" size="14" style="3"/>
+                          <text value="CONTACT DETAILS"/>
+                        </properties>
+                      </component>
+                      <component id="f37fc" class="javax.swing.JTextField" binding="addEmployeeHouseNoTextField">
+                        <constraints>
+                          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="40dc1" class="javax.swing.JTextField" binding="addEmployeeStreetNameTextField">
+                        <constraints>
+                          <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="16ba3" class="javax.swing.JTextField" binding="addEmployeeCityTextField">
+                        <constraints>
+                          <grid row="4" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="e662e" class="javax.swing.JTextField" binding="addEmployeeStateTextField">
+                        <constraints>
+                          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="48eec" class="javax.swing.JTextField" binding="addEmployeeCountryTextField">
+                        <constraints>
+                          <grid row="5" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="81d84" class="javax.swing.JTextField" binding="addEmployeeZipCodeTextField">
+                        <constraints>
+                          <grid row="5" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="90fa8" class="javax.swing.JTextField" binding="addEmployeePhoneTextField">
+                        <constraints>
+                          <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="fd4cd" class="javax.swing.JTextField" binding="addEmployeeEmailTextField">
+                        <constraints>
+                          <grid row="7" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                    </children>
                   </grid>
                   <grid id="345dc" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <tabbedpane title="MODIFY"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <font name="Dialog" size="12"/>
+                    </properties>
                     <border type="none"/>
                     <children/>
                   </grid>
@@ -514,7 +1179,9 @@
                     <constraints>
                       <tabbedpane title="DELETE"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <font name="Dialog" size="12"/>
+                    </properties>
                     <border type="none"/>
                     <children/>
                   </grid>
