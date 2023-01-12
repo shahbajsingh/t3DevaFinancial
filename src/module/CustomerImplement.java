@@ -68,6 +68,27 @@ public class CustomerImplement implements CustomerDAO {
     }
 
     @Override
+    public long getCustomerCardNoByAadhaar(long aadhaar) throws SQLException {
+
+        String sql = String.format(QUERY.getCustomerCardNoByAadhaar, aadhaar);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        long card_no = 0L;
+
+        if (rs.next()) {
+            card_no = rs.getLong("card_no");
+        }
+
+        c.closeConnection();
+
+        return card_no;
+
+    }
+
+    @Override
     public boolean checkCustomerExists(long card_no) throws SQLException { // Check if a customer-card pair exists
 
         String sql = String.format(QUERY.checkCustomerCardPaired, card_no);

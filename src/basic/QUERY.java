@@ -12,6 +12,10 @@ public class QUERY {
     public static final String deleteCustomer = "DELETE FROM TDF2.CUSTOMERS " +
             "WHERE card_no = %d";
 
+    public static final String getCustomerCardNoByAadhaar = "SELECT card_no " +
+            "FROM TDF2.CUSTOMERS " +
+            "WHERE aadhaar = %d";
+
     public static final String checkCustomerCardPaired = "SELECT * FROM TDF2.CUSTOMERS " +
             "INNER JOIN TDF2.CARDS ON TDF2.CUSTOMERS.card_no = TDF2.CARDS.card_no " +
             "WHERE TDF2.CUSTOMERS.card_no = %d";
@@ -235,14 +239,14 @@ public class QUERY {
     public static final String deleteLoan = "DELETE FROM TDF2.LOANS " +
             "WHERE loan_id = %d";
 
-    public static final String checkLoanExists = "SELECT * FROM TDF2.LOANS " +
-            "WHERE loan_id = %d";
-
-    public static final String getAllLoanIDs = "SELECT loan_id FROM TDF2.LOANS";
-
     public static final String getOldestActiveLoanIDByCardNo = "SELECT * FROM TDF2.LOANS " +
             "WHERE card_no = %d AND is_active = TRUE " +
             "ORDER BY loan_date ASC LIMIT 1";
+
+    public static final String getAllLoanIDs = "SELECT loan_id FROM TDF2.LOANS";
+
+    public static final String checkLoanExists = "SELECT * FROM TDF2.LOANS " +
+            "WHERE loan_id = %d";
 
     public static final String getLoanInfo = "SELECT * FROM TDF2.LOANS " +
             "WHERE loan_id = %d";

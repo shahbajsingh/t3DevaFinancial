@@ -363,7 +363,7 @@ public class LoanImplement implements LoanDAO { // TO-DO: optimize / determine b
     @Override
     public void setLoanInterestRate(float interest_rate, long loan_id) throws SQLException {
 
-        String sql = String.format(QUERY.setLoanInterestRate, interest_rate, loan_id);
+        String sql = String.format(QUERY.setLoanInterestRate, interest_rate / 100, loan_id);
 
         DatabaseConnection c = new DatabaseConnection();
         Connection newConnection = c.getConnection();

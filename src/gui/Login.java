@@ -9,7 +9,7 @@ public class Login extends JFrame {
 
     public Login() {
 
-        super("Login");
+        super("DFS LOGIN");
 
         try {
             UIManager.setLookAndFeel(
@@ -27,6 +27,7 @@ public class Login extends JFrame {
 
         handleLogin();
 
+        this.getRootPane().setDefaultButton(btnLogIn);
         this.setContentPane(loginPanel);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.pack();
@@ -51,10 +52,12 @@ public class Login extends JFrame {
                         PortalSelect portalSelect = new PortalSelect();
                         this.dispose();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Login Failed");
+                        JOptionPane.showMessageDialog(null, "LOGIN FAILED");
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Employee does not exist");
+                    JOptionPane.showMessageDialog(null,
+                            String.format("EMPLOYEE WITH ID %D DOES NOT EXIST", username)
+                            );
                 }
 
             } catch (SQLException ex) {
@@ -76,7 +79,7 @@ public class Login extends JFrame {
         try { // try to parse the username to an int
             username = Integer.parseInt(usernameTextField.getText());
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Please enter a valid username");
+            JOptionPane.showMessageDialog(null, "PLEASE ENTER A VALID USERNAME");
         }
         return username;
     }

@@ -15,6 +15,8 @@ public interface CustomerDAO {
 
     void deleteCustomer(long card_no) throws SQLException;
 
+    long getCustomerCardNoByAadhaar(long aadhaar) throws SQLException;
+
     boolean checkCustomerExists(long card_no) throws SQLException;
 
     boolean checkCustomerExistsByAadhaar(long aadhaar) throws SQLException;

@@ -5,13 +5,14 @@ import module.*;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 
 public class PortalSelect extends JFrame {
 
     public PortalSelect() {
 
-        super("Portal Select");
+        super("DFS PORTALS");
 
         try {
             UIManager.setLookAndFeel(
@@ -26,6 +27,8 @@ public class PortalSelect extends JFrame {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+
+        initializeComponents();
 
         handleLoanPortal();
         handlePaymentPortal();
@@ -256,8 +259,7 @@ public class PortalSelect extends JFrame {
 
         try {
 
-            if (!addLoanCardNoTextField.getText().isEmpty() && !addLoanPrincipleTextField.getText().isEmpty()
-                    && !addLoanInterestRateTextField.getText().isEmpty()) {
+            if (textFieldsFilled(addLoanTextFields)) {
 
                 long card_no = Long.parseLong(addLoanCardNoTextField.getText());
                 float loan_value = Float.parseFloat(addLoanPrincipleTextField.getText());
@@ -269,6 +271,7 @@ public class PortalSelect extends JFrame {
                             String.format("LOAN OF ₹%.2f ADDED TO CARD NO. %d AT %.2f%% INTEREST RATE",
                                     loan_value, card_no, interest_rate)
                             );
+                    clearTextFields(addLoanTextFields);
                 } else {
                     JOptionPane.showMessageDialog(null, "INVALID CARD NUMBER");
                 }
@@ -383,8 +386,7 @@ public class PortalSelect extends JFrame {
 
         try {
 
-            if (!addPaymentCardNoTextField.getText().isEmpty()
-                    && !addPaymentAmountTextField.getText().isEmpty()) {
+            if (textFieldsFilled(addPaymentTextFields)) {
 
                 long card_no = Long.parseLong(addPaymentCardNoTextField.getText());
                 float payment_value = Float.parseFloat(addPaymentAmountTextField.getText());
@@ -396,6 +398,7 @@ public class PortalSelect extends JFrame {
                             String.format("PAYMENT OF ₹%.2f ADDED TO CARD NO. %d WITH ₹%.2f LEFT OVER",
                                     payment_used, card_no, leftover)
                             );
+                    clearTextFields(addPaymentTextFields);
                 } else {
                     JOptionPane.showMessageDialog(null, "INVALID CARD NO");
                 }
@@ -431,7 +434,7 @@ public class PortalSelect extends JFrame {
 
                     if (tempCard.checkCardExists(card_no)) { // If card exists
                         if (radioBtnAccountInfo.isSelected()) {
-                            viewCustomersTable.setModel(tempCustomer.getCustomerAccountInfoTableModel(card_no));
+                            viewCustomersTable.setModel(tempCard.getCardInfoTableModel(card_no));
                         } else {
                             viewCustomersTable.setModel(tempCustomer.getCustomerInfoTableModel(card_no));
                         }
@@ -440,7 +443,7 @@ public class PortalSelect extends JFrame {
                     }
                 } else { // If card number not entered
                     if (radioBtnAccountInfo.isSelected()) {
-                        viewCustomersTable.setModel(tempCustomer.getAllCustomersAccountInfoTableModel());
+                        viewCustomersTable.setModel(tempCard.getAllCardsInfoTableModel());
                     } else {
                         viewCustomersTable.setModel(tempCustomer.getAllCustomersInfoTableModel());
                     }
@@ -453,8 +456,8 @@ public class PortalSelect extends JFrame {
 
                     if (tempCustomer.checkCustomerExistsByAadhaar(aadhaar)) { // If aadhaar number exists
                         if (radioBtnAccountInfo.isSelected()) {
-                            viewCustomersTable.setModel(
-                                    tempCustomer.getCustomerAccountInfoByAadhaarTableModel(aadhaar));
+                            long card_no = tempCustomer.getCustomerCardNoByAadhaar(aadhaar);
+                            viewCustomersTable.setModel(tempCard.getCardInfoTableModel(card_no));
                         } else {
                             viewCustomersTable.setModel(tempCustomer.getCustomerInfoByAadhaarTableModel(aadhaar));
                         }
@@ -463,7 +466,7 @@ public class PortalSelect extends JFrame {
                     }
                 } else { // If aadhaar number not entered
                     if (radioBtnAccountInfo.isSelected()) {
-                        viewCustomersTable.setModel(tempCustomer.getAllCustomersAccountInfoTableModel());
+                        viewCustomersTable.setModel(tempCard.getAllCardsInfoTableModel());
                     } else {
                         viewCustomersTable.setModel(tempCustomer.getAllCustomersInfoTableModel());
                     }
@@ -488,18 +491,7 @@ public class PortalSelect extends JFrame {
 
         try {
 
-            if (!addCustomerFirstNameTextField.getText().isEmpty()
-                    && !addCustomerMiddleNameTextField.getText().isEmpty()
-                    && !addCustomerLastNameTextField.getText().isEmpty()
-                    && !addCustomerAadhaarTextField.getText().isEmpty()
-                    && !addCustomerHouseNoTextField.getText().isEmpty()
-                    && !addCustomerStreetNameTextField.getText().isEmpty()
-                    && !addCustomerCityTextField.getText().isEmpty()
-                    && !addCustomerStateTextField.getText().isEmpty()
-                    && !addCustomerCountryTextField.getText().isEmpty()
-                    && !addCustomerZipCodeTextField.getText().isEmpty()
-                    && !addCustomerPhoneTextField.getText().isEmpty()
-                    && !addCustomerEmailTextField.getText().isEmpty()) {
+            if (textFieldsFilled(addCustomerTextFields)) {
 
                 String first_name = addCustomerFirstNameTextField.getText();
                 String middle_name = addCustomerMiddleNameTextField.getText();
@@ -525,6 +517,7 @@ public class PortalSelect extends JFrame {
                             String.format("CUSTOMER '%s %s %s' ADDED TO DATABASE WITH CARD NO. %d",
                                     first_name, middle_name, last_name, card_no)
                             );
+                    clearTextFields(addCustomerTextFields);
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "ENTER ALL FIELDS");
@@ -556,10 +549,10 @@ public class PortalSelect extends JFrame {
 
             if (boxSelected.equals("EMPLOYEE ID")) {
 
-                if (!viewEmployeesTextField.getText().isEmpty()) {
+                if (!viewEmployeesTextField.getText().isEmpty()) { // If employee ID entered
                     int employee_id = Integer.parseInt(viewEmployeesTextField.getText());
 
-                    if (tempEmployee.checkEmployeeExists(employee_id)) {
+                    if (tempEmployee.checkEmployeeExists(employee_id)) { // If employee with ID exists
                         viewEmployeesTable.setModel(tempEmployee.getEmployeeInfoTableModel(employee_id));
                     } else {
                         JOptionPane.showMessageDialog(null, "INVALID EMPLOYEE ID");
@@ -570,10 +563,10 @@ public class PortalSelect extends JFrame {
 
             } else if (boxSelected.equals("LAST NAME")) {
 
-                if (!viewEmployeesTextField.getText().isEmpty()) {
+                if (!viewEmployeesTextField.getText().isEmpty()) { // If last name entered
                     String last_name = viewEmployeesTextField.getText();
 
-                    if (tempEmployee.checkEmployeeExistsByLastName(last_name)) {
+                    if (tempEmployee.checkEmployeeExistsByLastName(last_name)) { // If employee with last name exists
                         viewEmployeesTable.setModel(tempEmployee.getEmployeeInfoByLastNameTableModel(last_name));
                     } else {
                         JOptionPane.showMessageDialog(null, "INVALID LAST NAME");
@@ -584,10 +577,10 @@ public class PortalSelect extends JFrame {
 
             } else if (boxSelected.equals("AADHAAR NUMBER")) {
 
-                if (!viewEmployeesTextField.getText().isEmpty()) {
+                if (!viewEmployeesTextField.getText().isEmpty()) { // If aadhaar number entered
                     long aadhaar = Long.parseLong(viewEmployeesTextField.getText());
 
-                    if (tempEmployee.checkEmployeeExistsByAadhaar(aadhaar)) {
+                    if (tempEmployee.checkEmployeeExistsByAadhaar(aadhaar)) { // If employee with aadhaar number exists
                         viewEmployeesTable.setModel(tempEmployee.getEmployeeInfoByAadhaarTableModel(aadhaar));
                     } else {
                         JOptionPane.showMessageDialog(null, "INVALID AADHAAR NUMBER");
@@ -615,19 +608,7 @@ public class PortalSelect extends JFrame {
 
         try {
 
-            if (!addEmployeeFirstNameTextField.getText().isEmpty()
-                    && !addEmployeeMiddleNameTextField.getText().isEmpty()
-                    && !addEmployeeLastNameTextField.getText().isEmpty()
-                    && !addEmployeeAadhaarTextField.getText().isEmpty()
-                    && !addEmployeeHouseNoTextField.getText().isEmpty()
-                    && !addEmployeeStreetNameTextField.getText().isEmpty()
-                    && !addEmployeeCityTextField.getText().isEmpty()
-                    && !addEmployeeStateTextField.getText().isEmpty()
-                    && !addEmployeeCountryTextField.getText().isEmpty()
-                    && !addEmployeeZipCodeTextField.getText().isEmpty()
-                    && !addEmployeePhoneTextField.getText().isEmpty()
-                    && !addEmployeeEmailTextField.getText().isEmpty()
-                    && !String.valueOf(addEmployeePasswordTextField.getPassword()).isEmpty()) {
+            if (textFieldsFilled(addEmployeeTextFields)) {
 
                 String first_name = addEmployeeFirstNameTextField.getText();
                 String middle_name = addEmployeeMiddleNameTextField.getText();
@@ -654,6 +635,7 @@ public class PortalSelect extends JFrame {
                             String.format("EMPLOYEE '%s %s %s' ADDED TO DATABASE",
                                     first_name, middle_name, last_name)
                     );
+                    clearTextFields(addEmployeeTextFields);
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "ENTER ALL FIELDS");
@@ -676,6 +658,92 @@ public class PortalSelect extends JFrame {
 
 
     // HELPER METHODS
+
+    private void initializeComponents(){
+        initializeTextFields();
+    }
+
+    private void initializeTextFields() {
+
+        // ADD PANELS
+
+        for (Component c : addLoanPanel.getComponents()) {
+            if (c instanceof JTextField) {
+                addLoanTextFields.add((JTextField) c);
+            }
+        }
+
+        for (Component c : addPaymentPanel.getComponents()) {
+            if (c instanceof JTextField) {
+                addPaymentTextFields.add((JTextField) c);
+            }
+        }
+
+        for (Component c : addCustomerPanel.getComponents()) {
+            if (c instanceof JTextField) {
+                addCustomerTextFields.add((JTextField) c);
+            }
+        }
+
+        for (Component c : addEmployeePanel.getComponents()) {
+            if (c instanceof JTextField || c instanceof JPasswordField) {
+                addEmployeeTextFields.add((JTextField) c);
+            }
+        }
+
+        // MODIFY PANELS
+
+        for (Component c : modifyLoanPanel.getComponents()) {
+            if (c instanceof JTextField) {
+                modifyLoanTextFields.add((JTextField) c);
+            }
+        }
+
+        for (Component c : modifyPaymentPanel.getComponents()) {
+            if (c instanceof JTextField) {
+                modifyPaymentTextFields.add((JTextField) c);
+            }
+        }
+
+        for (Component c : modifyCustomerPanel.getComponents()) {
+            if (c instanceof JTextField) {
+                modifyCustomerTextFields.add((JTextField) c);
+            }
+        }
+
+        for (Component c : modifyEmployeePanel.getComponents()) {
+            if (c instanceof JTextField || c instanceof JPasswordField) {
+                modifyEmployeeTextFields.add((JTextField) c);
+            }
+        }
+
+    }
+
+    private void clearTextField(JTextField textField) {
+
+        textField.setText("");
+
+    }
+
+    private void clearTextFields(ArrayList<JTextField> textFields) {
+
+        for (JTextField textField : textFields) {
+            textField.setText("");
+        }
+
+    }
+
+    private boolean textFieldsFilled(ArrayList<JTextField> textFields) {
+
+        for (JTextField textField : textFields) {
+            if (textField.getText().isEmpty()) {
+                return false;
+            }
+        }
+
+        return true;
+
+    }
 
     private void viewSortedLoans(LoanImplement tempLoan) throws SQLException {
 
@@ -731,6 +799,16 @@ public class PortalSelect extends JFrame {
 
 
     // COMPONENT DECLARATION
+
+    private final ArrayList<JTextField> addLoanTextFields = new ArrayList<>();
+    private final ArrayList<JTextField> addPaymentTextFields = new ArrayList<>();
+    private final ArrayList<JTextField> addCustomerTextFields = new ArrayList<>();
+    private final ArrayList<JTextField> addEmployeeTextFields = new ArrayList<>();
+
+    private final ArrayList<JTextField> modifyLoanTextFields = new ArrayList<>();
+    private final ArrayList<JTextField> modifyPaymentTextFields = new ArrayList<>();
+    private final ArrayList<JTextField> modifyCustomerTextFields = new ArrayList<>();
+    private final ArrayList<JTextField> modifyEmployeeTextFields = new ArrayList<>();
 
     private JPanel portalSelectPanel;
     private JButton btnLogOut;
@@ -799,6 +877,81 @@ public class PortalSelect extends JFrame {
     private JTextField addEmployeePhoneTextField;
     private JTextField addEmployeeEmailTextField;
     private JButton btnAddEmployeeSubmit;
+    private JPanel addLoanPanel;
+    private JPanel viewLoansPanel;
+    private JPanel modifyLoanPanel;
+    private JPanel deleteLoanPanel;
+    private JPanel viewPaymentsPanel;
+    private JPanel addPaymentPanel;
+    private JPanel modifyPaymentPanel;
+    private JPanel deletePaymentPanel;
+    private JPanel viewCustomersPanel;
+    private JPanel addCustomerPanel;
+    private JPanel deleteCustomerPanel;
+    private JPanel viewEmployeesPanel;
+    private JPanel addEmployeePanel;
+    private JPanel deleteEmployeePanel;
+    private JTextField modifyLoanIDTextField;
+    private JTextField modifyLoanDateTextField;
+    private JTextField modifyLoanCardNoTextField;
+    private JTextField modifyLoanPrincipleTextField;
+    private JTextField modifyLoanInterestRateTextField;
+    private JTextField modifyLoanIsActiveTextField;
+    private JTextField modifyLoanAmtRemainingTextField;
+    private JTextField modifyLoanInterestAccruedTextField;
+    private JButton btnModifyLoanSubmit;
+    private JButton btnModifyLoanDate;
+    private JButton btnModifyLoanCardNo;
+    private JButton btnModifyLoanPrinciple;
+    private JButton btnModifyLoanInterestRate;
+    private JButton btnModifyLoanIsActive;
+    private JTextField modifyPaymentIDTextField;
+    private JButton btnModifyPaymentSubmit;
+    private JTextField modifyPaymentDateTextField;
+    private JTextField modifyPaymentCardNoTextField;
+    private JTextField modifyPaymentValueTextField;
+    private JTextField modifyPaymentLoanIDTextField;
+    private JButton btnModifyPaymentDate;
+    private JButton btnModifyPaymentCardNo;
+    private JButton btnModifyPaymentValue;
+    private JButton btnModifyPaymentLoanID;
+    private JPanel modifyCustomerPanel;
+    private JTextField modifyCustomerCardNoTextField;
+    private JButton btnModifyCustomerSubmit;
+    private JButton btnModifyCustomerDetails;
+    private JButton btnModifyCustomerAddressDetails;
+    private JButton btnModifyCustomerContactDetails;
+    private JTextField modifyCustomerFirstNameTextField;
+    private JTextField modifyCustomerMiddleNameTextField;
+    private JTextField modifyCustomerLastNameTextField;
+    private JTextField modifyCustomerAadhaarTextField;
+    private JTextField modifyCustomerHouseNoTextField;
+    private JTextField modifyCustomerStreetNameTextField;
+    private JTextField modifyCustomerCityTextField;
+    private JTextField modifyCustomerStateTextField;
+    private JTextField modifyCustomerCountryTextField;
+    private JTextField modifyCustomerZipCodeTextField;
+    private JTextField modifyCustomerPhoneTextField;
+    private JTextField modifyCustomerEmailTextField;
+    private JTextField modifyEmployeeIDTextField;
+    private JButton btnModifyEmployeeSubmit;
+    private JButton btnModifyEmployeeDetails;
+    private JButton btnModifyEmployeeAddressDetails;
+    private JButton btnModifyEmployeeContactDetails;
+    private JTextField modifyEmployeeFirstNameTextField;
+    private JTextField modifyEmployeeMiddleNameTextField;
+    private JTextField modifyEmployeeLastNameTextField;
+    private JTextField modifyEmployeeAadhaarTextField;
+    private JPasswordField modifyEmployeePasswordTextField;
+    private JTextField modifyEmployeeHouseNoTextField;
+    private JTextField modifyEmployeeStreetNameTextField;
+    private JTextField modifyEmployeeCityTextField;
+    private JTextField modifyEmployeeStateTextField;
+    private JTextField modifyEmployeeCountryTextField;
+    private JTextField modifyEmployeeZipCodeTextField;
+    private JTextField modifyEmployeePhoneTextField;
+    private JTextField modifyEmployeeEmailTextField;
+    private JPanel modifyEmployeePanel;
 
 }
 
