@@ -138,6 +138,27 @@ public class EmployeeImplement implements EmployeeDAO {
     // in the actual data type specified in the database
 
     @Override
+    public String getEmployeePassword(int employee_id) throws SQLException {
+
+        String sql = String.format(QUERY.getEmployeePassword, employee_id);
+
+        DatabaseConnection c = new DatabaseConnection();
+        Connection newConnection = c.getConnection();
+
+        ResultSet rs = c.selectSQL(sql);
+        String password = null;
+
+        if(rs.next()){
+            password = rs.getString("password");
+        }
+
+        c.closeConnection();
+
+        return password;
+
+    }
+
+    @Override
     public String getEmployeeFirstName(int employee_id) throws SQLException {
 
         String sql = String.format(QUERY.getEmployeeName, employee_id);
@@ -169,7 +190,7 @@ public class EmployeeImplement implements EmployeeDAO {
         ResultSet rs = c.selectSQL(sql);
         String middle_name = null;
 
-        if (rs.getString("middle_name") != null) {
+        if (rs.next()) {
             middle_name = rs.getString("middle_name");
         }
 
@@ -656,6 +677,14 @@ public class EmployeeImplement implements EmployeeDAO {
     // They return a String or string representation of an object to the calling method
 
     @Override
+    public String getEmployeePasswordString(int employee_id) throws SQLException {
+
+        String password = getEmployeePassword(employee_id);
+        return password;
+
+    }
+
+    @Override
     public String getEmployeeFirstNameString(int employee_id) throws SQLException {
 
         String first_name = getEmployeeFirstName(employee_id);
@@ -696,15 +725,16 @@ public class EmployeeImplement implements EmployeeDAO {
         Connection newConnection = c.getConnection();
 
         ResultSet rs = c.selectSQL(sql);
+        Map<String, String> addressMap = new HashMap<>();
 
-        Map<String, String> addressMap = new HashMap<>() {{
-            put("house_no", rs.getString("house_no"));
-            put("street_name", rs.getString("street_name"));
-            put("city", rs.getString("city"));
-            put("state", rs.getString("state"));
-            put("country", rs.getString("country"));
-            put("zip_code", rs.getString("zip_code"));
-        }};
+        if (rs.next()) {
+            addressMap.put("house_no", rs.getString("house_no"));
+            addressMap.put("street_name", rs.getString("street_name"));
+            addressMap.put("city", rs.getString("city"));
+            addressMap.put("state", rs.getString("state"));
+            addressMap.put("country", rs.getString("country"));
+            addressMap.put("zip_code", rs.getString("zip_code"));
+        }
 
         c.closeConnection();
 

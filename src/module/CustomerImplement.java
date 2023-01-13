@@ -161,7 +161,7 @@ public class CustomerImplement implements CustomerDAO {
         ResultSet rs = c.selectSQL(sql);
         String middle_name = null;
 
-        if (rs.getString("middle_name") != null) {
+        if (rs.next()) {
             middle_name = rs.getString("middle_name");
         }
 
@@ -737,15 +737,16 @@ public class CustomerImplement implements CustomerDAO {
         Connection newConnection = c.getConnection();
 
         ResultSet rs = c.selectSQL(sql);
+        Map<String, String> addressMap = new HashMap<>();
 
-        Map<String, String> addressMap = new HashMap<>() {{
-            put("house_no", rs.getString("house_no"));
-            put("street_name", rs.getString("street_name"));
-            put("city", rs.getString("city"));
-            put("state", rs.getString("state"));
-            put("country", rs.getString("country"));
-            put("zip_code", rs.getString("zip_code"));
-        }};
+        if (rs.next()) {
+            addressMap.put("house_no", rs.getString("house_no"));
+            addressMap.put("street_name", rs.getString("street_name"));
+            addressMap.put("city", rs.getString("city"));
+            addressMap.put("state", rs.getString("state"));
+            addressMap.put("country", rs.getString("country"));
+            addressMap.put("zip_code", rs.getString("zip_code"));
+        }
 
         c.closeConnection();
 

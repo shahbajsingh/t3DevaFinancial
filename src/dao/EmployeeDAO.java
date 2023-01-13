@@ -25,6 +25,8 @@ public interface EmployeeDAO {
 
     // GETTERS
 
+    String getEmployeePassword(int employee_id) throws SQLException;
+
     String getEmployeeFirstName(int employee_id) throws SQLException;
 
     String getEmployeeMiddleName(int employee_id) throws SQLException;
@@ -87,6 +89,8 @@ public interface EmployeeDAO {
     TableModel getAllEmployeesInfoTableModel() throws SQLException;
 
     // STRING METHODS
+
+    String getEmployeePasswordString(int employee_id) throws SQLException;
 
     String getEmployeeFirstNameString(int employee_id) throws SQLException;
 

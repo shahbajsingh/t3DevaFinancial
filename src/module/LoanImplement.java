@@ -218,7 +218,7 @@ public class LoanImplement implements LoanDAO { // TO-DO: optimize / determine b
 
         c.closeConnection();
 
-        return interest_rate;
+        return interest_rate * 100; // convert decimal interest rate to integer percentage
 
     }
 
