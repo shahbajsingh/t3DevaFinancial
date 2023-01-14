@@ -2854,7 +2854,9 @@
                             <preferred-size width="150" height="-1"/>
                           </grid>
                         </constraints>
-                        <properties/>
+                        <properties>
+                          <editable value="false"/>
+                        </properties>
                       </component>
                     </children>
                   </grid>
@@ -3170,7 +3172,9 @@
                             <preferred-size width="150" height="-1"/>
                           </grid>
                         </constraints>
-                        <properties/>
+                        <properties>
+                          <editable value="false"/>
+                        </properties>
                       </component>
                       <component id="1010b" class="javax.swing.JButton" binding="btnDeleteEmployee">
                         <constraints>

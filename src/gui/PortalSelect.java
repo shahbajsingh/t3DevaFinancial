@@ -5,6 +5,7 @@ import module.*;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 
@@ -71,7 +72,7 @@ public class PortalSelect extends JFrame {
 
         // MODIFY TAB
 
-        handleLoanModify(tempLoan);
+        handleLoanModify(tempLoan, tempCard);
 
         // DELETE TAB
 
@@ -307,32 +308,16 @@ public class PortalSelect extends JFrame {
 
     }
 
-    private void handleLoanModify(LoanImplement tempLoan){
+    private void handleLoanModify(LoanImplement tempLoan, CardImplement tempCard) {
+
 
         btnModifyLoanSubmit.addActionListener(e -> { // populate text fields
 
             try {
 
-                if (!modifyLoanIDTextField.getText().isEmpty()) { // If loan ID entered
-
-                    long loan_id = Long.parseLong(modifyLoanIDTextField.getText());
-
-                    if (tempLoan.checkLoanExists(loan_id)) { // If loan exists
-
-                        modifyLoanDateTextField.setText(tempLoan.getLoanDateString(loan_id));
-                        modifyLoanCardNoTextField.setText(tempLoan.getLoanCardNoString(loan_id));
-                        modifyLoanPrincipleTextField.setText(tempLoan.getLoanValueString(loan_id));
-                        modifyLoanInterestRateTextField.setText(tempLoan.getLoanInterestRateString(loan_id));
-                        modifyLoanIsActiveTextField.setText(tempLoan.getLoanIsActiveString(loan_id));
-                        modifyLoanAmtRemainingTextField.setText(tempLoan.getLoanAmtRemainingString(loan_id));
-                        modifyLoanInterestAccruedTextField.setText(tempLoan.getLoanInterestAccruedString(loan_id));
-
-                    } else {
-                        JOptionPane.showMessageDialog(null, "INVALID LOAN ID");
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "ENTER LOAN ID");
-                }
+                populateLoanTextFields(tempLoan, modifyLoanIDTextField, modifyLoanDateTextField,
+                        modifyLoanCardNoTextField, modifyLoanPrincipleTextField, modifyLoanInterestRateTextField,
+                        modifyLoanIsActiveTextField, modifyLoanAmtRemainingTextField, modifyLoanInterestAccruedTextField);
 
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null, "INVALID INPUT");
@@ -346,31 +331,157 @@ public class PortalSelect extends JFrame {
 
         btnModifyLoanDate.addActionListener(e -> {
 
+            try {
 
+                if (!modifyLoanDateTextField.getText().isEmpty()) {
+
+                    long loan_id = Long.parseLong(modifyLoanIDTextField.getText());
+
+                    if (tempLoan.checkLoanExists(loan_id)) {
+                        Timestamp newLoanDate = ModifyPanels.modifyLoanDatePanel();
+                        if (newLoanDate != null) {
+                            tempLoan.setLoanDate(newLoanDate, loan_id);
+                            JOptionPane.showMessageDialog(null, "LOAN DATE MODIFIED");
+                            clearTextFields(modifyLoanTextFields);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "INVALID DATE");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "INVALID LOAN ID");
+                    }
+                }
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "SQL ERROR");
+                ex.printStackTrace();
+            }
 
         });
 
         btnModifyLoanCardNo.addActionListener(e -> {
 
+            try {
 
+                if (!modifyLoanDateTextField.getText().isEmpty()) {
+
+                    long loan_id = Long.parseLong(modifyLoanIDTextField.getText());
+
+                    if (tempLoan.checkLoanExists(loan_id)) {
+                        long newLoanCardNo = ModifyPanels.modifyLoanCardNoPanel();
+                        if (tempCard.checkCardExists(newLoanCardNo)) {
+                            tempLoan.setLoanCardNo(newLoanCardNo, loan_id);
+                            JOptionPane.showMessageDialog(null, "LOAN CARD NUMBER MODIFIED");
+                            clearTextFields(modifyLoanTextFields);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "INVALID CARD NUMBER");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "INVALID LOAN ID");
+                    }
+                }
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "SQL ERROR");
+                ex.printStackTrace();
+            }
 
         });
 
         btnModifyLoanPrinciple.addActionListener(e -> {
 
+            try {
 
+                if (!modifyLoanDateTextField.getText().isEmpty()) {
+
+                    long loan_id = Long.parseLong(modifyLoanIDTextField.getText());
+
+                    if (tempLoan.checkLoanExists(loan_id)) {
+                        float newLoanPrinciple = ModifyPanels.modifyLoanPrinciplePanel();
+                        if (newLoanPrinciple > 0.00f) {
+                            tempLoan.setLoanValue(newLoanPrinciple, loan_id);
+                            JOptionPane.showMessageDialog(null, "LOAN PRINCIPLE VALUE MODIFIED");
+                            clearTextFields(modifyLoanTextFields);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "INVALID PRINCIPLE VALUE");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "INVALID LOAN ID");
+                    }
+                }
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "SQL ERROR");
+                ex.printStackTrace();
+            }
 
         });
 
         btnModifyLoanInterestRate.addActionListener(e -> {
 
+            try {
 
+                if (!modifyLoanDateTextField.getText().isEmpty()) {
+
+                    long loan_id = Long.parseLong(modifyLoanIDTextField.getText());
+
+                    if (tempLoan.checkLoanExists(loan_id)) {
+                        float newLoanInterestRate = ModifyPanels.modifyLoanInterestRatePanel();
+                        if (newLoanInterestRate > 0.00f) {
+                            tempLoan.setLoanInterestRate(newLoanInterestRate, loan_id);
+                            JOptionPane.showMessageDialog(null, "LOAN INTEREST MODIFIED");
+                            clearTextFields(modifyLoanTextFields);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "INVALID INTEREST RATE");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "INVALID LOAN ID");
+                    }
+                }
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "SQL ERROR");
+                ex.printStackTrace();
+            }
 
         });
 
         btnModifyLoanIsActive.addActionListener(e -> {
 
+            try {
 
+                if (!modifyLoanDateTextField.getText().isEmpty()) {
+
+                    long loan_id = Long.parseLong(modifyLoanIDTextField.getText());
+
+                    if (tempLoan.checkLoanExists(loan_id)) {
+                        boolean newLoanIsActive = ModifyPanels.modifyLoanIsActivePanel();
+                        tempLoan.setLoanIsActive(newLoanIsActive, loan_id);
+                        JOptionPane.showMessageDialog(null, "LOAN ACTIVE STATUS MODIFIED");
+                        clearTextFields(modifyLoanTextFields);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "INVALID LOAN ID");
+                    }
+                }
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "SQL ERROR");
+                ex.printStackTrace();
+            }
 
         });
 
@@ -382,26 +493,9 @@ public class PortalSelect extends JFrame {
 
             try {
 
-                if (!deleteLoanIDTextField.getText().isEmpty()) { // If loan ID entered
-
-                    long loan_id = Long.parseLong(deleteLoanIDTextField.getText());
-
-                    if (tempLoan.checkLoanExists(loan_id)) { // If loan exists
-
-                        deleteLoanDateTextField.setText(tempLoan.getLoanDateString(loan_id));
-                        deleteLoanCardNoTextField.setText(tempLoan.getLoanCardNoString(loan_id));
-                        deleteLoanPrincipleTextField.setText(tempLoan.getLoanValueString(loan_id));
-                        deleteLoanInterestRateTextField.setText(tempLoan.getLoanInterestRateString(loan_id));
-                        deleteLoanIsActiveTextField.setText(tempLoan.getLoanIsActiveString(loan_id));
-                        deleteLoanAmtRemainingTextField.setText(tempLoan.getLoanAmtRemainingString(loan_id));
-                        deleteLoanInterestAccruedTextField.setText(tempLoan.getLoanInterestAccruedString(loan_id));
-
-                    } else {
-                        JOptionPane.showMessageDialog(null, "INVALID LOAN ID");
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "ENTER LOAN ID");
-                }
+                populateLoanTextFields(tempLoan, deleteLoanIDTextField, deleteLoanDateTextField,
+                        deleteLoanCardNoTextField, deleteLoanPrincipleTextField, deleteLoanInterestRateTextField,
+                        deleteLoanIsActiveTextField, deleteLoanAmtRemainingTextField, deleteLoanInterestAccruedTextField);
 
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null, "INVALID INPUT");
@@ -427,7 +521,7 @@ public class PortalSelect extends JFrame {
                                 String.format("ARE YOU SURE YOU WANT TO DELETE LOAN ID %d?", loan_id),
                                 "DELETE LOAN", JOptionPane.YES_NO_OPTION);
 
-                        if (confirm == 0) {
+                        if (confirm == JOptionPane.YES_OPTION) {
                             tempLoan.deleteLoan(loan_id);
                             JOptionPane.showMessageDialog(null, "LOAN DELETED");
                             clearTextFields(deleteLoanTextFields);
@@ -589,23 +683,8 @@ public class PortalSelect extends JFrame {
 
             try {
 
-                if (!modifyPaymentIDTextField.getText().isEmpty()) { // If payment ID entered
-
-                    long payment_id = Long.parseLong(modifyPaymentIDTextField.getText());
-
-                    if (tempPayment.checkPaymentExists(payment_id)) { // If payment exists
-
-                        modifyPaymentDateTextField.setText(tempPayment.getPaymentDateString(payment_id));
-                        modifyPaymentCardNoTextField.setText(tempPayment.getPaymentCardNoString(payment_id));
-                        modifyPaymentValueTextField.setText(tempPayment.getPaymentValueString(payment_id));
-                        modifyPaymentLoanIDTextField.setText(tempPayment.getPaymentLoanIDString(payment_id));
-
-                    } else {
-                        JOptionPane.showMessageDialog(null, "INVALID PAYMENT ID");
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "ENTER PAYMENT ID");
-                }
+                populatePaymentTextFields(tempPayment, modifyPaymentIDTextField, modifyPaymentDateTextField,
+                        modifyPaymentCardNoTextField, modifyPaymentValueTextField, modifyPaymentLoanIDTextField);
 
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null, "INVALID INPUT");
@@ -649,23 +728,8 @@ public class PortalSelect extends JFrame {
 
             try {
 
-                if (!deletePaymentIDTextField.getText().isEmpty()) { // If payment ID entered
-
-                    long payment_id = Long.parseLong(deletePaymentIDTextField.getText());
-
-                    if (tempPayment.checkPaymentExists(payment_id)) { // If payment exists
-
-                        deletePaymentDateTextField.setText(tempPayment.getPaymentDateString(payment_id));
-                        deletePaymentCardNoTextField.setText(tempPayment.getPaymentCardNoString(payment_id));
-                        deletePaymentValueTextField.setText(tempPayment.getPaymentValueString(payment_id));
-                        deletePaymentLoanIDTextField.setText(tempPayment.getPaymentLoanIDString(payment_id));
-
-                    } else {
-                        JOptionPane.showMessageDialog(null, "INVALID PAYMENT ID");
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "ENTER PAYMENT ID");
-                }
+                populatePaymentTextFields(tempPayment, deletePaymentIDTextField, deletePaymentDateTextField,
+                        deletePaymentCardNoTextField, deletePaymentValueTextField, deletePaymentLoanIDTextField);
 
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null, "INVALID INPUT");
@@ -691,7 +755,7 @@ public class PortalSelect extends JFrame {
                                 String.format("ARE YOU SURE YOU WANT TO PAYMENT ID %d?", payment_id),
                                 "DELETE PAYMENT", JOptionPane.YES_NO_OPTION);
 
-                        if (confirm == 0) {
+                        if (confirm == JOptionPane.YES_OPTION) {
                             tempPayment.deletePayment(payment_id);
                             JOptionPane.showMessageDialog(null, "PAYMENT DELETED");
                             clearTextFields(deletePaymentTextFields);
@@ -845,31 +909,11 @@ public class PortalSelect extends JFrame {
 
             try {
 
-                if (!modifyCustomerCardNoTextField.getText().isEmpty()) { // If card number entered
-
-                    long card_no = Long.parseLong(modifyCustomerCardNoTextField.getText());
-
-                    if (tempCustomer.checkCustomerExists(card_no)) { // If card number exists
-
-                        modifyCustomerFirstNameTextField.setText(tempCustomer.getCustomerFirstNameString(card_no));
-                        modifyCustomerMiddleNameTextField.setText(tempCustomer.getCustomerMiddleNameString(card_no));
-                        modifyCustomerLastNameTextField.setText(tempCustomer.getCustomerLastNameString(card_no));
-                        modifyCustomerAadhaarTextField.setText(tempCustomer.getCustomerAadhaarString(card_no));
-                        modifyCustomerHouseNoTextField.setText(tempCustomer.getCustomerAddressMap(card_no).get("house_no"));
-                        modifyCustomerStreetNameTextField.setText(tempCustomer.getCustomerAddressMap(card_no).get("street_name"));
-                        modifyCustomerCityTextField.setText(tempCustomer.getCustomerAddressMap(card_no).get("city"));
-                        modifyCustomerStateTextField.setText(tempCustomer.getCustomerAddressMap(card_no).get("state"));
-                        modifyCustomerCountryTextField.setText(tempCustomer.getCustomerAddressMap(card_no).get("country"));
-                        modifyCustomerZipCodeTextField.setText(tempCustomer.getCustomerAddressMap(card_no).get("zip_code"));
-                        modifyCustomerPhoneTextField.setText(tempCustomer.getCustomerPhoneString(card_no));
-                        modifyCustomerEmailTextField.setText(tempCustomer.getCustomerEmailString(card_no));
-
-                    } else {
-                        JOptionPane.showMessageDialog(null, "INVALID CARD NUMBER");
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "ENTER CARD NUMBER");
-                }
+                populateCustomerTextFields(tempCustomer, modifyCustomerCardNoTextField, modifyCustomerFirstNameTextField,
+                        modifyCustomerMiddleNameTextField, modifyCustomerLastNameTextField, modifyCustomerAadhaarTextField,
+                        modifyCustomerHouseNoTextField, modifyCustomerStreetNameTextField, modifyCustomerCityTextField,
+                        modifyCustomerStateTextField, modifyCustomerCountryTextField, modifyCustomerZipCodeTextField,
+                        modifyCustomerPhoneTextField, modifyCustomerEmailTextField);
 
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null, "INVALID INPUT");
@@ -907,31 +951,11 @@ public class PortalSelect extends JFrame {
 
             try {
 
-                if (!deleteCustomerCardNoTextField.getText().isEmpty()) { // If card number entered
-
-                    long card_no = Long.parseLong(deleteCustomerCardNoTextField.getText());
-
-                    if (tempCustomer.checkCustomerExists(card_no)) { // If card number exists
-
-                        deleteCustomerFirstNameTextField.setText(tempCustomer.getCustomerFirstNameString(card_no));
-                        deleteCustomerMiddleNameTextField.setText(tempCustomer.getCustomerMiddleNameString(card_no));
-                        deleteCustomerLastNameTextField.setText(tempCustomer.getCustomerLastNameString(card_no));
-                        deleteCustomerAadhaarTextField.setText(tempCustomer.getCustomerAadhaarString(card_no));
-                        deleteCustomerHouseNoTextField.setText(tempCustomer.getCustomerAddressMap(card_no).get("house_no"));
-                        deleteCustomerStreetNameTextField.setText(tempCustomer.getCustomerAddressMap(card_no).get("street_name"));
-                        deleteCustomerCityTextField.setText(tempCustomer.getCustomerAddressMap(card_no).get("city"));
-                        deleteCustomerStateTextField.setText(tempCustomer.getCustomerAddressMap(card_no).get("state"));
-                        deleteCustomerCountryTextField.setText(tempCustomer.getCustomerAddressMap(card_no).get("country"));
-                        deleteCustomerZipCodeTextField.setText(tempCustomer.getCustomerAddressMap(card_no).get("zip_code"));
-                        deleteCustomerPhoneTextField.setText(tempCustomer.getCustomerPhoneString(card_no));
-                        deleteCustomerEmailTextField.setText(tempCustomer.getCustomerEmailString(card_no));
-
-                    } else {
-                        JOptionPane.showMessageDialog(null, "INVALID CARD NUMBER");
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "ENTER CARD NUMBER");
-                }
+                populateCustomerTextFields(tempCustomer, deleteCustomerCardNoTextField, deleteCustomerFirstNameTextField,
+                        deleteCustomerMiddleNameTextField, deleteCustomerLastNameTextField, deleteCustomerAadhaarTextField,
+                        deleteCustomerHouseNoTextField, deleteCustomerStreetNameTextField, deleteCustomerCityTextField,
+                        deleteCustomerStateTextField, deleteCustomerCountryTextField, deleteCustomerZipCodeTextField,
+                        deleteCustomerPhoneTextField, deleteCustomerEmailTextField);
 
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null, "INVALID INPUT");
@@ -957,7 +981,7 @@ public class PortalSelect extends JFrame {
                                 String.format("ARE YOU SURE YOU WANT TO DELETE CUSTOMER WITH CARD NUMBER %d?", card_no),
                                 "DELETE CUSTOMER", JOptionPane.YES_NO_OPTION);
 
-                        if (confirm == 0) {
+                        if (confirm == JOptionPane.YES_OPTION) {
                             tempCustomer.deleteCustomer(card_no);
                             JOptionPane.showMessageDialog(null, "CUSTOMER DELETED");
                             clearTextFields(deleteCustomerTextFields);
@@ -1108,32 +1132,11 @@ public class PortalSelect extends JFrame {
 
             try {
 
-                if (!modifyEmployeeIDTextField.getText().isEmpty()) { // If employee ID entered
-
-                    int employee_id = Integer.parseInt(modifyEmployeeIDTextField.getText());
-
-                    if (tempEmployee.checkEmployeeExists(employee_id)) { // If employee with ID exists
-
-                        modifyEmployeeFirstNameTextField.setText(tempEmployee.getEmployeeFirstNameString(employee_id));
-                        modifyEmployeeMiddleNameTextField.setText(tempEmployee.getEmployeeMiddleNameString(employee_id));
-                        modifyEmployeeLastNameTextField.setText(tempEmployee.getEmployeeLastNameString(employee_id));
-                        modifyEmployeeAadhaarTextField.setText(tempEmployee.getEmployeeAadhaarString(employee_id));
-                        modifyEmployeePasswordTextField.setText(tempEmployee.getEmployeePasswordString(employee_id));
-                        modifyEmployeeHouseNoTextField.setText(tempEmployee.getEmployeeAddressMap(employee_id).get("house_no"));
-                        modifyEmployeeStreetNameTextField.setText(tempEmployee.getEmployeeAddressMap(employee_id).get("street_name"));
-                        modifyEmployeeCityTextField.setText(tempEmployee.getEmployeeAddressMap(employee_id).get("city"));
-                        modifyEmployeeStateTextField.setText(tempEmployee.getEmployeeAddressMap(employee_id).get("state"));
-                        modifyEmployeeCountryTextField.setText(tempEmployee.getEmployeeAddressMap(employee_id).get("country"));
-                        modifyEmployeeZipCodeTextField.setText(tempEmployee.getEmployeeAddressMap(employee_id).get("zip_code"));
-                        modifyEmployeePhoneTextField.setText(tempEmployee.getEmployeePhoneString(employee_id));
-                        modifyEmployeeEmailTextField.setText(tempEmployee.getEmployeeEmailString(employee_id));
-
-                    } else {
-                        JOptionPane.showMessageDialog(null, "INVALID EMPLOYEE ID");
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "ENTER EMPLOYEE ID");
-                }
+                populateEmployeeTextFields(tempEmployee, modifyEmployeeIDTextField, modifyEmployeeFirstNameTextField,
+                        modifyEmployeeMiddleNameTextField, modifyEmployeeLastNameTextField, modifyEmployeeAadhaarTextField,
+                        modifyEmployeePasswordTextField, modifyEmployeeHouseNoTextField, modifyEmployeeStreetNameTextField,
+                        modifyEmployeeCityTextField, modifyEmployeeStateTextField, modifyEmployeeCountryTextField,
+                        modifyEmployeeZipCodeTextField, modifyEmployeePhoneTextField, modifyEmployeeEmailTextField);
 
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null, "INVALID INPUT");
@@ -1171,32 +1174,11 @@ public class PortalSelect extends JFrame {
 
                 try {
 
-                    if (!deleteEmployeeIDTextField.getText().isEmpty()) { // If employee ID entered
-
-                        int employee_id = Integer.parseInt(deleteEmployeeIDTextField.getText());
-
-                        if (tempEmployee.checkEmployeeExists(employee_id)) { // If employee with ID exists
-
-                            deleteEmployeeFirstNameTextField.setText(tempEmployee.getEmployeeFirstNameString(employee_id));
-                            deleteEmployeeMiddleNameTextField.setText(tempEmployee.getEmployeeMiddleNameString(employee_id));
-                            deleteEmployeeLastNameTextField.setText(tempEmployee.getEmployeeLastNameString(employee_id));
-                            deleteEmployeeAadhaarTextField.setText(tempEmployee.getEmployeeAadhaarString(employee_id));
-                            deleteEmployeePasswordTextField.setText(tempEmployee.getEmployeePasswordString(employee_id));
-                            deleteEmployeeHouseNoTextField.setText(tempEmployee.getEmployeeAddressMap(employee_id).get("house_no"));
-                            deleteEmployeeStreetNameTextField.setText(tempEmployee.getEmployeeAddressMap(employee_id).get("street_name"));
-                            deleteEmployeeCityTextField.setText(tempEmployee.getEmployeeAddressMap(employee_id).get("city"));
-                            deleteEmployeeStateTextField.setText(tempEmployee.getEmployeeAddressMap(employee_id).get("state"));
-                            deleteEmployeeCountryTextField.setText(tempEmployee.getEmployeeAddressMap(employee_id).get("country"));
-                            deleteEmployeeZipCodeTextField.setText(tempEmployee.getEmployeeAddressMap(employee_id).get("zip_code"));
-                            deleteEmployeePhoneTextField.setText(tempEmployee.getEmployeePhoneString(employee_id));
-                            deleteEmployeeEmailTextField.setText(tempEmployee.getEmployeeEmailString(employee_id));
-
-                        } else {
-                            JOptionPane.showMessageDialog(null, "INVALID EMPLOYEE ID");
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "ENTER EMPLOYEE ID");
-                    }
+                    populateEmployeeTextFields(tempEmployee, deleteEmployeeIDTextField, deleteEmployeeFirstNameTextField,
+                            deleteEmployeeMiddleNameTextField, deleteEmployeeLastNameTextField, deleteEmployeeAadhaarTextField,
+                            deleteEmployeePasswordTextField, deleteEmployeeHouseNoTextField, deleteEmployeeStreetNameTextField,
+                            deleteEmployeeCityTextField, deleteEmployeeStateTextField, deleteEmployeeCountryTextField,
+                            deleteEmployeeZipCodeTextField, deleteEmployeePhoneTextField, deleteEmployeeEmailTextField);
 
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "INVALID INPUT");
@@ -1222,7 +1204,7 @@ public class PortalSelect extends JFrame {
                                 String.format("ARE YOU SURE YOU WANT TO DELETE EMPLOYEE WITH ID %d?", employee_id),
                                 "DELETE EMPLOYEE", JOptionPane.YES_NO_OPTION);
 
-                        if (confirm == 0) {
+                        if (confirm == JOptionPane.YES_OPTION) {
                             tempEmployee.deleteEmployee(employee_id);
                             JOptionPane.showMessageDialog(null, "EMPLOYEE DELETED");
                             clearTextFields(deleteEmployeeTextFields);
@@ -1261,81 +1243,54 @@ public class PortalSelect extends JFrame {
 
     private void initializeTextFields() {
 
+        // VIEW PANELS
+
+        addTextFieldsToArrayList(viewLoansPanel, viewLoansTextFields, viewPaymentsPanel, viewPaymentsTextFields,
+                viewCustomersPanel, viewCustomersTextFields, viewEmployeesPanel, viewEmployeesTextFields);
+
         // ADD PANELS
 
-        for (Component c : addLoanPanel.getComponents()) {
-            if (c instanceof JTextField) {
-                addLoanTextFields.add((JTextField) c);
-            }
-        }
-
-        for (Component c : addPaymentPanel.getComponents()) {
-            if (c instanceof JTextField) {
-                addPaymentTextFields.add((JTextField) c);
-            }
-        }
-
-        for (Component c : addCustomerPanel.getComponents()) {
-            if (c instanceof JTextField) {
-                addCustomerTextFields.add((JTextField) c);
-            }
-        }
-
-        for (Component c : addEmployeePanel.getComponents()) {
-            if (c instanceof JTextField || c instanceof JPasswordField) {
-                addEmployeeTextFields.add((JTextField) c);
-            }
-        }
+        addTextFieldsToArrayList(addLoanPanel, addLoanTextFields, addPaymentPanel, addPaymentTextFields,
+                addCustomerPanel, addCustomerTextFields, addEmployeePanel, addEmployeeTextFields);
 
         // MODIFY PANELS
 
-        for (Component c : modifyLoanPanel.getComponents()) {
-            if (c instanceof JTextField) {
-                modifyLoanTextFields.add((JTextField) c);
-            }
-        }
-
-        for (Component c : modifyPaymentPanel.getComponents()) {
-            if (c instanceof JTextField) {
-                modifyPaymentTextFields.add((JTextField) c);
-            }
-        }
-
-        for (Component c : modifyCustomerPanel.getComponents()) {
-            if (c instanceof JTextField) {
-                modifyCustomerTextFields.add((JTextField) c);
-            }
-        }
-
-        for (Component c : modifyEmployeePanel.getComponents()) {
-            if (c instanceof JTextField || c instanceof JPasswordField) {
-                modifyEmployeeTextFields.add((JTextField) c);
-            }
-        }
+        addTextFieldsToArrayList(modifyLoanPanel, modifyLoanTextFields, modifyPaymentPanel, modifyPaymentTextFields,
+                modifyCustomerPanel, modifyCustomerTextFields, modifyEmployeePanel, modifyEmployeeTextFields);
 
         // DELETE PANELS
 
-        for (Component c : deleteLoanPanel.getComponents()) {
+        addTextFieldsToArrayList(deleteLoanPanel, deleteLoanTextFields, deletePaymentPanel, deletePaymentTextFields,
+                deleteCustomerPanel, deleteCustomerTextFields, deleteEmployeePanel, deleteEmployeeTextFields);
+
+    }
+
+    private void addTextFieldsToArrayList(JPanel loanPanel, ArrayList<JTextField> loanTextFields,
+                                           JPanel paymentPanel, ArrayList<JTextField> paymentTextFields,
+                                           JPanel customerPanel, ArrayList<JTextField> customerTextFields,
+                                           JPanel employeePanel, ArrayList<JTextField> employeeTextFields) {
+
+        for (Component c : loanPanel.getComponents()) {
             if (c instanceof JTextField) {
-                deleteLoanTextFields.add((JTextField) c);
+                loanTextFields.add((JTextField) c);
             }
         }
 
-        for (Component c : deletePaymentPanel.getComponents()) {
+        for (Component c : paymentPanel.getComponents()) {
             if (c instanceof JTextField) {
-                deletePaymentTextFields.add((JTextField) c);
+                paymentTextFields.add((JTextField) c);
             }
         }
 
-        for (Component c : deleteCustomerPanel.getComponents()) {
+        for (Component c : customerPanel.getComponents()) {
             if (c instanceof JTextField) {
-                deleteCustomerTextFields.add((JTextField) c);
+                customerTextFields.add((JTextField) c);
             }
         }
 
-        for (Component c : deleteEmployeePanel.getComponents()) {
-            if (c instanceof JTextField) {
-                deleteEmployeeTextFields.add((JTextField) c);
+        for (Component c : employeePanel.getComponents()) {
+            if (c instanceof JTextField || c instanceof JPasswordField) {
+                employeeTextFields.add((JTextField) c);
             }
         }
 
@@ -1364,6 +1319,135 @@ public class PortalSelect extends JFrame {
         }
 
         return true;
+
+    }
+
+    private void populateLoanTextFields(LoanImplement tempLoan, JTextField loanIDTextField,
+                                        JTextField loanDateTextField, JTextField loanCardNoTextField,
+                                        JTextField loanPrincipleTextField, JTextField loanInterestRateTextField,
+                                        JTextField loanIsActiveTextField, JTextField loanAmtRemainingTextField,
+                                        JTextField loanInterestAccruedTextField) throws SQLException {
+
+        if (!loanIDTextField.getText().isEmpty()) { // If loan ID entered
+
+            long loan_id = Long.parseLong(loanIDTextField.getText());
+
+            if (tempLoan.checkLoanExists(loan_id)) { // If loan exists
+
+                loanDateTextField.setText(tempLoan.getLoanDateString(loan_id));
+                loanCardNoTextField.setText(tempLoan.getLoanCardNoString(loan_id));
+                loanPrincipleTextField.setText(tempLoan.getLoanValueString(loan_id));
+                loanInterestRateTextField.setText(tempLoan.getLoanInterestRateString(loan_id));
+                loanIsActiveTextField.setText(tempLoan.getLoanIsActiveString(loan_id));
+                loanAmtRemainingTextField.setText(tempLoan.getLoanAmtRemainingString(loan_id));
+                loanInterestAccruedTextField.setText(tempLoan.getLoanInterestAccruedString(loan_id));
+
+            } else {
+                JOptionPane.showMessageDialog(null, "INVALID LOAN ID");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "ENTER LOAN ID");
+        }
+
+    }
+
+    private void populatePaymentTextFields(PaymentImplement tempPayment,
+                                           JTextField paymentIDTextField, JTextField paymentDateTextField,
+                                           JTextField paymentCardNoTextField, JTextField paymentValueTextField,
+                                           JTextField paymentLoanIDTextField) throws SQLException {
+
+        if (!paymentIDTextField.getText().isEmpty()) { // If payment ID entered
+
+            long payment_id = Long.parseLong(paymentIDTextField.getText());
+
+            if (tempPayment.checkPaymentExists(payment_id)) { // If payment exists
+
+                paymentDateTextField.setText(tempPayment.getPaymentDateString(payment_id));
+                paymentCardNoTextField.setText(tempPayment.getPaymentCardNoString(payment_id));
+                paymentValueTextField.setText(tempPayment.getPaymentValueString(payment_id));
+                paymentLoanIDTextField.setText(tempPayment.getPaymentLoanIDString(payment_id));
+
+            } else {
+                JOptionPane.showMessageDialog(null, "INVALID PAYMENT ID");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "ENTER PAYMENT ID");
+        }
+
+    }
+
+    private void populateCustomerTextFields(CustomerImplement tempCustomer,
+                                            JTextField customerCardNoTextField, JTextField customerFirstNameTextField,
+                                            JTextField customerMiddleNameTextField, JTextField customerLastNameTextField,
+                                            JTextField customerAadhaarTextField, JTextField customerHouseNoTextField,
+                                            JTextField customerStreetNameTextField, JTextField customerCityTextField,
+                                            JTextField customerStateTextField, JTextField customerCountryTextField,
+                                            JTextField customerZipCodeTextField, JTextField customerPhoneTextField,
+                                            JTextField customerEmailTextField) throws SQLException {
+
+        if (!customerCardNoTextField.getText().isEmpty()) { // If card number entered
+
+            long card_no = Long.parseLong(customerCardNoTextField.getText());
+
+            if (tempCustomer.checkCustomerExists(card_no)) { // If card number exists
+
+                customerFirstNameTextField.setText(tempCustomer.getCustomerFirstNameString(card_no));
+                customerMiddleNameTextField.setText(tempCustomer.getCustomerMiddleNameString(card_no));
+                customerLastNameTextField.setText(tempCustomer.getCustomerLastNameString(card_no));
+                customerAadhaarTextField.setText(tempCustomer.getCustomerAadhaarString(card_no));
+                customerHouseNoTextField.setText(tempCustomer.getCustomerAddressMap(card_no).get("house_no"));
+                customerStreetNameTextField.setText(tempCustomer.getCustomerAddressMap(card_no).get("street_name"));
+                customerCityTextField.setText(tempCustomer.getCustomerAddressMap(card_no).get("city"));
+                customerStateTextField.setText(tempCustomer.getCustomerAddressMap(card_no).get("state"));
+                customerCountryTextField.setText(tempCustomer.getCustomerAddressMap(card_no).get("country"));
+                customerZipCodeTextField.setText(tempCustomer.getCustomerAddressMap(card_no).get("zip_code"));
+                customerPhoneTextField.setText(tempCustomer.getCustomerPhoneString(card_no));
+                customerEmailTextField.setText(tempCustomer.getCustomerEmailString(card_no));
+
+            } else {
+                JOptionPane.showMessageDialog(null, "INVALID CARD NUMBER");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "ENTER CARD NUMBER");
+        }
+
+    }
+
+    private void populateEmployeeTextFields(EmployeeImplement tempEmployee, JTextField employeeIDTextField,
+                                            JTextField employeeFirstNameTextField, JTextField employeeMiddleNameTextField,
+                                            JTextField employeeLastNameTextField, JTextField employeeAadhaarTextField,
+                                            JPasswordField employeePasswordTextField, JTextField employeeHouseNoTextField,
+                                            JTextField employeeStreetNameTextField, JTextField employeeCityTextField,
+                                            JTextField employeeStateTextField, JTextField employeeCountryTextField,
+                                            JTextField employeeZipCodeTextField, JTextField employeePhoneTextField,
+                                            JTextField employeeEmailTextField) throws SQLException{
+
+        if (!employeeIDTextField.getText().isEmpty()) { // If employee ID entered
+
+            int employee_id = Integer.parseInt(employeeIDTextField.getText());
+
+            if (tempEmployee.checkEmployeeExists(employee_id)) { // If employee with ID exists
+
+                employeeFirstNameTextField.setText(tempEmployee.getEmployeeFirstNameString(employee_id));
+                employeeMiddleNameTextField.setText(tempEmployee.getEmployeeMiddleNameString(employee_id));
+                employeeLastNameTextField.setText(tempEmployee.getEmployeeLastNameString(employee_id));
+                employeeAadhaarTextField.setText(tempEmployee.getEmployeeAadhaarString(employee_id));
+                employeePasswordTextField.setText(tempEmployee.getEmployeePasswordString(employee_id));
+                employeeHouseNoTextField.setText(tempEmployee.getEmployeeAddressMap(employee_id).get("house_no"));
+                employeeStreetNameTextField.setText(tempEmployee.getEmployeeAddressMap(employee_id).get("street_name"));
+                employeeCityTextField.setText(tempEmployee.getEmployeeAddressMap(employee_id).get("city"));
+                employeeStateTextField.setText(tempEmployee.getEmployeeAddressMap(employee_id).get("state"));
+                employeeCountryTextField.setText(tempEmployee.getEmployeeAddressMap(employee_id).get("country"));
+                employeeZipCodeTextField.setText(tempEmployee.getEmployeeAddressMap(employee_id).get("zip_code"));
+                employeePhoneTextField.setText(tempEmployee.getEmployeePhoneString(employee_id));
+                employeeEmailTextField.setText(tempEmployee.getEmployeeEmailString(employee_id));
+
+            } else {
+                JOptionPane.showMessageDialog(null, "INVALID EMPLOYEE ID");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "ENTER EMPLOYEE ID");
+        }
 
     }
 
@@ -1421,6 +1505,11 @@ public class PortalSelect extends JFrame {
 
 
     // COMPONENT DECLARATION
+
+    private final ArrayList<JTextField> viewLoansTextFields = new ArrayList<>();
+    private final ArrayList<JTextField> viewPaymentsTextFields = new ArrayList<>();
+    private final ArrayList<JTextField> viewCustomersTextFields = new ArrayList<>();
+    private final ArrayList<JTextField> viewEmployeesTextFields = new ArrayList<>();
 
     private final ArrayList<JTextField> addLoanTextFields = new ArrayList<>();
     private final ArrayList<JTextField> addPaymentTextFields = new ArrayList<>();

@@ -47,10 +47,13 @@ public class Login extends JFrame {
             String password = getPassword();
 
             try {
+
                 if (checkEmployeeExists(username)) {
                     if (checkPassword(username, password)){
-                        PortalSelect portalSelect = new PortalSelect();
-                        this.dispose();
+                        if (checkEmployeeIsAdmin(username)) {
+                            PortalSelect portalSelect = new PortalSelect();
+                            this.dispose();
+                        }
                     } else {
                         JOptionPane.showMessageDialog(null, "LOGIN FAILED");
                     }
@@ -94,13 +97,23 @@ public class Login extends JFrame {
     // HELPER METHODS
 
     private boolean checkEmployeeExists(int employee_id) throws SQLException {
+
         EmployeeImplement employeeImplement = new EmployeeImplement();
         return employeeImplement.checkEmployeeExists(employee_id);
+
+    }
+
+    private boolean checkEmployeeIsAdmin(int employee_id) throws SQLException {
+
+        return getUsername() == 1;
+
     }
 
     private boolean checkPassword(int employee_id, String password) throws SQLException {
+
         EmployeeImplement tempEmployee = new EmployeeImplement();
         return tempEmployee.checkEmployeePassword(employee_id, password);
+
     }
 
 
