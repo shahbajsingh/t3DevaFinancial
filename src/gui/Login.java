@@ -52,6 +52,11 @@ public class Login extends JFrame {
                     if (checkPassword(username, password)){
                         if (checkEmployeeIsAdmin(username)) {
                             PortalSelect portalSelect = new PortalSelect();
+                            JOptionPane.showMessageDialog(null, "LOGGED IN AS ADMIN");
+                            this.dispose();
+                        } else {
+                            PortalSelect portalSelect = new PortalSelect();
+                            JOptionPane.showMessageDialog(null, "LOGGED IN AS EMPLOYEE");
                             this.dispose();
                         }
                     } else {
@@ -59,7 +64,7 @@ public class Login extends JFrame {
                     }
                 } else {
                     JOptionPane.showMessageDialog(null,
-                            String.format("EMPLOYEE WITH ID %D DOES NOT EXIST", username)
+                            String.format("EMPLOYEE WITH ID %d DOES NOT EXIST", username)
                             );
                 }
 

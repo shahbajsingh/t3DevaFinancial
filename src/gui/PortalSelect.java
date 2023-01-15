@@ -108,7 +108,7 @@ public class PortalSelect extends JFrame {
 
         // MODIFY TAB
 
-        handlePaymentModify(tempPayment);
+        handlePaymentModify(tempPayment, tempLoan, tempCard);
 
         // DELETE TAB
 
@@ -187,8 +187,15 @@ public class PortalSelect extends JFrame {
     private void handleLogOut(){
 
         btnLogOut.addActionListener(e -> {
-            Login login = new Login();
-            this.dispose();
+
+            int result = JOptionPane.showConfirmDialog(null, "LOG OUT?",
+                    "DFS PORTAL", JOptionPane.YES_NO_OPTION);
+
+            if(result == JOptionPane.YES_OPTION){
+                this.dispose();
+                new Login();
+            }
+
         });
 
     }
@@ -338,13 +345,9 @@ public class PortalSelect extends JFrame {
                     long loan_id = Long.parseLong(modifyLoanIDTextField.getText());
 
                     if (tempLoan.checkLoanExists(loan_id)) {
-                        Timestamp newLoanDate = ModifyPanels.modifyLoanDatePanel();
-                        if (newLoanDate != null) {
-                            tempLoan.setLoanDate(newLoanDate, loan_id);
-                            JOptionPane.showMessageDialog(null, "LOAN DATE MODIFIED");
+                        boolean modified = ModifyPanels.modifyLoanDatePrompt(tempLoan, loan_id);
+                        if (modified) {
                             clearTextFields(modifyLoanTextFields);
-                        } else {
-                            JOptionPane.showMessageDialog(null, "INVALID DATE");
                         }
                     } else {
                         JOptionPane.showMessageDialog(null, "INVALID LOAN ID");
@@ -356,6 +359,9 @@ public class PortalSelect extends JFrame {
                 ex.printStackTrace();
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "SQL ERROR");
+                ex.printStackTrace();
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID DATE");
                 ex.printStackTrace();
             }
 
@@ -370,13 +376,9 @@ public class PortalSelect extends JFrame {
                     long loan_id = Long.parseLong(modifyLoanIDTextField.getText());
 
                     if (tempLoan.checkLoanExists(loan_id)) {
-                        long newLoanCardNo = ModifyPanels.modifyLoanCardNoPanel();
-                        if (tempCard.checkCardExists(newLoanCardNo)) {
-                            tempLoan.setLoanCardNo(newLoanCardNo, loan_id);
-                            JOptionPane.showMessageDialog(null, "LOAN CARD NUMBER MODIFIED");
+                        boolean modified = ModifyPanels.modifyLoanCardNoPrompt(tempLoan, tempCard, loan_id);
+                        if (modified) {
                             clearTextFields(modifyLoanTextFields);
-                        } else {
-                            JOptionPane.showMessageDialog(null, "INVALID CARD NUMBER");
                         }
                     } else {
                         JOptionPane.showMessageDialog(null, "INVALID LOAN ID");
@@ -388,6 +390,9 @@ public class PortalSelect extends JFrame {
                 ex.printStackTrace();
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "SQL ERROR");
+                ex.printStackTrace();
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID CARD NUMBER");
                 ex.printStackTrace();
             }
 
@@ -402,13 +407,9 @@ public class PortalSelect extends JFrame {
                     long loan_id = Long.parseLong(modifyLoanIDTextField.getText());
 
                     if (tempLoan.checkLoanExists(loan_id)) {
-                        float newLoanPrinciple = ModifyPanels.modifyLoanPrinciplePanel();
-                        if (newLoanPrinciple > 0.00f) {
-                            tempLoan.setLoanValue(newLoanPrinciple, loan_id);
-                            JOptionPane.showMessageDialog(null, "LOAN PRINCIPLE VALUE MODIFIED");
+                        boolean modified = ModifyPanels.modifyLoanPrinciplePrompt(tempLoan, loan_id);
+                        if (modified) {
                             clearTextFields(modifyLoanTextFields);
-                        } else {
-                            JOptionPane.showMessageDialog(null, "INVALID PRINCIPLE VALUE");
                         }
                     } else {
                         JOptionPane.showMessageDialog(null, "INVALID LOAN ID");
@@ -420,6 +421,9 @@ public class PortalSelect extends JFrame {
                 ex.printStackTrace();
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "SQL ERROR");
+                ex.printStackTrace();
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID LOAN PRINCIPLE");
                 ex.printStackTrace();
             }
 
@@ -434,13 +438,9 @@ public class PortalSelect extends JFrame {
                     long loan_id = Long.parseLong(modifyLoanIDTextField.getText());
 
                     if (tempLoan.checkLoanExists(loan_id)) {
-                        float newLoanInterestRate = ModifyPanels.modifyLoanInterestRatePanel();
-                        if (newLoanInterestRate > 0.00f) {
-                            tempLoan.setLoanInterestRate(newLoanInterestRate, loan_id);
-                            JOptionPane.showMessageDialog(null, "LOAN INTEREST MODIFIED");
+                        boolean modified = ModifyPanels.modifyLoanInterestRatePrompt(tempLoan, loan_id);
+                        if (modified) {
                             clearTextFields(modifyLoanTextFields);
-                        } else {
-                            JOptionPane.showMessageDialog(null, "INVALID INTEREST RATE");
                         }
                     } else {
                         JOptionPane.showMessageDialog(null, "INVALID LOAN ID");
@@ -452,6 +452,9 @@ public class PortalSelect extends JFrame {
                 ex.printStackTrace();
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "SQL ERROR");
+                ex.printStackTrace();
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INTEREST RATE");
                 ex.printStackTrace();
             }
 
@@ -466,10 +469,10 @@ public class PortalSelect extends JFrame {
                     long loan_id = Long.parseLong(modifyLoanIDTextField.getText());
 
                     if (tempLoan.checkLoanExists(loan_id)) {
-                        boolean newLoanIsActive = ModifyPanels.modifyLoanIsActivePanel();
-                        tempLoan.setLoanIsActive(newLoanIsActive, loan_id);
-                        JOptionPane.showMessageDialog(null, "LOAN ACTIVE STATUS MODIFIED");
-                        clearTextFields(modifyLoanTextFields);
+                        boolean modified = ModifyPanels.modifyLoanIsActivePrompt(tempLoan, loan_id);
+                        if (modified) {
+                            clearTextFields(modifyLoanTextFields);
+                        }
                     } else {
                         JOptionPane.showMessageDialog(null, "INVALID LOAN ID");
                     }
@@ -677,7 +680,7 @@ public class PortalSelect extends JFrame {
 
     }
 
-    private void handlePaymentModify(PaymentImplement tempPayment) {
+    private void handlePaymentModify(PaymentImplement tempPayment, LoanImplement tempLoan, CardImplement tempCard) {
 
         btnModifyPaymentSubmit.addActionListener(e -> { // populate text fields
 
@@ -698,25 +701,125 @@ public class PortalSelect extends JFrame {
 
         btnModifyPaymentDate.addActionListener(e -> {
 
+            try {
 
+                if (!modifyPaymentIDTextField.getText().isEmpty()) {
+
+                    long payment_id = Long.parseLong(modifyPaymentIDTextField.getText());
+
+                    if (tempPayment.checkPaymentExists(payment_id)) {
+                        boolean modified = ModifyPanels.modifyPaymentDatePrompt(tempPayment, payment_id);
+                        if (modified) {
+                            clearTextFields(modifyPaymentTextFields);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "INVALID PAYMENT ID");
+                    }
+                }
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "SQL ERROR");
+                ex.printStackTrace();
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID DATE");
+                ex.printStackTrace();
+            }
 
         });
 
         btnModifyPaymentCardNo.addActionListener(e -> {
 
+            try {
 
+                if (!modifyPaymentIDTextField.getText().isEmpty()) {
+
+                    long payment_id = Long.parseLong(modifyPaymentIDTextField.getText());
+
+                    if (tempPayment.checkPaymentExists(payment_id)) {
+                        boolean modified = ModifyPanels.modifyPaymentCardNoPrompt(tempPayment, tempCard, payment_id);
+                        if (modified) {
+                            clearTextFields(modifyPaymentTextFields);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "INVALID PAYMENT ID");
+                    }
+                }
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "SQL ERROR");
+                ex.printStackTrace();
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID CARD NO");
+                ex.printStackTrace();
+            }
 
         });
 
         btnModifyPaymentValue.addActionListener(e -> {
 
+            try {
 
+                if (!modifyPaymentIDTextField.getText().isEmpty()) {
+
+                    long payment_id = Long.parseLong(modifyPaymentIDTextField.getText());
+
+                    if (tempPayment.checkPaymentExists(payment_id)) {
+                        boolean modified = ModifyPanels.modifyPaymentValuePrompt(tempPayment, payment_id);
+                        if (modified) {
+                            clearTextFields(modifyPaymentTextFields);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "INVALID PAYMENT ID");
+                    }
+                }
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "SQL ERROR");
+                ex.printStackTrace();
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID PAYMENT VALUE");
+                ex.printStackTrace();
+            }
 
         });
 
         btnModifyPaymentLoanID.addActionListener(e -> {
 
+            try {
 
+                if (!modifyPaymentIDTextField.getText().isEmpty()) {
+
+                    long payment_id = Long.parseLong(modifyPaymentIDTextField.getText());
+
+                    if (tempPayment.checkPaymentExists(payment_id)) {
+                        boolean modified = ModifyPanels.modifyPaymentLoanIDPrompt(tempPayment, tempLoan, payment_id);
+                        if (modified) {
+                            clearTextFields(modifyPaymentTextFields);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "INVALID PAYMENT ID");
+                    }
+                }
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "SQL ERROR");
+                ex.printStackTrace();
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID LOAN ID");
+                ex.printStackTrace();
+            }
 
         });
 
@@ -928,18 +1031,100 @@ public class PortalSelect extends JFrame {
         btnModifyCustomerDetails.addActionListener(e -> {
 
 
+            try {
+
+                if (!modifyCustomerCardNoTextField.getText().isEmpty()) {
+
+                    long card_no = Long.parseLong(modifyCustomerCardNoTextField.getText());
+
+                    if (tempCustomer.checkCustomerExists(card_no)) {
+                        boolean modified = ModifyPanels.modifyCustomerDetailsPrompt(tempCustomer, card_no);
+                        if (modified) {
+                            clearTextFields(modifyCustomerTextFields);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "INVALID CARD NUMBER");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "ENTER CARD NUMBER");
+                }
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "SQL ERROR");
+                ex.printStackTrace();
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            }
 
         });
 
         btnModifyCustomerAddressDetails.addActionListener(e -> {
 
+            try {
 
+                if (!modifyCustomerCardNoTextField.getText().isEmpty()) {
+
+                    long card_no = Long.parseLong(modifyCustomerCardNoTextField.getText());
+
+                    if (tempCustomer.checkCustomerExists(card_no)) {
+                        boolean modified = ModifyPanels.modifyCustomerAddressDetailsPrompt(tempCustomer, card_no);
+                        if (modified) {
+                            clearTextFields(modifyCustomerTextFields);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "INVALID CARD NUMBER");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "ENTER CARD NUMBER");
+                }
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "SQL ERROR");
+                ex.printStackTrace();
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            }
 
         });
 
         btnModifyCustomerContactDetails.addActionListener(e -> {
 
+            try {
 
+                if (!modifyCustomerCardNoTextField.getText().isEmpty()) {
+
+                    long card_no = Long.parseLong(modifyCustomerCardNoTextField.getText());
+
+                    if (tempCustomer.checkCustomerExists(card_no)) {
+                        boolean modified = ModifyPanels.modifyCustomerContactDetailsPrompt(tempCustomer, card_no);
+                        if (modified) {
+                            clearTextFields(modifyCustomerTextFields);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "INVALID CARD NUMBER");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "ENTER CARD NUMBER");
+                }
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "SQL ERROR");
+                ex.printStackTrace();
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            }
 
         });
 
@@ -1150,19 +1335,100 @@ public class PortalSelect extends JFrame {
 
         btnModifyEmployeeDetails.addActionListener(e -> {
 
+            try {
 
+                if (!modifyEmployeeIDTextField.getText().isEmpty()) {
+
+                    int employee_id = Integer.parseInt(modifyEmployeeIDTextField.getText());
+
+                    if (tempEmployee.checkEmployeeExists(employee_id)) {
+                        boolean modified = ModifyPanels.modifyEmployeeDetailsPrompt(tempEmployee, employee_id);
+                        if (modified) {
+                            clearTextFields(modifyEmployeeTextFields);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "INVALID EMPLOYEE ID");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "ENTER EMPLOYEE ID");
+                }
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "SQL ERROR");
+                ex.printStackTrace();
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            }
 
         });
 
         btnModifyEmployeeAddressDetails.addActionListener(e -> {
 
+            try {
 
+                if (!modifyEmployeeIDTextField.getText().isEmpty()) {
+
+                    int employee_id = Integer.parseInt(modifyEmployeeIDTextField.getText());
+
+                    if (tempEmployee.checkEmployeeExists(employee_id)) {
+                        boolean modified = ModifyPanels.modifyEmployeeAddressDetailsPrompt(tempEmployee, employee_id);
+                        if (modified) {
+                            clearTextFields(modifyEmployeeTextFields);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "INVALID EMPLOYEE ID");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "ENTER EMPLOYEE ID");
+                }
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "SQL ERROR");
+                ex.printStackTrace();
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            }
 
         });
 
         btnModifyEmployeeContactDetails.addActionListener(e -> {
 
+            try {
 
+                if (!modifyEmployeeIDTextField.getText().isEmpty()) {
+
+                    int employee_id = Integer.parseInt(modifyEmployeeIDTextField.getText());
+
+                    if (tempEmployee.checkEmployeeExists(employee_id)) {
+                        boolean modified = ModifyPanels.modifyEmployeeContactDetailsPrompt(tempEmployee, employee_id);
+                        if (modified) {
+                            clearTextFields(modifyEmployeeTextFields);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "INVALID EMPLOYEE ID");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "ENTER EMPLOYEE ID");
+                }
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "SQL ERROR");
+                ex.printStackTrace();
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(null, "INVALID INPUT");
+                ex.printStackTrace();
+            }
 
         });
 
