@@ -51,6 +51,12 @@ public class PortalSelect extends JFrame {
         LoanImplement tempLoan = new LoanImplement();
         CardImplement tempCard = new CardImplement();
 
+        try { // Update interest on application boot
+            tempLoan.updateAllLoansInterestAccrued();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         // VIEW TAB
 
         viewLoansComboBox.addItem("LOAN ID");

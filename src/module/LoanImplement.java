@@ -68,7 +68,7 @@ public class LoanImplement implements LoanDAO { // TO-DO: optimize / determine b
     @Override
     public void updateLoanInterestAccrued(long loan_id) throws SQLException {
 
-        float interest_accrued = calculateLoanCompoundInterestAccrued(loan_id);
+        float interest_accrued = calculateLoanSimpleInterestAccrued(loan_id);
         setLoanInterestAccrued(interest_accrued, loan_id);
 
     }
@@ -293,14 +293,14 @@ public class LoanImplement implements LoanDAO { // TO-DO: optimize / determine b
     // in the database using the passed value
 
     @Override
-    public void setLoanInfo(Loan loan) throws SQLException { // MOD: includes interest accrued update
+    public void setLoanInfo(Loan loan) throws SQLException {
 
-        long loan_id = loan.getLoanID();
-        Timestamp loan_date = loan.getLoanDate(); long card_no = loan.getCardNo();
-        float loan_value = loan.getLoanValue(); float interest_rate = loan.getInterestRate();
-        float amt_remaining = loan.getAmtRemaining(); boolean is_active = loan.getIsActive();
+        long loan_id = loan.getLoanID(); Timestamp loan_date = loan.getLoanDate();
+        long card_no = loan.getCardNo(); float loan_value = loan.getLoanValue();
+        float interest_rate = loan.getInterestRate(); float amt_remaining = loan.getAmtRemaining();
+        float interest_accrued = loan.getInterestAccrued(); boolean is_active = loan.getIsActive();
 
-        updateLoanInterestAccrued(loan_id); float interest_accrued = loan.getInterestAccrued();
+
 
         String sql = String.format(QUERY.setLoanInfo, loan_date, card_no, loan_value,
                 interest_rate, amt_remaining, interest_accrued, is_active, loan_id);
@@ -1234,12 +1234,14 @@ public class LoanImplement implements LoanDAO { // TO-DO: optimize / determine b
 
         int days_since_loan = (int) ((current_date.getTime() - loan_date.getTime()) / (1000 * 60 * 60 * 24));
 
+        float interest_accrued = getLoanInterestAccrued(loan_id);
         float interest_rate = getLoanInterestRate(loan_id); // interest rate is stored as decimal
         float loan_remaining = getLoanAmtRemaining(loan_id);
 
-        float interest_accrued = (loan_remaining * interest_rate * days_since_loan) / 365;
+        tempCard.subtractBalanceFromCard(interest_accrued, card_no);
 
-        setLoanInterestAccrued(interest_accrued, loan_id);
+        interest_accrued = (loan_remaining * interest_rate * days_since_loan) / 365;
+
         tempCard.addBalanceToCard(interest_accrued, card_no);
 
         return interest_accrued;
@@ -1258,14 +1260,16 @@ public class LoanImplement implements LoanDAO { // TO-DO: optimize / determine b
 
         int days_since_loan = (int) ((current_date.getTime() - loan_date.getTime()) / (1000 * 60 * 60 * 24));
 
+        float interest_accrued = getLoanInterestAccrued(loan_id);
         float interest_rate = getLoanInterestRate(loan_id);
         float loan_remaining = getLoanAmtRemaining(loan_id);
 
-        float interest_accrued = (float) (loan_remaining *
+        tempCard.subtractBalanceFromCard(interest_accrued, card_no);
+
+        interest_accrued = (float) (loan_remaining *
                 Math.pow((1 + interest_rate / 365), days_since_loan) - loan_remaining);
 
 
-        setLoanInterestAccrued(interest_accrued, loan_id);
         tempCard.addBalanceToCard(interest_accrued, card_no);
 
         return interest_accrued;

@@ -52,11 +52,9 @@ public class Login extends JFrame {
                     if (checkPassword(username, password)){
                         if (checkEmployeeIsAdmin(username)) {
                             PortalSelect portalSelect = new PortalSelect();
-                            JOptionPane.showMessageDialog(null, "LOGGED IN AS ADMIN");
                             this.dispose();
                         } else {
                             PortalSelect portalSelect = new PortalSelect();
-                            JOptionPane.showMessageDialog(null, "LOGGED IN AS EMPLOYEE");
                             this.dispose();
                         }
                     } else {
